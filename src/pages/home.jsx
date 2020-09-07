@@ -1,8 +1,10 @@
 import React, { Component } from 'react'
 import { Grid } from '@material-ui/core'
 import axios from 'axios'
-
+// Components
 import Post from '../components/Post'
+import Profile from '../components/Profile'
+
 
 
 export class home extends Component {
@@ -30,7 +32,7 @@ export class home extends Component {
                     {recentPostsMarkup}
                 </Grid>
                 <Grid item sm={4} xs={12}>
-                    <p>Profile</p>
+                    <Profile />
                 </Grid>
             </Grid>
         )

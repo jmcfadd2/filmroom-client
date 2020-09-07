@@ -59,7 +59,11 @@ export const signupUser = (newUserData, history) => (dispatch) => {
 
 
 export const getUserData = () => (dispatch) => {
-    axios.get('/user')
+    dispatch({
+        type: LOADING_USER
+    });
+    axios
+        .get('/user')
         .then((res) => {
             dispatch({
                 type: SET_USER,
