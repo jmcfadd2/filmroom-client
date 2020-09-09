@@ -1,6 +1,7 @@
 import React, { Component, Fragment } from 'react'
 import { Link } from 'react-router-dom'
 import PropTypes from 'prop-types';
+import CreatePost from './CreatePost';
 // Redux
 import { connect } from 'react-redux'
 
@@ -23,9 +24,9 @@ class Navbar extends Component {
                 <Toolbar className="nav-container">
                     {authenticated ? (
                         <Fragment>
-                            <MyButton tip="Create a Post">
-                                <AddIcon color="primary" />
-                            </MyButton>
+                            <CreatePost>
+
+                            </CreatePost>
                             <Link to="/">
                                 <MyButton tip="Home">
                                     <HomeIcon color="primary" />

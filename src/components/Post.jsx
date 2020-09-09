@@ -4,8 +4,12 @@ import { Link } from 'react-router-dom'
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import PropTypes from 'prop-types';
+import DeletePost from './DeletePost';
 // MUI Cards
+import CardHeader from '@material-ui/core/CardHeader';
+import Avatar from '@material-ui/core/Avatar';
 import Card from '@material-ui/core/Card';
+import CardActions from '@material-ui/core/CardActions';
 import CardMedia from '@material-ui/core/CardMedia';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
@@ -19,9 +23,10 @@ import { likePost, unlikePost } from '../redux/actions/dataActions';
 import MyButton from '../util/MyButton';
 
 
+
 const styles = {
     card: {
-        display: 'flex',
+        
         marginBottom: 20,
 
     },
@@ -59,7 +64,8 @@ export class Post extends Component {
             likeCount,
             commentCount },
             user: {
-                authenticated
+                authenticated,
+                credentials: { handle }
 
             } } = this.props;
         const likeButton = !authenticated ? (
@@ -79,21 +85,36 @@ export class Post extends Component {
                         </MyButton>
                     )
             )
+        const deleteButton = authenticated && userHandle === handle ? (
+            <DeletePost postId={postId} />
+        ) : null;
         return (
             <Card className={classes.card}>
-                <CardMedia
-                    image={userImage}
-                    title="Profile Image" className={classes.image} />
+                <CardHeader
+                    avatar={
+                        <Avatar component={Link} to={`/users/${userHandle}`}  src={userImage} className={classes.avatar}>
+                        </Avatar>
+                    }
+                    action={
+                        deleteButton
+                    }
+                    title={
+                    <Link to={`/users/${userHandle}`}>{userHandle}</Link>
+                    }
+                    subheader={dayjs(createdAt).fromNow()} 
+                    
+                    />
                 <CardContent className={classes.content}>
-                    <Typography variant="h5" component={Link} to={`/users/${userHandle}`} color="primary">{userHandle} </Typography>
-                    <Typography variant="body2">{dayjs(createdAt).fromNow()}</Typography>
-                    <Typography variant="body2">{body}</Typography>
-                    {likeButton}
-                    <span> {likeCount} likes </span>
-                    <MyButton tip="Comments">
-                        <ChatIcon color="primary" />
-                    </MyButton>
-                    <span> {commentCount} comments </span>
+                    <Typography variant="h5" component={Link} to={`/users/${userHandle}`} color="primary"></Typography>
+                    <Typography variant="h5">{body}</Typography>
+                    <CardActions disableSpacing >
+                        {likeButton}
+                        <span> {likeCount} likes </span>
+                        <MyButton tip="Comments">
+                            <ChatIcon color="primary" />
+                        </MyButton>
+                        <span> {commentCount} comments </span>
+                    </CardActions>
                 </CardContent>
             </Card>
         )

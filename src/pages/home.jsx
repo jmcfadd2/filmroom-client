@@ -25,10 +25,10 @@ export class home extends Component {
         ) : <p>Loading...</p>
         return (
             <Grid container spacing={2}>
-                <Grid item sm={8} xs={12}>
+                <Grid item md={6} xs={12}>
                     {recentPostsMarkup}
                 </Grid>
-                <Grid item sm={4} xs={12}>
+                <Grid item md={4} sm={12}>
                     <Profile />
                 </Grid>
             </Grid>
