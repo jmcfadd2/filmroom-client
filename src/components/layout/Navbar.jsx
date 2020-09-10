@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from 'react'
 import { Link } from 'react-router-dom'
 import PropTypes from 'prop-types';
-import CreatePost from './CreatePost';
+import CreatePost from '../post/CreatePost';
 // Redux
 import { connect } from 'react-redux'
 
@@ -10,7 +10,7 @@ import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Button from '@material-ui/core/Button';
 import { Tooltip } from '@material-ui/core';
-import MyButton from '../util/MyButton';
+import MyButton from '../../util/MyButton';
 // Icons 
 import HomeIcon from '@material-ui/icons/Home';
 import AddIcon from '@material-ui/icons/Add';

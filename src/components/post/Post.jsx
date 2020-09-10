@@ -20,8 +20,8 @@ import ChatIcon from '@material-ui/icons/Chat';
 
 // Redux
 import { connect } from 'react-redux'
-import { likePost, unlikePost } from '../redux/actions/dataActions';
-import MyButton from '../util/MyButton';
+import { likePost, unlikePost } from '../../redux/actions/dataActions';
+import MyButton from '../../util/MyButton';
 
 
 
