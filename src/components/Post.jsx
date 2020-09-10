@@ -5,6 +5,8 @@ import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import PropTypes from 'prop-types';
 import DeletePost from './DeletePost';
+import PostDialog from './PostDialog'
+import LikeButton from './LikeButton'
 // MUI Cards
 import CardHeader from '@material-ui/core/CardHeader';
 import Avatar from '@material-ui/core/Avatar';
@@ -15,8 +17,7 @@ import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
 // Icons
 import ChatIcon from '@material-ui/icons/Chat';
-import ThumbUpAlt from '@material-ui/icons/ThumbUpAlt';
-import ThumbUpAltOutlined from '@material-ui/icons/ThumbUpAltOutlined';
+
 // Redux
 import { connect } from 'react-redux'
 import { likePost, unlikePost } from '../redux/actions/dataActions';
@@ -26,7 +27,7 @@ import MyButton from '../util/MyButton';
 
 const styles = {
     card: {
-        
+        postion: "relative",
         marginBottom: 20,
 
     },
@@ -41,19 +42,7 @@ const styles = {
 }
 
 export class Post extends Component {
-    likedPost = () => {
-        if (this.props.user.likes && this.props.user.likes.find(
-            (like) => like.postId === this.props.post.postId
-        ))
-            return true
-        else return false
-    }
-    likePost = () => {
-        this.props.likePost(this.props.post.postId)
-    }
-    unlikePost = () => {
-        this.props.unlikePost(this.props.post.postId)
-    }
+    
     render() {
         dayjs.extend(relativeTime)
         const { classes, post: { body,
@@ -68,23 +57,7 @@ export class Post extends Component {
                 credentials: { handle }
 
             } } = this.props;
-        const likeButton = !authenticated ? (
-            <MyButton tip="Give Props">
-                <Link to="/login">
-                    <ThumbUpAltOutlined color="primary" />
-                </Link>
-            </MyButton>
-        ) : (
-                this.likedPost() ? (
-                    <MyButton tip="Undo Props" onClick={this.unlikePost}>
-                        <ThumbUpAlt color="primary" />
-                    </MyButton>
-                ) : (
-                        <MyButton tip="Give Props" onClick={this.likePost}>
-                            <ThumbUpAltOutlined color="primary" />
-                        </MyButton>
-                    )
-            )
+        
         const deleteButton = authenticated && userHandle === handle ? (
             <DeletePost postId={postId} />
         ) : null;
@@ -105,18 +78,26 @@ export class Post extends Component {
                     
                     />
                 <CardContent className={classes.content}>
-                    <Typography variant="h5" component={Link} to={`/users/${userHandle}`} color="primary"></Typography>
+                    
                     <Typography variant="h5">{body}</Typography>
                     <CardActions disableSpacing >
-                        {likeButton}
+                        <LikeButton postId={postId}/>
                         <span> {likeCount} likes </span>
                         <MyButton tip="Comments">
                             <ChatIcon color="primary" />
                         </MyButton>
                         <span> {commentCount} comments </span>
+                    <PostDialog 
+                        postId={postId}
+                        userHandle={userHandle}
+                        
+                        />
                     </CardActions>
                 </CardContent>
+                
+                
             </Card>
+            
         )
     }
 }

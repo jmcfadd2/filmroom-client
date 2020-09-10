@@ -69,7 +69,7 @@ class DeletePost extends Component {
 DeletePost.propTypes = {
     deletePost: PropTypes.func.isRequired,
     classes: PropTypes.object.isRequired,
-    PostId: PropTypes.string.isRequired
+    postId: PropTypes.string.isRequired
 };
 
 export default connect(

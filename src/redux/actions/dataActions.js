@@ -34,6 +34,24 @@ export const getPosts = () => (dispatch) => {
         });
 };
 
+export const getPost = (postId) => (dispatch) => {
+    dispatch({
+        type: LOADING_UI
+    });
+    axios
+        .get(`/post/${postId}`)
+        .then((res) => {
+            dispatch({
+                type: SET_POST,
+                payload: res.data
+            });
+            dispatch({
+                type: STOP_LOADING_UI
+            });
+        })
+        .catch((err) => console.log(err));
+};
+
 export const createPost = (newPost) => (dispatch) => {
     dispatch({
         type: LOADING_UI
