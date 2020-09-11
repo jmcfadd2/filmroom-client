@@ -90,7 +90,7 @@ export class Post extends Component {
                     <PostDialog 
                         postId={postId}
                         userHandle={userHandle}
-                        
+                        openDialog={this.props.openDialog}
                         />
                     </CardActions>
                 </CardContent>
