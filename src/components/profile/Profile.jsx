@@ -8,10 +8,9 @@ import MyButton from '../../util/MyButton';
 import ProfileSkeleton from '../../util/ProfileSkeleton';
 // MUI
 import Button from '@material-ui/core/Button';
-import { Paper, IconButton } from '@material-ui/core';
+import { Paper } from '@material-ui/core';
 import MuiLink from '@material-ui/core/Link';
 import Typography from '@material-ui/core/Typography'
-import Tooltip from '@material-ui/core/Tooltip'
 // Redux
 import { connect } from 'react-redux'
 import { logoutUser, uploadImage } from '../../redux/actions/userActions'

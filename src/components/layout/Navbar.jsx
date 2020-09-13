@@ -9,13 +9,11 @@ import { connect } from 'react-redux'
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Button from '@material-ui/core/Button';
-import { Tooltip } from '@material-ui/core';
 import MyButton from '../../util/MyButton';
 import Notifications from './Notifications';
 
 // Icons 
 import HomeIcon from '@material-ui/icons/Home';
-import AddIcon from '@material-ui/icons/Add';
 
 class Navbar extends Component {
     render() {
