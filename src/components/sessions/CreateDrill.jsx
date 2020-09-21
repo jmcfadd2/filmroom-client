@@ -9,11 +9,12 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import AddIcon from '@material-ui/icons/Add';
+import AddIcon from '@material-ui/icons/Add'
 import CloseIcon from '@material-ui/icons/Close';
+import Typography from '@material-ui/core/Typography'
 // Redux stuff
 import { connect } from 'react-redux';
-import { createPost, clearErrors } from '../../redux/actions/dataActions';
+import { addNewDrill, setSession, clearErrors } from '../../redux/actions/dataActions';
 
 const styles = (theme) => ({
     ...theme.spreadThis,
@@ -32,10 +33,9 @@ const styles = (theme) => ({
     }
 });
 
-class CreatePost extends Component {
+class CreateDrill extends Component {
     state = {
         open: false,
-        body: '',
         errors: {}
     };
     componentWillReceiveProps(nextProps) {
@@ -45,7 +45,7 @@ class CreatePost extends Component {
             });
         }
         if (!nextProps.UI.errors && !nextProps.UI.loading) {
-            this.setState({ body: '', open: false, errors: {} });
+            this.setState({ open: false, errors: {} });
         }
     }
     handleOpen = () => {
@@ -58,9 +58,13 @@ class CreatePost extends Component {
     handleChange = (event) => {
         this.setState({ [event.target.name]: event.target.value });
     };
-    handleSubmit = (event) => {
+    sendDrill = (event) => {
         event.preventDefault();
-        this.props.createPost({ body: this.state.body });
+        this.props.addNewDrill({
+            topic: this.state.topic,
+            metrics: this.state.metrics,
+            name: this.state.name
+        });
     };
     render() {
         const { errors } = this.state;
@@ -70,8 +74,10 @@ class CreatePost extends Component {
         } = this.props;
         return (
             <Fragment>
-                <MyButton onClick={this.handleOpen} tip="Create a Post!">
-                    <AddIcon />
+                <MyButton onClick={this.handleOpen} tip="Create New Drill">
+                    <AddIcon> Create New Drill </AddIcon>
+                    <Typography variant={"h6"}>Create New Drill</Typography>
+
                 </MyButton>
                 <Dialog
                     open={this.state.open}
@@ -86,16 +92,42 @@ class CreatePost extends Component {
                     >
                         <CloseIcon />
                     </MyButton>
-                    <DialogTitle>Create a post</DialogTitle>
+                    <DialogTitle>Create a Drill</DialogTitle>
                     <DialogContent>
-                        <form onSubmit={this.handleSubmit}>
+                        <form >
                             <TextField
-                                name="body"
+                                name="topic"
                                 type="text"
-                                label="Post"
+                                label="Topic"
                                 multiline
-                                rows="3"
-                                placeholder="Share your progress"
+                                rows="1"
+                                placeholder="What sport/activity are you tracking?"
+                                error={errors.body ? true : false}
+                                helperText={errors.body}
+                                className={classes.textField}
+                                onChange={this.handleChange}
+                                fullWidth
+                            />
+                            <TextField
+                                name="name"
+                                type="text"
+                                label="Drill Name"
+                                multiline
+                                rows="1"
+                                placeholder="The name of your drill?"
+                                error={errors.body ? true : false}
+                                helperText={errors.body}
+                                className={classes.textField}
+                                onChange={this.handleChange}
+                                fullWidth
+                            />
+                            <TextField
+                                name="metrics"
+                                type="text"
+                                label="Repps"
+                                multiline
+                                rows="1"
+                                placeholder="How are you tracking your Repps"
                                 error={errors.body ? true : false}
                                 helperText={errors.body}
                                 className={classes.textField}
@@ -103,11 +135,12 @@ class CreatePost extends Component {
                                 fullWidth
                             />
                             <Button
-                                type="submit"
+                                type="sendDrill"
                                 variant="contained"
                                 color="primary"
                                 className={classes.submitButton}
                                 disabled={loading}
+                                onClick={this.sendDrill}
                             >
                                 Submit
                 {loading && (
@@ -125,17 +158,20 @@ class CreatePost extends Component {
     }
 }
 
-CreatePost.propTypes = {
-    createPost: PropTypes.func.isRequired,
+CreateDrill.propTypes = {
+    addNewDrill: PropTypes.func.isRequired,
+    setSession: PropTypes.func.isRequired,
     clearErrors: PropTypes.func.isRequired,
-    UI: PropTypes.object.isRequired
+    UI: PropTypes.object.isRequired,
+    data: PropTypes.object.isRequired
 };
 
 const mapStateToProps = (state) => ({
-    UI: state.UI
+    UI: state.UI,
+    data: state.data
 });
 
 export default connect(
     mapStateToProps,
-    { createPost, clearErrors }
-)(withStyles(styles)(CreatePost));
+    { addNewDrill, setSession, clearErrors }
+)(withStyles(styles)(CreateDrill));

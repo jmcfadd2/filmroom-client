@@ -6,12 +6,17 @@ import {
     DELETE_POST,
     CREATE_POST,
     SET_POST,
-    SUBMIT_COMMENT
+    SUBMIT_COMMENT, 
+    SET_SESSION, 
+    CREATE_SESSION,
+    ADD_NEW_DRILL,
+    ADD_DRILL
 } from '../types';
 
 const initialState = {
     posts: [],
     post: {},
+    drills: [],
     loading: false
 };
 
@@ -67,6 +72,29 @@ export default function (state = initialState, action) {
                     comments: [action.payload, ...state.post.comments]
                 }
             };
+        case SET_SESSION:
+                return {
+                    ...state,
+                    session: action.payload, ...state.session
+                };
+        case CREATE_SESSION:
+            return {
+                ...state,
+                session: action.payload
+            };
+        case ADD_NEW_DRILL:
+            return {
+                ...state,
+                    drills: [...state.drills, action.payload]
+            }
+        case ADD_DRILL:
+            return {
+                ...state,
+                session: {
+                    ...state.session,
+                    drills: [action.payload, ...state.drills]
+                 }
+            }
         default:
             return state;
     }

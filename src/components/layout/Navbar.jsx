@@ -2,6 +2,8 @@ import React, { Component, Fragment } from 'react'
 import { Link } from 'react-router-dom'
 import PropTypes from 'prop-types';
 import CreatePost from '../post/CreatePost';
+import StartSession from '../sessions/StartSession';
+
 // Redux
 import { connect } from 'react-redux'
 
@@ -23,6 +25,9 @@ class Navbar extends Component {
                 <Toolbar className="nav-container">
                     {authenticated ? (
                         <Fragment>
+                            <Link to="/session">
+                                <StartSession />
+                            </Link>
                             <CreatePost>
 
                             </CreatePost>

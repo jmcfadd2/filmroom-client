@@ -10,6 +10,11 @@ import {
     LOADING_UI,
     SET_POST,
     STOP_LOADING_UI,
+    SET_SESSION,
+    CREATE_SESSION,
+    ADD_NEW_DRILL,
+    ADD_DRILL,
+    CREATE_SESSION_POST,
     SUBMIT_COMMENT
 } from '../types';
 import axios from 'axios';
@@ -149,6 +154,70 @@ export const getUserData = (userHandle) => (dispatch) => {
         });
 };
 
+export const setSession = (prepSession) => (dispatch) => {
+    dispatch({
+        type: SET_SESSION,
+        payload: prepSession
+    })
+}
+
+export const createSession = (newSession) => (dispatch) => {
+    dispatch({
+        type: LOADING_UI
+    });
+    axios
+        .post('/session', newSession)
+        .then((res) => {
+            dispatch({
+                type: CREATE_SESSION,
+                payload: res.data
+            });
+            dispatch(clearErrors());
+        })
+        .catch((err) => {
+            dispatch({
+                type: SET_ERRORS,
+                payload: err.response.data
+            });
+        });
+};
+export const addNewDrill = (newDrill) => (dispatch) => {
+    dispatch({
+        type: LOADING_UI
+    });
+    axios
+        .post('/drill', newDrill)
+        .then((res) => {
+            dispatch({
+                type: ADD_NEW_DRILL,
+                payload: res.data
+            });
+            dispatch(clearErrors());
+        })
+        
+};
+
+export const postSession = (sessionId) => (dispatch) => {
+    dispatch({
+        type: LOADING_UI
+    });
+    axios
+        .post(`/post/${sessionId}`, sessionId)
+        .then((res) => {
+            dispatch({
+                type: CREATE_SESSION_POST,
+                payload: res.data
+            });
+            dispatch(clearErrors());
+        })
+        .catch((err) => {
+            dispatch({
+                type: SET_ERRORS,
+                payload: err.response.data
+            });
+        });
+};
+
 
 
 export const clearErrors = () => (dispatch) => {
@@ -156,3 +225,4 @@ export const clearErrors = () => (dispatch) => {
         type: CLEAR_ERRORS
     });
 };
+
