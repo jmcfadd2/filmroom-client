@@ -21,6 +21,7 @@ import signup from './pages/signup';
 import user from './pages/user'
 import session from './pages/session'
 import axios from 'axios';
+import { activity } from './pages/activity';
 
 const theme = createMuiTheme(themeFile);
 
@@ -56,6 +57,8 @@ function App() {
                             <Route exact path="/users/:handle/post/:postId" component={user}
                             />
                             <Route exact path="/session" component={session}
+                            />
+                            <Route exact path="/activity" component={activity}
                             />
                         </Switch>
                     </div>

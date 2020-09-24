@@ -86,6 +86,10 @@ export default {
             '& a': {
                 margin: '20px 10px'
             }
+        },
+        paperActivity: {
+            marginLeft: 'auto',
+            marginRight: 'auto'
         }
     }
 }
