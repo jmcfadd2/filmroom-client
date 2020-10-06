@@ -8,7 +8,7 @@ import TimelineDot from '@material-ui/lab/TimelineDot';
 import { useSelector } from 'react-redux';
 
 export default function DrillTimeline() {
-    const drills = useSelector(state => state.data.drills)
+    const drills = useSelector(state => state.data.session.drills)
     return (
         <Timeline>
             {drills.map((drill) => (

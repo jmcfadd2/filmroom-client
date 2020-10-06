@@ -90,6 +90,12 @@ export default {
         paperActivity: {
             marginLeft: 'auto',
             marginRight: 'auto'
-        }
+        },
+        formPaper: {
+            padding: '10vh 10vh',
+            width: '50vh',
+            marginLeft: 'auto',
+            marginRight: 'auto',
+        },
     }
 }

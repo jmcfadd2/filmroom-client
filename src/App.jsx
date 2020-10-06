@@ -21,8 +21,6 @@ import signup from './pages/signup';
 import user from './pages/user'
 import session from './pages/session'
 import axios from 'axios';
-import { activity } from './pages/activity';
-
 const theme = createMuiTheme(themeFile);
 
 axios.defaults.baseURL = "https://us-central1-shotsup-mvp.cloudfunctions.net/api"
@@ -58,8 +56,7 @@ function App() {
                             />
                             <Route exact path="/session" component={session}
                             />
-                            <Route exact path="/activity" component={activity}
-                            />
+                            
                         </Switch>
                     </div>
                 </Router>

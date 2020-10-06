@@ -42,5 +42,5 @@
       "last 1 safari version"
     ]
   },
-  "proxy": "https://us-central1-shotsup-mvp.cloudfunctions.net/api"
+  "proxy": "http://localhost:5000/shotsup-mvp/us-central1/api"
 }

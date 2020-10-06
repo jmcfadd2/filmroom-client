@@ -10,10 +10,15 @@ import {
     LOADING_UI,
     SET_POST,
     STOP_LOADING_UI,
-    SET_SESSION,
-    CREATE_SESSION,
+    SET_TOPIC,
+    SET_TYPE,
+    STAGE_SESSION,
     ADD_NEW_DRILL,
+    SET_DRILLS,
     ADD_DRILL,
+    UPDATE_RESULTS,
+    SET_TITLE,
+    SET_DESCRIPT,
     CREATE_SESSION_POST,
     SUBMIT_COMMENT
 } from '../types';
@@ -93,16 +98,16 @@ export const likePost = (postId) => (dispatch) => {
 };
 
 export const unlikePost = (postId) => (dispatch) => {
-        axios
-            .get(`/post/${postId}/unlike`)
-            .then((res) => {
-                dispatch({
-                    type: UNLIKE_POST,
-                    payload: res.data
-                });
-            })
-            .catch((err) => console.log(err));
-        }
+    axios
+        .get(`/post/${postId}/unlike`)
+        .then((res) => {
+            dispatch({
+                type: UNLIKE_POST,
+                payload: res.data
+            });
+        })
+        .catch((err) => console.log(err));
+}
 
 export const deletePost = (postId) => (dispatch) => {
     axios
@@ -154,22 +159,29 @@ export const getUserData = (userHandle) => (dispatch) => {
         });
 };
 
-export const setSession = (prepSession) => (dispatch) => {
+export const setTopic = (newTopic) => (dispatch) => {
     dispatch({
-        type: SET_SESSION,
-        payload: prepSession
+        type: SET_TOPIC,
+        payload: newTopic
+    })
+}
+export const setType = (newType) => (dispatch) => {
+    dispatch({
+        type: SET_TYPE,
+        payload: newType
     })
 }
 
-export const createSession = (newSession) => (dispatch) => {
+export const finishSession = (newSession) => (dispatch) => {
     dispatch({
         type: LOADING_UI
     });
     axios
-        .post('/session', newSession)
+        .post('/session/stage', newSession)
         .then((res) => {
+            console.log(res)
             dispatch({
-                type: CREATE_SESSION,
+                type: STAGE_SESSION,
                 payload: res.data
             });
             dispatch(clearErrors());
@@ -194,18 +206,71 @@ export const addNewDrill = (newDrill) => (dispatch) => {
             });
             dispatch(clearErrors());
         })
-        
+
 };
 
-export const postSession = (sessionId) => (dispatch) => {
+export const getUserDrills = (userHandle) => (dispatch) => {
+
+    axios
+        .get(`/drills/${userHandle}`)
+        .then((res) => {
+            dispatch({
+                type: SET_DRILLS,
+                payload: res.data
+            })
+        })
+        .catch(() => {
+            dispatch({
+                type: SET_DRILLS,
+                payload: ["No drills available"]
+            })
+        })
+}
+
+export const addDrillToSession = (drillName) => (dispatch) => {
+    dispatch({
+        type: ADD_DRILL,
+        payload: drillName
+    })
+}
+
+export const updateResults = (results, drillName, drillId) => (dispatch) => {
+    
+    dispatch({
+                type: UPDATE_RESULTS,
+                payload: {
+                    drillName,
+                    drillId,
+                    results
+                    
+                }
+            });
+            dispatch(clearErrors());
+        
+}
+
+export const setTitle = (newTitle) => (dispatch) => {
+    dispatch({
+        type: SET_TITLE,
+        payload: newTitle
+    })
+}
+export const setDescript = (newDescript) => (dispatch) => {
+    dispatch({
+        type: SET_DESCRIPT,
+        payload: newDescript
+    })
+}
+
+export const postSession = (sessionId, newSessionPost) => (dispatch) => {
     dispatch({
         type: LOADING_UI
     });
     axios
-        .post(`/post/${sessionId}`, sessionId)
+        .post(`/post/${sessionId}`, newSessionPost)
         .then((res) => {
             dispatch({
-                type: CREATE_SESSION_POST,
+                type: CREATE_POST,
                 payload: res.data
             });
             dispatch(clearErrors());
@@ -225,4 +290,3 @@ export const clearErrors = () => (dispatch) => {
         type: CLEAR_ERRORS
     });
 };
-

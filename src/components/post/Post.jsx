@@ -21,6 +21,7 @@ import ChatIcon from '@material-ui/icons/Chat';
 import { connect } from 'react-redux'
 import { likePost, unlikePost } from '../../redux/actions/dataActions';
 import MyButton from '../../util/MyButton';
+import { Grid } from '@material-ui/core';
 
 
 
@@ -35,7 +36,21 @@ const styles = {
         objectFit: 'cover',
     },
     content: {
-        padding: 25
+        padding: 25,
+        paddingLeft: 30, 
+        marginBottom: 8,
+    },
+    sessionTitle: {
+        fontWeight: 600,
+        marginBottom: 15,
+    },
+    subActivity: {
+        fontWeight: 700,
+        marginTop: 15,
+        marginBottom: 15,
+    },
+    results: {
+        marginLeft: 30
     }
 
 }
@@ -44,10 +59,13 @@ export class Post extends Component {
     
     render() {
         dayjs.extend(relativeTime)
-        const { classes, post: { body,
+        const { classes, post: { 
+            body,
             createdAt,
             userImage,
             userHandle,
+            title,
+            session,
             postId,
             likeCount,
             commentCount },
@@ -73,12 +91,29 @@ export class Post extends Component {
                     title={
                     <Link to={`/users/${userHandle}`}>{userHandle}</Link>
                     }
-                    subheader={dayjs(createdAt).fromNow()} 
+                    subheader={dayjs(createdAt).format("MMMM D, YYYY")} 
                     
                     />
                 <CardContent className={classes.content}>
-                    
+                {title && <Typography variant="h4" className={classes.sessionTitle}>{title}</Typography>}
                     <Typography variant="h5">{body}</Typography>
+                    <Grid container justify="center">
+                        {session && <Typography variant="h6" className={classes.subActivity}>Drills</Typography>}
+                        <Grid justify="space-around" alignItems="center" container >
+                            {session && 
+                            session.drillResults.map((result, index) => (
+                                <Grid item  key={index}  >
+                                    <Typography variant="body1">
+                                        {result.drillName}
+                                    </Typography>
+                                    <Typography variant="body2">
+                                        {result.results.field1}/{result.results.field2}
+                                    </Typography>
+                                </Grid>
+                            ))}
+                        </Grid>
+                    </Grid>
+                </CardContent>
                     <CardActions disableSpacing >
                         <LikeButton postId={postId}/>
                         <span> {likeCount} likes </span>
@@ -92,7 +127,6 @@ export class Post extends Component {
                         openDialog={this.props.openDialog}
                         />
                     </CardActions>
-                </CardContent>
                 
                 
             </Card>

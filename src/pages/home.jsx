@@ -26,11 +26,11 @@ export class home extends Component {
         ) : <PostSkeleton />
         return (
             <Grid container spacing={2}>
-                <Grid item md={6} xs={12}>
-                    {recentPostsMarkup}
-                </Grid>
                 <Grid item md={4} sm={12}>
                     <Profile />
+                </Grid>
+                <Grid item md={6} xs={12}>
+                    {recentPostsMarkup}
                 </Grid>
             </Grid>
         )

@@ -9,12 +9,13 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import MenuItem from '@material-ui/core/MenuItem'
 import AddIcon from '@material-ui/icons/Add'
 import CloseIcon from '@material-ui/icons/Close';
 import Typography from '@material-ui/core/Typography'
 // Redux stuff
 import { connect } from 'react-redux';
-import { addNewDrill, clearErrors } from '../../redux/actions/dataActions';
+import { getUserDrills, addDrillToSession, clearErrors } from '../../redux/actions/dataActions';
 
 const styles = (theme) => ({
     ...theme.spreadThis,
@@ -33,41 +34,40 @@ const styles = (theme) => ({
     }
 });
 
-class CreateDrill extends Component {
+class AddDrill extends Component {
     state = {
         open: false,
-        errors: {}
+        errors: {},
+        drillToBeAdded: ""
     };
-    componentWillReceiveProps(nextProps) {
-        if (nextProps.UI.errors) {
-            this.setState({
-                errors: nextProps.UI.errors
-            });
-        }
-        if (!nextProps.UI.errors && !nextProps.UI.loading) {
-            this.setState({ open: false, errors: {} });
-        }
-    }
+    handle = this.props.user.credentials.handle
     handleOpen = () => {
         this.setState({ open: true });
+        console.log(this.handle)
+        this.props.getUserDrills(this.handle)
+        
     };
     handleClose = () => {
         this.props.clearErrors();
         this.setState({ open: false, errors: {} });
     };
     handleChange = (event) => {
-        this.setState({ [event.target.name]: event.target.value });
+        this.setState({ drillToBeAdded: event.target.value });
+        console.log(this.state)
     };
     sendDrill = (event) => {
         event.preventDefault();
-        this.props.addNewDrill({
-            topic: this.state.topic,
-            metrics: this.state.metrics,
-            name: this.state.name
-        });
+        this.props.addDrillToSession(this.state.drillToBeAdded);
+        console.log(this.state.drillToBeAdded)
     };
+    componentDidMount() {
+        
+        
+    }
     render() {
         const { errors } = this.state;
+        const { yourDrills } = this.props.data;
+        
         const {
             classes,
             UI: { loading }
@@ -75,8 +75,8 @@ class CreateDrill extends Component {
         return (
             <Fragment>
                 <MyButton onClick={this.handleOpen} tip="Create New Drill">
-                    <AddIcon> Create New Drill </AddIcon>
-                    <Typography variant={"h6"}>Create New Drill</Typography>
+                    <AddIcon />
+                    <Typography variant={"h6"}>Add Your Drill</Typography>
 
                 </MyButton>
                 <Dialog
@@ -92,48 +92,40 @@ class CreateDrill extends Component {
                     >
                         <CloseIcon />
                     </MyButton>
-                    <DialogTitle>Create a Drill</DialogTitle>
+                    <DialogTitle>Add Your Drills</DialogTitle>
                     <DialogContent>
                         <form >
                             <TextField
-                                name="topic"
-                                type="text"
-                                label="Topic"
-                                multiline
+                                name="userDrill"
+                                label="Your Drills"
+                                select
                                 rows="1"
-                                placeholder="What sport/activity are you tracking?"
+                                error={errors.body ? true : false}
+                                helperText={errors.body}
+                                className={classes.textField}
+                                
+                                onChange={this.handleChange}
+                                fullWidth
+                            >
+                                {yourDrills.map((drill) => (
+                                    <MenuItem key={drill.drillId} value={drill.name}>
+                                        {drill.name}
+                                    </MenuItem>
+                                ))}
+                            </TextField>
+                            {/* <TextField
+                                name="instructorDrills"
+                                select 
+                                label="Instructor Drills"
                                 error={errors.body ? true : false}
                                 helperText={errors.body}
                                 className={classes.textField}
                                 onChange={this.handleChange}
                                 fullWidth
-                            />
-                            <TextField
-                                name="name"
-                                type="text"
-                                label="Drill Name"
-                                multiline
-                                rows="1"
-                                placeholder="The name of your drill?"
-                                error={errors.body ? true : false}
-                                helperText={errors.body}
-                                className={classes.textField}
-                                onChange={this.handleChange}
-                                fullWidth
-                            />
-                            <TextField
-                                name="metrics"
-                                type="text"
-                                label="Repps"
-                                multiline
-                                rows="1"
-                                placeholder="How are you tracking your Repps"
-                                error={errors.body ? true : false}
-                                helperText={errors.body}
-                                className={classes.textField}
-                                onChange={this.handleChange}
-                                fullWidth
-                            />
+                            >
+
+                            </TextField> */}
+                            
                             <Button
                                 type="sendDrill"
                                 variant="contained"
@@ -158,19 +150,21 @@ class CreateDrill extends Component {
     }
 }
 
-CreateDrill.propTypes = {
-    addNewDrill: PropTypes.func.isRequired,
+AddDrill.propTypes = {
+    getUserDrills: PropTypes.func.isRequired,
     clearErrors: PropTypes.func.isRequired,
     UI: PropTypes.object.isRequired,
-    data: PropTypes.object.isRequired
+    data: PropTypes.object.isRequired,
+    user: PropTypes.object.isRequired
 };
 
 const mapStateToProps = (state) => ({
     UI: state.UI,
-    data: state.data
+    data: state.data,
+    user: state.user
 });
 
 export default connect(
     mapStateToProps,
-    { addNewDrill, clearErrors }
-)(withStyles(styles)(CreateDrill));
+    { getUserDrills, addDrillToSession, clearErrors }
+)(withStyles(styles)(AddDrill));

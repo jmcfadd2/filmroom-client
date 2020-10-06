@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Stepper from '@material-ui/core/Stepper';
 import Step from '@material-ui/core/Step';
@@ -7,8 +7,9 @@ import StepContent from '@material-ui/core/StepContent';
 import Button from '@material-ui/core/Button';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
-import { useSelector, useActions } from 'react-redux';
-import Timer from 'react-compound-timer/build';
+import Textfield from '@material-ui/core/TextField'
+import { useSelector, useDispatch } from 'react-redux';
+import { updateResults, finishSession } from '../../redux/actions/dataActions';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -28,11 +29,18 @@ const useStyles = makeStyles((theme) => ({
 
 
 
-export default function ActivityStepper() {
+export default function ActivityStepper(props) {
     const classes = useStyles();
-    const [activeStep, setActiveStep] = React.useState(0);
-    const drills = useSelector(state => state.data.drills)
-
+    const [activeStep, setActiveStep] = useState(0);
+    const [results, setResults] = useState({field1: 0, field2: 0})
+    const drills = useSelector(state => state.data.session.drills)
+    const currentSession = {
+        session: useSelector(state => state.data.session)
+    }
+    const dispatch = useDispatch()
+    
+ 
+    
     const handleNext = () => {
         setActiveStep((prevActiveStep) => prevActiveStep + 1);
     };
@@ -41,18 +49,40 @@ export default function ActivityStepper() {
         setActiveStep((prevActiveStep) => prevActiveStep - 1);
     };
 
-    const handleReset = () => {
-        setActiveStep(0);
-    };
+    
 
     return (
         <div className={classes.root}>
             <Stepper activeStep={activeStep} orientation="vertical">
-                {drills.map((drill) => (
-                    <Step key={drill.drillId}>
-                        <StepLabel>{drill.name}</StepLabel>
+                {drills.map((drill, index) => (
+                    
+                    <Step key={index}>
+                        <StepLabel>{`Drill #${index + 1 }`}</StepLabel>
                         <StepContent>
-                            <Typography>{drill.topic}</Typography>
+                            <Typography>{drill.name}</Typography>
+                            <form>
+                                <Textfield
+                                    rows="1"
+                                    type="number"
+                                    label="Makes"
+                                    name="Makes"
+                                    defaultValue={results.field1}
+                                    variant="filled"
+                                    onChange={e => setResults({ field1: e.target.value })}
+
+                                />
+                                /
+                                <Textfield
+                                    rows="1"
+                                    type="number"
+                                    label="Attempts"
+                                    defaultValue={results.field2}
+                                    variant="filled"
+                                    onChange={e => setResults({ ...results, field2: e.target.value })}
+                                />
+
+
+                            </form>
                             <div className={classes.actionsContainer}>
                                 <div>
                                     <Button
@@ -65,10 +95,13 @@ export default function ActivityStepper() {
                                     <Button
                                         variant="contained"
                                         color="primary"
-                                        onClick={handleNext}
+                                        onClick={() => {
+                                            handleNext(); 
+                                            dispatch(updateResults(results, drill.name, drill.drillId))
+                                        }}
                                         className={classes.button}
                                     >
-                                        {activeStep === drills.length - 1 ? 'Finish' : 'Next'}
+                                        {activeStep === drills.length - 1 ? 'Finish Drills' : 'Next'}
                                     </Button>
                                 </div>
                             </div>
@@ -78,9 +111,14 @@ export default function ActivityStepper() {
             </Stepper>
             {activeStep === drills.length && (
                 <Paper square elevation={0} className={classes.resetContainer}>
-                    <Typography>All drills completed - you&apos;re finished</Typography>
-                    <Button onClick={handleReset} className={classes.button}>
-                        Reset
+                    <Typography>All drills completed - you're finished</Typography>
+                    <Button 
+                    onClick={() => {
+                        dispatch( finishSession(currentSession) )
+                        
+                        }, props.stage}  
+                    className={classes.button}>
+                        Finish Session
           </Button>
                 </Paper>
             )}

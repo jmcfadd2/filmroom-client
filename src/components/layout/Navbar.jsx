@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import PropTypes from 'prop-types';
 import CreatePost from '../post/CreatePost';
 import StartSession from '../sessions/StartSession';
-
+import moduleName from 'module'
 // Redux
 import { connect } from 'react-redux'
 
@@ -28,9 +28,7 @@ class Navbar extends Component {
                             <Link to="/session">
                                 <StartSession />
                             </Link>
-                            <CreatePost>
-
-                            </CreatePost>
+                            <CreatePost />
                             <Link to="/">
                                 <MyButton tip="Home">
                                     <HomeIcon color="primary" />
