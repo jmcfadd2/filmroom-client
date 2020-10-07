@@ -49,7 +49,7 @@ class StartSession extends Component {
         return (
             <Fragment>
                 <MyButton onClick={this.handleOpen}  tip="Start a session">
-                    <SportsIcon />
+                    <SportsIcon color="textPrimary" />
                 </MyButton>
                 
             </Fragment>

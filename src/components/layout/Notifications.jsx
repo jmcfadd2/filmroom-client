@@ -77,9 +77,9 @@ class Notifications extends Component {
                                 component={Link}
                                 color="default"
                                 variant="body1"
-                                to={`/users/${not.recipient}/scream/${not.screamId}`}
+                                to={`/users/${not.recipient}/post/${not.postId}`}
                             >
-                                {not.sender} {verb} your scream {time}
+                                {not.sender} {verb} your post {time}
                             </Typography>
                         </MenuItem>
                     );
@@ -91,7 +91,7 @@ class Notifications extends Component {
                 );
         return (
             <Fragment>
-                <Tooltip placement="top" title="Notifications">
+                
                     <IconButton
                         aria-owns={anchorEl ? 'simple-menu' : undefined}
                         aria-haspopup="true"
@@ -99,7 +99,7 @@ class Notifications extends Component {
                     >
                         {notificationsIcon}
                     </IconButton>
-                </Tooltip>
+                
                 <Menu
                     anchorEl={anchorEl}
                     open={Boolean(anchorEl)}

@@ -2,7 +2,7 @@ export default {
     palette: {
         primary: {
             light: '#33c9dc',
-            main: '#00bcd4',
+            main: '#81C266',
             dark: '#008394',
             contrastText: '#fff'
         },
@@ -97,5 +97,12 @@ export default {
             marginLeft: 'auto',
             marginRight: 'auto',
         },
+        appBar: {
+            marginBottom: 100
+        },
+        numberField: {
+            width: 70,
+        },
+
     }
 }

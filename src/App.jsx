@@ -2,9 +2,10 @@ import React from 'react';
 
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import './App.css';
-import { ThemeProvider as MuiThemeProvider } from '@material-ui/core/styles'
+import { ThemeProvider as MuiThemeProvider, } from '@material-ui/core/styles'
 import createMuiTheme from '@material-ui/core/styles/createMuiTheme'
 import themeFile from './util/theme';
+import { withStyles } from '@material-ui/core'
 // Redux
 import { Provider } from 'react-redux';
 import store from './redux/store';
@@ -38,7 +39,13 @@ if (token)  {
     }
 }
 
+const styles = (theme) => ({
+    ...theme.spreadThis,
+
+})
+
 function App() {
+    
     return (
         
             <MuiThemeProvider theme={theme}>
@@ -66,4 +73,4 @@ function App() {
     );
 }
 
-export default App;
+export default (withStyles(styles)(App));

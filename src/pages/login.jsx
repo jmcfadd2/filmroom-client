@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import withStyles from '@material-ui/core/styles/withStyles';
 import PropTypes from 'prop-types';
-import AppIcon from '../images/up-logo.png';
+import Background from '../images/filip-mroz-AvWhWeWhleE-unsplash.jpg';
 import { Link } from 'react-router-dom'
 //MUI
 import Grid from '@material-ui/core/Grid';
@@ -53,10 +53,9 @@ export class login extends Component {
 
         return (
             
-            <Grid container className={classes.form}>
+            <Grid container  className={classes.form}>
                 <Grid item sm/>
                 <Grid item sm>
-                    <img src={AppIcon} alt="Up logo" className={classes.image}/>
                     <Typography variant="h3" className={classes.pageTitle}>
                         Login
                     </Typography>

@@ -1,9 +1,11 @@
 import React, { Component, Fragment } from 'react'
+import withStyles from '@material-ui/core/styles/withStyles';
 import { Link } from 'react-router-dom'
 import PropTypes from 'prop-types';
 import CreatePost from '../post/CreatePost';
 import StartSession from '../sessions/StartSession';
-import moduleName from 'module'
+import AppIcon from '../../images/reppit-text-logo.png'
+import { Box } from '@material-ui/core'
 // Redux
 import { connect } from 'react-redux'
 
@@ -17,41 +19,56 @@ import Notifications from './Notifications';
 // Icons 
 import HomeIcon from '@material-ui/icons/Home';
 
+const styles = (theme) => ({
+    ...theme.spreadThis,
+    logo: {
+        height: 40,
+        marginLeft: 25
+    },
+    
+})
+
 class Navbar extends Component {
     render() {
-        const { authenticated } = this.props
+        const { authenticated, classes } = this.props
         return (
-            <AppBar position="fixed">
-                <Toolbar className="nav-container">
-                    {authenticated ? (
-                        <Fragment>
-                            <Link to="/session">
-                                <StartSession />
-                            </Link>
-                            <CreatePost />
-                            <Link to="/">
-                                <MyButton tip="Home">
-                                    <HomeIcon color="primary" />
-                                </MyButton>
-                            </Link>
-                            <MyButton tip="Notifications">
-                                <Notifications color="primary" />
-                            </MyButton>
-                        </Fragment>
-                    ) : (
-                            <Fragment>
-                                <Button color="inherit" component={Link} to="/login">
-                                    Login
-              </Button>
-                                <Button color="inherit" component={Link} to="/">
-                                    Home
-              </Button>
-                                <Button color="inherit" component={Link} to="/signup">
-                                    Signup
-              </Button>
-                            </Fragment>
-                        )}
-                </Toolbar>
+
+            <AppBar  className={classes.appBar} color="light" position="fixed">
+                <Box display="flex">
+                    <Box my="auto" mt={2}>
+                        <Link to="/">
+                            <img src={AppIcon} alt="Up logo" className={classes.logo} />
+                        </Link>
+
+                    </Box>
+                    <Box mx="auto" mr={65} my="auto">
+                        <Toolbar>
+                            {authenticated ? (
+                                <Fragment>
+                                    <Link to="/session">
+                                        <StartSession />
+                                    </Link>
+                                    <CreatePost />
+                                    <MyButton tip="Notifications">
+                                        <Notifications />
+                                    </MyButton>
+                                </Fragment>
+                            ) : (
+                                    <Fragment>
+                                        <Button color="primary" component={Link} to="/login">
+                                            Login
+                      </Button>
+                                        <Button color="inherit" component={Link} to="/">
+                                            Home
+                      </Button>
+                                        <Button color="inherit" component={Link} to="/signup">
+                                            Signup
+                      </Button>
+                                    </Fragment>
+                                )}
+                        </Toolbar>
+                    </Box>
+                </Box>
             </AppBar>
         )
     }
@@ -65,4 +82,4 @@ const mapStateToProps = (state) => ({
     authenticated: state.user.authenticated
 });
 
-export default connect(mapStateToProps)(Navbar);
+export default connect(mapStateToProps)(withStyles(styles)(Navbar));

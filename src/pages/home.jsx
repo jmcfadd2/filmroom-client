@@ -1,17 +1,24 @@
 import React, { Component } from 'react'
-import { Grid } from '@material-ui/core'
+import { Grid, withStyles } from '@material-ui/core'
 import PropTypes from 'prop-types';
 
 // Components
 import Post from '../components/post/Post'
 import Profile from '../components/profile/Profile'
 import PostSkeleton from '../util/PostSkeleton';
+import { Hidden, Box } from '@material-ui/core'
 
 // Redux 
 import { connect } from 'react-redux'
 import { getPosts } from '../redux/actions/dataActions';
+import theme from '../util/theme';
 
-
+const styles = (theme) =>({
+    ...theme.spreadThis,
+    homeGrid: {
+        marginTop: 50,
+    }
+})
 
 export class home extends Component {
     
@@ -20,19 +27,24 @@ export class home extends Component {
     }
     
     render() {
+        const { classes } = this.props
         const { posts, loading } = this.props.data;
         let recentPostsMarkup = !loading ? (
         posts.map(post => <Post key={post.postId} post={post}/>)
         ) : <PostSkeleton />
         return (
-            <Grid container spacing={2}>
-                <Grid item md={4} sm={12}>
-                    <Profile />
+            <Box mt={10}>
+                <Grid className={classes.homeGrid} container spacing={2}>
+                    <Hidden smDown>
+                        <Grid item md={4} sm={12}>
+                            <Profile />
+                        </Grid>
+                    </Hidden>
+                    <Grid item md={6} style={{ paddingLeft: 25, paddingRight: 25 }} sm={12}>
+                        {recentPostsMarkup}
+                    </Grid>
                 </Grid>
-                <Grid item md={6} xs={12}>
-                    {recentPostsMarkup}
-                </Grid>
-            </Grid>
+            </Box>
         )
     }
 }
@@ -49,5 +61,5 @@ const mapStateToProps = (state) => ({
 export default connect(
     mapStateToProps,
     { getPosts }
-)(home);
+)(withStyles(styles)(home));
 
