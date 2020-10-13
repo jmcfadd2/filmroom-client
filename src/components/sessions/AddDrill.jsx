@@ -70,13 +70,14 @@ class AddDrill extends Component {
         
         const {
             classes,
+            data: { topics, session },
             UI: { loading }
         } = this.props;
         return (
             <Fragment>
-                <MyButton onClick={this.handleOpen} tip="Create New Drill">
+                <MyButton onClick={this.handleOpen} tip={`Add New ${session.topic ? topics[this.props.index].subActivity : "Drill"}`}>
                     <AddIcon />
-                    <Typography variant={"h6"}>Add Your Drill</Typography>
+                    <Typography variant={"h6"}>Add Your {session.topic ? topics[this.props.index].subActivity : "Drill"} </Typography>
 
                 </MyButton>
                 <Dialog
@@ -92,7 +93,7 @@ class AddDrill extends Component {
                     >
                         <CloseIcon />
                     </MyButton>
-                    <DialogTitle>Add Your Drills</DialogTitle>
+                    <DialogTitle>Add Your {session.topic ? topics[this.props.index].subActivity : "Drill"}</DialogTitle>
                     <DialogContent>
                         <form >
                             <TextField
@@ -113,18 +114,7 @@ class AddDrill extends Component {
                                     </MenuItem>
                                 ))}
                             </TextField>
-                            {/* <TextField
-                                name="instructorDrills"
-                                select 
-                                label="Instructor Drills"
-                                error={errors.body ? true : false}
-                                helperText={errors.body}
-                                className={classes.textField}
-                                onChange={this.handleChange}
-                                fullWidth
-                            >
-
-                            </TextField> */}
+                            
                             
                             <Button
                                 type="sendDrill"

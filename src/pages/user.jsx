@@ -42,9 +42,12 @@ export class user extends Component {
         ) : posts === null ? (
             <p>No posts from this user</p>
         ) : !postIdParam ? (
-            posts.map((post) => <Post key={post.postId} post={post} />)
+        posts.map((post) => { console.log(post)
+        return <Post key={post.postId} post={post}/>
+    })
         ) : (
                         posts.map((post) => {
+                            
                             if (post.postId !== postIdParam)
                                 return <Post key={post.postId} post={post} />;
                             else return <Post key={post.postId} post={post} openDialog />;
@@ -52,16 +55,17 @@ export class user extends Component {
                     );
 
         return (
-            <Grid container spacing={16}>
-                <Grid item sm={8} xs={12}>
-                    {postsMarkup}
-                </Grid>
-                <Grid item sm={4} xs={12}>
+            <Grid container spacing={6}>
+                
+                <Grid item  sm={4} xs={12}>
                     {this.state.profile === null ? (
                         <ProfileSkeleton />
                     ) : (
                             <StaticProfile profile={this.state.profile} />
                         )}
+                </Grid>
+                <Grid item sm={5} xs={12}>
+                    {postsMarkup}
                 </Grid>
             </Grid>
         )

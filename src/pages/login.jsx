@@ -9,6 +9,7 @@ import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import firebase from '../util/firebase';
 // Redux
 import { connect } from 'react-redux'
 import { loginUser } from '../redux/actions/userActions'
@@ -40,6 +41,7 @@ export class login extends Component {
             email: this.state.email,
             password: this.state.password
         }
+        firebase.auth().signInWithEmailAndPassword(this.state.email, this.state.password)
         this.props.loginUser(userData, this.props.history)
     }
     handleChange = (event) => {

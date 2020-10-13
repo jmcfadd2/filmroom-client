@@ -6,6 +6,7 @@ import { ThemeProvider as MuiThemeProvider, } from '@material-ui/core/styles'
 import createMuiTheme from '@material-ui/core/styles/createMuiTheme'
 import themeFile from './util/theme';
 import { withStyles } from '@material-ui/core'
+
 // Redux
 import { Provider } from 'react-redux';
 import store from './redux/store';
@@ -23,6 +24,8 @@ import user from './pages/user'
 import session from './pages/session'
 import axios from 'axios';
 const theme = createMuiTheme(themeFile);
+
+
 
 axios.defaults.baseURL = "https://us-central1-shotsup-mvp.cloudfunctions.net/api"
 

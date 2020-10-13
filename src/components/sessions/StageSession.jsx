@@ -24,42 +24,18 @@ export default function StageSession() {
     return (
         <div>
             <Paper className={classes.formPaper}>
-                <Box>
-                    <Box mx="auto">
-                    	<Typography variant="h4"> Finalize Details </Typography>
-                    </Box>
-                    
-                    <Box my={1}>
-                        <TextField
-                            name="title"
-                            placeholder="Session Title"
-                            variant="outlined"
-                            onChange={(e) => setTitle(e.target.value)}
-                            size="small"
-                        />
-                    </Box>
-                    <br />
-                    <Box my={2}>
-                        <TextField
-                            name="description"
-                            placeholder="Description"
-                            variant="outlined"
-                            multiline
-                            onChange={(e) => setDescription(e.target.value)}
-                            rows={5}
-                        />
-                    </Box>
-                    <Box mx="auto">
-                        <Typography variant="h5"> Completed Drills </Typography>
+                <Box justifyItems="center">
+                    <Box >
+                    	<Typography variant="h4"> Finalize Results </Typography>
                     </Box>
                     <Grid container justify="center" >
                         {session.drillResults.map((result, index) => (
                             <Box mx="auto">
                                 <Grid item key={index}>
-                                    <Typography variant="h6"> 
-                                    {result.drillName}
+                                    <Typography variant="h6">
+                                        {result.drillName}
                                     </Typography>
-                                    <br/>
+                                    <br />
                                     <Box mx="20%" mt="10%">
                                         <Typography variant="body1">
                                             {result.results.field1}/{result.results.field2}
@@ -69,13 +45,40 @@ export default function StageSession() {
                             </Box>
                         ))}
                     </Grid>
-                    <Button variant="contained" onClick={() => {
-                        dispatch( postSession(session.sessionId, {
-                            session: session,
-                            description: description,
-                            title: title
-                        }) )
-                    }}> Post Session </Button>
+                    
+                    <Box mx="auto">
+                        <Typography variant="h5"> Completed Drills </Typography>
+                        <Box my={1}>
+                            <TextField
+                                name="title"
+                                placeholder="Session Title"
+                                variant="outlined"
+                                onChange={(e) => setTitle(e.target.value)}
+                                size="small"
+                            />
+                        </Box>
+                        <br />
+                        <Box my={2}>
+                            <TextField
+                                name="description"
+                                placeholder="Description"
+                                variant="outlined"
+                                multiline
+                                onChange={(e) => setDescription(e.target.value)}
+                                rows={5}
+                            />
+                        </Box>
+                    </Box>
+                    
+                    <Box my={5} mx="auto">
+                        <Button variant="contained" href="/" onClick={() => {
+                            dispatch( postSession(session.sessionId, {
+                                session: session,
+                                description: description,
+                                title: title
+                            }) )
+                        }}> Post Session </Button>
+                    </Box>
                 </Box>
             </Paper>
         </div>

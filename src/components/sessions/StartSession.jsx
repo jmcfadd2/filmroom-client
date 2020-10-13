@@ -8,6 +8,7 @@ import SportsIcon from '@material-ui/icons/Sports'
 // Redux stuff
 import { connect } from 'react-redux';
 import { clearErrors } from '../../redux/actions/dataActions';
+import { Typography } from '@material-ui/core';
 
 const styles = (theme) => ({
     ...theme.spreadThis,
@@ -49,7 +50,7 @@ class StartSession extends Component {
         return (
             <Fragment>
                 <MyButton onClick={this.handleOpen}  tip="Start a session">
-                    <SportsIcon color="textPrimary" />
+                    <Typography variant={"h6"} >Train</Typography>
                 </MyButton>
                 
             </Fragment>

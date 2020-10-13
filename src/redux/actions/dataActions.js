@@ -10,6 +10,7 @@ import {
     LOADING_UI,
     SET_POST,
     STOP_LOADING_UI,
+    GET_TOPICS,
     SET_TOPIC,
     SET_TYPE,
     STAGE_SESSION,
@@ -19,9 +20,9 @@ import {
     UPDATE_RESULTS,
     SET_TITLE,
     SET_DESCRIPT,
-    CREATE_SESSION_POST,
     SUBMIT_COMMENT
 } from '../types';
+import firebase from '../../util/firebase'
 import axios from 'axios';
 
 export const getPosts = () => (dispatch) => {
@@ -29,6 +30,7 @@ export const getPosts = () => (dispatch) => {
         type: LOADING_DATA
     });
     axios
+    
         .get('/posts')
         .then((res) => {
             dispatch({
@@ -158,6 +160,34 @@ export const getUserData = (userHandle) => (dispatch) => {
             });
         });
 };
+export const getTopicData = () => (dispatch) => {
+    dispatch({
+        type: LOADING_DATA
+    });
+    firebase
+        .firestore()
+        .collection("topics")
+        .get()
+        .then((data) => {
+            let topics = []
+            data.forEach((doc) => {
+                topics.push({
+                    name: doc.data().name,
+                    sessionTypes: doc.data().sessionTypes,
+                    metrics: doc.data().metrics,
+                    subActivity: doc.data().subActivity
+
+                })
+
+            })
+            dispatch({
+                type: GET_TOPICS,
+                payload: topics
+            })
+        })
+};
+
+
 
 export const setTopic = (newTopic) => (dispatch) => {
     dispatch({

@@ -33,7 +33,7 @@ class Navbar extends Component {
         const { authenticated, classes } = this.props
         return (
 
-            <AppBar  className={classes.appBar} color="light" position="fixed">
+            <AppBar elevation={1} className={classes.appBar} color="light" position="fixed">
                 <Box display="flex">
                     <Box my="auto" mt={2}>
                         <Link to="/">
@@ -41,7 +41,7 @@ class Navbar extends Component {
                         </Link>
 
                     </Box>
-                    <Box mx="auto" mr={65} my="auto">
+                    <Box mx="auto"  my="auto">
                         <Toolbar>
                             {authenticated ? (
                                 <Fragment>
@@ -49,21 +49,11 @@ class Navbar extends Component {
                                         <StartSession />
                                     </Link>
                                     <CreatePost />
-                                    <MyButton tip="Notifications">
-                                        <Notifications />
-                                    </MyButton>
+                                    <Notifications />
                                 </Fragment>
                             ) : (
                                     <Fragment>
-                                        <Button color="primary" component={Link} to="/login">
-                                            Login
-                      </Button>
-                                        <Button color="inherit" component={Link} to="/">
-                                            Home
-                      </Button>
-                                        <Button color="inherit" component={Link} to="/signup">
-                                            Signup
-                      </Button>
+                                        
                                     </Fragment>
                                 )}
                         </Toolbar>

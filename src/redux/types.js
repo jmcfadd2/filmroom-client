@@ -20,6 +20,7 @@ export const UNLIKE_POST = 'UNLIKE_POST';
 export const DELETE_POST = 'DELETE_POST';
 export const CREATE_POST = 'CREATE_POST';
 export const SUBMIT_COMMENT = 'SUBMIT_COMMENT';
+export const GET_TOPICS = 'GET_TOPICS'
 export const ADD_NEW_DRILL = 'ADD_NEW_DRILL';
 export const ADD_DRILL = 'ADD_DRILL';
 export const SET_TYPE = 'SET_TYPE';

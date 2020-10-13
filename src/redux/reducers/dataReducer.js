@@ -17,7 +17,8 @@ import {
     SET_DESCRIPT,
     SET_TITLE,
     UPDATE_RESULTS,
-    CREATE_SESSION_POST
+    CREATE_SESSION_POST,
+    GET_TOPICS
 } from '../types';
 
 const initialState = {
@@ -27,6 +28,7 @@ const initialState = {
         drills: [],
         drillResults: []
     },
+    topics: [],
     yourDrills: [],
     loading: false
 };
@@ -83,6 +85,12 @@ export default function (state = initialState, action) {
                     comments: [action.payload, ...state.post.comments]
                 }
             };
+        case GET_TOPICS:
+            return {
+                ...state,
+                topics: action.payload,
+                loading: false
+            }
         case SET_TOPIC:
             return {
                 ...state,

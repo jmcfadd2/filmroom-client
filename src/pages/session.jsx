@@ -4,6 +4,7 @@ import withStyles from '@material-ui/core/styles/withStyles';
 import CreateDrill from '../components/sessions/CreateDrill';
 import DrillTimeline from '../components/sessions/DrillTimeline'
 import StageSession from '../components/sessions/StageSession'
+import firebase from '../util/firebase'
 // MUI Stuff
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
@@ -13,7 +14,7 @@ import Paper from '@material-ui/core/Paper';
 import MenuItem from '@material-ui/core/MenuItem'
 // Redux stuff
 import { connect } from 'react-redux';
-import { setTopic, setType, clearErrors } from '../redux/actions/dataActions';
+import { setTopic, setType, clearErrors, getTopicData } from '../redux/actions/dataActions';
 import { Typography } from '@material-ui/core';
 import ActivityStepper from '../components/sessions/ActivityStepper';
 import AddDrill from '../components/sessions/AddDrill';
@@ -43,15 +44,20 @@ export class session extends Component {
     constructor(props) {
         super(props);
         this.handleStage = this.handleStage.bind(this)
+        this.handleStart = this.handleStart.bind(this)
+        this.state = {
+            currentTopicIndex: 0,
+        }
     }
-    
+
     state = {
         open: false,
         errors: {},
+        currentTopicIndex: 0,
         sessionCreated: false,
         sessionStaged: false,
     };
-    
+
     componentWillReceiveProps(nextProps) {
         if (nextProps.UI.errors) {
             this.setState({
@@ -62,6 +68,10 @@ export class session extends Component {
             this.setState({ body: '', open: false, errors: {} });
         }
     }
+    getTopics = () => {
+        this.props.getTopicData()
+        console.log(this.props.data.topics)
+    }
     handleOpen = () => {
         this.setState({ open: true });
     };
@@ -70,29 +80,38 @@ export class session extends Component {
         this.setState({ open: false, errors: {} });
     };
     handleTopic = (event) => {
-        this.props.setTopic( event.target.value);
+        let topicIndex = event.target.value
+        this.props.setTopic(this.props.data.topics[topicIndex].name);
+        this.setState({ currentTopicIndex: topicIndex})
     };
     handleType = (event) => {
-        this.props.setType( event.target.value);
+        this.props.setType(event.target.value);
     };
     handleStart = (event) => {
         event.preventDefault();
         this.setState({ sessionCreated: true });
     };
     handleStage = (event) => {
-        
+
         this.setState({ sessionStaged: true });
     };
-    
+
+
+
 
     render() {
-        const { errors, sessionCreated, sessionStaged } = this.state;
+        const { errors, sessionCreated, sessionStaged, currentTopicIndex} = this.state;
         const {
             classes,
+            data: { topics },
             UI: { loading }
         } = this.props;
+
         return (
+
             <Fragment>
+                
+
                 { !sessionCreated && !sessionStaged && <Paper className={classes.formPaper}>
                     <Typography variant={"h5"}>What kind of session?</Typography>
                     <form onSubmit={this.handleStart}>
@@ -101,28 +120,21 @@ export class session extends Component {
                             select
                             label="Sport"
                             variant="outlined"
+
                             
-                            error={errors.body ? true : false}
-                            helperText={errors.body}
                             className={classes.textField}
+                            onClick={this.getTopics}
                             onChange={this.handleTopic}
                             fullWidth
                         >
-                            <MenuItem value="Basketball">
-                                Basketball
-                            </MenuItem>
-                            <MenuItem value="eSports">
-                                eSports
-                            </MenuItem>
-                            <MenuItem value="Soccer">
-                                Soccer
-                            </MenuItem>
-                            <MenuItem value="Football">
-                                Football
-                            </MenuItem>
-                            <MenuItem value="Baseball">
-                                Baseball
-                            </MenuItem>
+                            {topics.map((topic, index) => (
+                                <MenuItem key={index} value={index}>
+                                    {topic.name}
+                                </MenuItem>
+                            ))}
+
+
+
                         </TextField>
                         <TextField
                             name="type"
@@ -133,20 +145,16 @@ export class session extends Component {
                             onChange={this.handleType}
                             fullWidth
                         >
-                            <MenuItem value="Skill Session">
-                                Skill Session
-                            </MenuItem>
-                            <MenuItem value="Team Practice">
-                                Team Practice
-                            </MenuItem>
-                            <MenuItem value="Team Game">
-                                Team Game
-                            </MenuItem>
+                            {topics[0] && topics[currentTopicIndex].sessionTypes.map((type, index) => (
+                                <MenuItem key={index} value={type}>
+                                    {type}
+                                </MenuItem>
+                            ))}
                         </TextField>
                         <DrillTimeline />
                         <Fragment>
-                        <AddDrill> Add Your Drills </AddDrill>
-                        <CreateDrill> Create New Drill </CreateDrill>
+                            <AddDrill index={this.state.currentTopicIndex}/>
+                            <CreateDrill index={this.state.currentTopicIndex}/>
                         </Fragment>
                         <Button
                             type="submit"
@@ -154,7 +162,7 @@ export class session extends Component {
                             color="primary"
                             className={classes.submitButton}
                             disabled={loading}
-                        
+
                         >
                             Start Session
                     {loading && (
@@ -177,6 +185,7 @@ export class session extends Component {
 
 session.propTypes = {
     clearErrors: PropTypes.func.isRequired,
+    getTopicData: PropTypes.func.isRequired,
     UI: PropTypes.object.isRequired,
     data: PropTypes.object.isRequired
 };
@@ -190,4 +199,4 @@ const mapStateToProps = (state) => ({
 
 
 
-export default connect(mapStateToProps, { setTopic, setType, clearErrors })(withStyles(styles)(session))
+export default connect(mapStateToProps, { setTopic, setType, clearErrors, getTopicData })(withStyles(styles)(session))

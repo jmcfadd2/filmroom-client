@@ -14,6 +14,7 @@ import CloseIcon from '@material-ui/icons/Close';
 // Redux stuff
 import { connect } from 'react-redux';
 import { createPost, clearErrors } from '../../redux/actions/dataActions';
+import { Typography } from '@material-ui/core';
 
 const styles = (theme) => ({
     ...theme.spreadThis,
@@ -71,7 +72,7 @@ class CreatePost extends Component {
         return (
             <Fragment>
                 <MyButton onClick={this.handleOpen} tip="Create a Post!">
-                    <PostAddIcon color="textPrimary" />
+                    <Typography variant="h6">Post</Typography>
                 </MyButton>
                 <Dialog
                     open={this.state.open}

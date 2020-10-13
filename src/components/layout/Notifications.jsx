@@ -50,12 +50,12 @@ class Notifications extends Component {
                         }
                         color="secondary"
                     >
-                        <NotificationsIcon />
+                        <Typography variant="h6">Notifications</Typography>
                     </Badge>
                 ))
-                : (notificationsIcon = <NotificationsIcon />);
+                : (notificationsIcon = <Typography variant="h6">Notifications</Typography>);
         } else {
-            notificationsIcon = <NotificationsIcon />;
+            notificationsIcon = <Typography variant="h6">Notifications</Typography>;
         }
         let notificationsMarkup =
             notifications && notifications.length > 0 ? (

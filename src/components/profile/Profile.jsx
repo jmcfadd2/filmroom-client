@@ -6,6 +6,7 @@ import dayjs from 'dayjs'
 import EditDetails from './EditDetails';
 import MyButton from '../../util/MyButton';
 import ProfileSkeleton from '../../util/ProfileSkeleton';
+import firebase from '../../util/firebase';
 // MUI
 import Button from '@material-ui/core/Button';
 import { Paper } from '@material-ui/core';
@@ -15,6 +16,8 @@ import Typography from '@material-ui/core/Typography'
 import { connect } from 'react-redux'
 import { logoutUser, uploadImage } from '../../redux/actions/userActions'
 
+
+
 // Icons 
 import LocationOn from '@material-ui/icons/LocationOn'
 import LinkIcon from '@material-ui/icons/Link'
@@ -23,16 +26,30 @@ import EditIcon from '@material-ui/icons/Edit'
 import KeyboardReturn from '@material-ui/icons/KeyboardReturn'
 
 
+
+
 const styles = (theme) => ({
     ...theme.spreadThis
 });
 
 export class Profile extends Component {
-    handleIamgeChange = (event) => {
+    
+    handleImageChange = async (event) => {
         const image = event.target.files[0]
-        const formData = new FormData()
-        formData.append('image', image, image.name)
-        this.props.uploadImage(formData)
+        const storageRef = firebase.storage().ref('profile-pics')
+        const fileRef = storageRef.child(image.name)
+        await fileRef.put(image)
+            .then(() => {
+            
+            console.log(`Uploaded file: ${image.name}`)
+                console.log(this.props.user.credentials.handle)
+            fileRef.getDownloadURL().then((url) => {
+                firebase.firestore().collection('users').doc(`${this.props.user.credentials.handle}`).update({ imageUrl: url})
+                this.setState()
+            })
+                
+                    
+        })
     }
     handleEditPicture = () => {
         const fileInput = document.getElementById('imageInput')
@@ -55,7 +72,7 @@ export class Profile extends Component {
                     <input type="file" 
                     id="imageInput" 
                     hidden="hidden"
-                    onChange={this.handleIamgeChange}
+                    onChange={this.handleImageChange}
                     />
                     <MyButton
                         tip="Edit profile picture"
