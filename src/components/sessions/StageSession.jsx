@@ -26,37 +26,47 @@ export default function StageSession() {
             <Paper className={classes.formPaper}>
                 <Box justifyItems="center">
                     <Box >
-                    	<Typography variant="h4"> Finalize Results </Typography>
+                        <Typography variant="h4"> Completed Drills </Typography>
+                        <br />
+                        <hr />
+
                     </Box>
                     <Grid container justify="center" >
+                        <Grid item />
                         {session.drillResults.map((result, index) => (
-                            <Box mx="auto">
-                                <Grid item key={index}>
-                                    <Typography variant="h6">
-                                        {result.drillName}
-                                    </Typography>
-                                    <br />
-                                    <Box mx="20%" mt="10%">
-                                        <Typography variant="body1">
-                                            {result.results.field1}/{result.results.field2}
-                                        </Typography>
-                                    </Box>
-                                </Grid>
-                            </Box>
+                            <Grid item spacing={2} key={index}>
+                                <Typography variant="body1">{result.drillName}</Typography>
+                                <br />
+                                {!result.results.compoundMetric ? Object.entries(result.results).map(([metric, value], index) => (
+                                    <div key={index}>
+                                        <Typography variant="body2">{metric}</Typography>
+                                        <br />
+                                        <Typography variant="body2">{value}</Typography>
+                                    </div>
+                                )) : <div>
+                                        <Typography> {Object.keys(result.results.compoundMetric)[0]}/{Object.keys(result.results.compoundMetric)[1]}</Typography>
+
+                                        <Typography> {Object.values(result.results.compoundMetric)[0]}/{Object.values(result.results.compoundMetric)[1]} {(Object.values(result.results.compoundMetric)[0] / Object.values(result.results.compoundMetric)[1] * 100).toPrecision(3)}%</Typography>
+                                    </div>
+
+                                }
+                            </Grid>
+
                         ))}
+                        <Grid item />
                     </Grid>
-                    
-                    <Box mx="auto">
-                        <Typography variant="h5"> Completed Drills </Typography>
-                        <Box my={1}>
+                    <hr />
+                    <Grid container >
+                        <Typography variant="h6"> Describe Session </Typography>
+                        <Grid my={1}>
                             <TextField
                                 name="title"
-                                placeholder="Session Title"
+                                defaultValue={`${session.topic} ${session.type} session`}
                                 variant="outlined"
                                 onChange={(e) => setTitle(e.target.value)}
                                 size="small"
                             />
-                        </Box>
+                        </Grid>
                         <br />
                         <Box my={2}>
                             <TextField
@@ -68,15 +78,15 @@ export default function StageSession() {
                                 rows={5}
                             />
                         </Box>
-                    </Box>
-                    
+                    </Grid>
+
                     <Box my={5} mx="auto">
                         <Button variant="contained" href="/" onClick={() => {
-                            dispatch( postSession(session.sessionId, {
+                            dispatch(postSession(session.sessionId, {
                                 session: session,
                                 description: description,
                                 title: title
-                            }) )
+                            }))
                         }}> Post Session </Button>
                     </Box>
                 </Box>

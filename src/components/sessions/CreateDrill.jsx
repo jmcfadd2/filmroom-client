@@ -2,6 +2,8 @@ import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import withStyles from '@material-ui/core/styles/withStyles';
 import MyButton from '../../util/MyButton';
+import * as UpChunk from '@mux/upchunk'
+import axios from 'axios'
 // MUI Stuff
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
@@ -10,6 +12,7 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import AddIcon from '@material-ui/icons/Add'
+import EditIcon from '@material-ui/icons/Edit'
 import CloseIcon from '@material-ui/icons/Close';
 import Typography from '@material-ui/core/Typography'
 // Redux stuff
@@ -38,7 +41,8 @@ class CreateDrill extends Component {
     state = {
         open: false,
         errors: {},
-        metrics: []
+        metrics: [],
+        
     };
     componentWillReceiveProps(nextProps) {
         if (nextProps.UI.errors) {
@@ -65,15 +69,48 @@ class CreateDrill extends Component {
         event.target.value = ""
         console.log(this.state.metrics)
     }
-    
+
+    uploadDrillVideo =  (video) => {
+        console.log("going")
+        
+        
+            const getUploadUrl = () => axios
+                .get('/video/upload')
+                .then((res) => {
+                    console.log(res)
+                    const uploadUrl = res.data.uploadUrl
+                    
+                    return uploadUrl 
+                })
+                .catch((err) => console.log(err));
+
+            const upload = UpChunk.createUpload({
+                endpoint: getUploadUrl,
+                file: video,
+                chunkSize: 20971520,
+            })
+        upload.on('progress', progress => {
+            console.log(`So far we've uploaded ${progress.detail}% of this file.`);
+        })
+        
+    }
+    handleAddVideo = () => {
+        const fileInput = document.getElementById('videoInput')
+        fileInput.click()
+    }
+
     sendDrill = (event) => {
         event.preventDefault();
+        this.uploadDrillVideo(document.getElementById('videoInput').files[0])
         this.props.addNewDrill({
             topic: this.props.data.session.topic,
             metrics: this.state.metrics,
-            name: this.state.name
+            name: this.state.name,
+            videoId: this.state.videoId
         });
-        
+
+
+
     };
     render() {
         const { errors, metrics } = this.state;
@@ -109,7 +146,7 @@ class CreateDrill extends Component {
                                 name="topic"
                                 type="text"
                                 label="Topic"
-                                
+
                                 rows="1"
                                 defaultValue={this.props.data.session.topic}
                                 error={errors.body ? true : false}
@@ -131,6 +168,24 @@ class CreateDrill extends Component {
                                 onChange={this.handleChange}
                                 fullWidth
                             />
+                            <div className="image-wrapper">
+
+                                <input type="file"
+                                    id="videoInput"
+                                    hidden="hidden"
+                                    
+                                />
+                                <MyButton
+                                    
+                                    onClick={this.handleAddVideo}
+                                    btnClassName="button"
+                                >
+                                    <AddIcon color="primary" />
+                                    <Typography variant="body1">
+                                        Add Video Instruction To Your drill
+                                    </Typography>
+                                </MyButton>
+                            </div>
                             <TextField
                                 name="metrics"
                                 select
@@ -142,17 +197,17 @@ class CreateDrill extends Component {
                                 onChange={this.handleMetric}
                                 fullWidth
                             >
-                            {session.topic && topics[this.props.index].metrics.map((metric, index) => (
-                                <MenuItem value={metric} key={index}>
-                                    {metric}
-                                </MenuItem>
-                            ))}
+                                {session.topic && topics[this.props.index].metrics.map((metric, index) => (
+                                    <MenuItem value={metric} key={index}>
+                                        {metric}
+                                    </MenuItem>
+                                ))}
                             </TextField>
-                            
+
                             {metrics.map((metric, index) => (
                                 <Typography key={index}>{metric}</Typography>
                             ))}
-                            
+
                             <Button
                                 type="sendDrill"
                                 variant="contained"
@@ -191,5 +246,5 @@ const mapStateToProps = (state) => ({
 
 export default connect(
     mapStateToProps,
-    { addNewDrill, clearErrors }
+    { addNewDrill, clearErrors,  }
 )(withStyles(styles)(CreateDrill));

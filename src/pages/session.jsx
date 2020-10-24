@@ -96,7 +96,9 @@ export class session extends Component {
         this.setState({ sessionStaged: true });
     };
 
-
+    componentDidMount() {
+        this.getTopics()
+    }
 
 
     render() {
@@ -123,7 +125,6 @@ export class session extends Component {
 
                             
                             className={classes.textField}
-                            onClick={this.getTopics}
                             onChange={this.handleTopic}
                             fullWidth
                         >

@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import ReactPlayer from 'react-player'
 import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import Paper from '@material-ui/core/Paper';
@@ -32,18 +33,27 @@ const useStyles = makeStyles((theme) => ({
 export default function ActivityStepper(props) {
     const classes = useStyles();
     const [activeStep, setActiveStep] = useState(0);
-    const [results, setResults] = useState({ field1: 0, field2: 0 })
+    const [results, setResults] = useState()
     const drills = useSelector(state => state.data.session.drills)
-    
+
     const currentSession = {
         session: useSelector(state => state.data.session)
     }
     const dispatch = useDispatch()
 
-
-
+    const handleMetric = (e) => {
+        setResults({ ...results, [e.target.name]: e.target.value })
+    }
+    const handleFirstCompoundMetric = (e) => {
+        setResults({ ...results,  compoundMetric: { [e.target.name]: e.target.value } })
+    }
+    const handleSecondCompoundMetric = (e) => {
+        setResults({ ...results,  compoundMetric: { ...results.compoundMetric, [e.target.name]: e.target.value} })
+    }
+    
     const handleNext = () => {
         setActiveStep((prevActiveStep) => prevActiveStep + 1);
+        setResults()
     };
 
     const handleBack = () => {
@@ -58,68 +68,73 @@ export default function ActivityStepper(props) {
             <Grid container >
                 <Grid item sm />
                 <Grid item sm>
-                    {console.log(drills)}
+                    
                     {drills.map((drill, index) => (
 
-                        <div>
+                        <div key={index}>
                             { activeStep === index && <Card key={index}>
-                                <CardContent style={{justifyContent: "center"}}>
+                                <CardContent style={{ justifyContent: "center" }}>
                                     <Typography variant="h6">{drill.name}</Typography>
-                                    <hr/>
-                                    <br/>
-                                    <br/>
+                                    <hr />
+                                    <br />
+                                    <br />
+                                    <ReactPlayer playing="true" loop="true" url='https://stream.mux.com/JVNJh8NGPIWLbgVlAw4eLJ6A4M7rrYktf8cRLq01B7K00.m3u8' />
                                     <form>
-                                        {drill.metrics.map((metric, index) => ( 
+                                        {drill.metrics.map((metric, index) => (
 
-                                            <div>
-                                                {metric.includes("/") || metric.includes(" x ") ? 
-                                                <div>
-                                                    
+                                            <div key={index}>
+                                                
+                                                {metric.includes("/") || metric.includes(" x ") ?
+                                                    <div key={index}>
+                                                        
+                                                        <Textfield
+                                                            key={index}
+                                                            className={classes.numberField}
+                                                            rows="1"
+                                                            type="text"
+                                                            label={metric.split(/(\sx\s|\/)/)[0]}
+                                                            name={metric.split(/(\sx\s|\/)/)[0]}
+                                                            defaultValue="0"
+                                                            variant="standard"
+                                                            onChange={handleFirstCompoundMetric}
+                                                            size="small"
+                                                        />
+                                                        <Textfield
+                                                            key={index}
+                                                            className={classes.numberField}
+                                                            rows="1"
+                                                            type="number"
+                                                            label={metric.split(/(\sx\s|\/)/)[2]}
+                                                            name={metric.split(/(\sx\s|\/)/)[2]}
+                                                            defaultValue="0"
+                                                            variant="standard"
+                                                            onChange={handleSecondCompoundMetric}
+                                                            size="small"
+                                                        />
+                                                    </div> :
                                                     <Textfield
+                                                        key={index}
                                                         className={classes.numberField}
                                                         rows="1"
                                                         type="number"
-                                                        label={metric.split("/")[0]}
-                                                        name={metric.split("/")[0]}
+                                                        label={metric}
+                                                        name={metric}
                                                         defaultValue="0"
                                                         variant="standard"
-                                                        onChange={e => setResults({ [e.target.name]: e.target.value })}
+                                                        onChange={handleMetric}
                                                         size="small"
-                                                    /> 
-                                                    <Textfield
-                                                        className={classes.numberField}
-                                                        rows="1"
-                                                        type="number"
-                                                        label={metric.split("/")[1]}
-                                                        name={metric.split("/")[1]}
-                                                        defaultValue="0"
-                                                        variant="standard"
-                                                        onChange={e => setResults({ [e.target.name]: e.target.value })}
-                                                        size="small"
-                                                    /> 
-                                                </div> :
-                                                <Textfield
-                                                    className={classes.numberField}
-                                                    rows="1"
-                                                    type="number"
-                                                    label={metric}
-                                                    name={metric}
-                                                    defaultValue="0"
-                                                    variant="standard"
-                                                        onChange={e => setResults({ [e.target.name]: e.target.value })}
-                                                    size="small"
-                                                />}
+                                                    />}
                                             </div>
                                         ))}
-                                    
-                                    
-    
-    
+
+
+
+
                                     </form>
                                     <div className={classes.actionsContainer}>
                                         <div>
                                             {activeStep === 0 && <Button
-                                                
+
                                                 onClick={handleBack}
                                                 className={classes.button}
                                             >
@@ -127,7 +142,7 @@ export default function ActivityStepper(props) {
                                     </Button>}
                                             <Button
                                                 variant="contained"
-    
+
                                                 color="primary"
                                                 onClick={() => {
                                                     handleNext();
@@ -142,8 +157,8 @@ export default function ActivityStepper(props) {
                                 </CardContent>
                             </Card>}
                         </div>
-                        ))}
-                        </Grid>
+                    ))}
+                </Grid>
                 <Grid item sm />
             </Grid>
 

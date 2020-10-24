@@ -31,3 +31,5 @@ export const STAGE_SESSION = 'STAGE_SESSION';
 export const SET_TITLE = 'SET_TITLE';
 export const SET_DESCRIPT = 'SET_DESCRIPT';
 export const CREATE_SESSION_POST = 'CREATE_SESSION_POST';
+// Video Reducer
+export const UPLOAD_DRILL_VIDEO = 'UPLOAD_DRILL_VIDEO'
