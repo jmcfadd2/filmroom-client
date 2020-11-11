@@ -6,12 +6,11 @@ import PropTypes from 'prop-types';
 import Post from '../components/post/Post'
 import Profile from '../components/profile/Profile'
 import PostSkeleton from '../util/PostSkeleton';
-import { Hidden, Box } from '@material-ui/core'
+import { Box } from '@material-ui/core'
 
 // Redux 
 import { connect } from 'react-redux'
 import { getPosts } from '../redux/actions/dataActions';
-import theme from '../util/theme';
 
 const styles = (theme) =>({
     ...theme.spreadThis,
@@ -35,12 +34,12 @@ export class home extends Component {
         return (
             <Box mt={10}>
                 <Grid className={classes.homeGrid} container spacing={2}>
-                    <Hidden smDown>
-                        <Grid item md={4} sm={12}>
+                    
+                        <Grid item md={4} sm={12} xs={12}>
                             <Profile />
                         </Grid>
-                    </Hidden>
-                    <Grid item md={6} style={{ paddingLeft: 25, paddingRight: 25 }} sm={12}>
+                    
+                    <Grid item md={6} style={{ paddingLeft: 25, paddingRight: 25 }} sm={12} xs={12}>
                         {recentPostsMarkup}
                     </Grid>
                 </Grid>

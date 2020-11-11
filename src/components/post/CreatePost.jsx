@@ -9,7 +9,7 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import PostAddIcon from '@material-ui/icons/PostAdd';
+import AddIcon from '@material-ui/icons/Add'
 import CloseIcon from '@material-ui/icons/Close';
 // Redux stuff
 import { connect } from 'react-redux';
@@ -59,9 +59,23 @@ class CreatePost extends Component {
     handleChange = (event) => {
         this.setState({ [event.target.name]: event.target.value });
     };
+
+    handleAddVideo = () => {
+        const fileInput = document.getElementById('videoInput')
+        fileInput.click()
+    }
+    handleAddImage = () => {
+        const fileInput = document.getElementById('imageInput')
+        fileInput.click()
+    }
+
+
+
     handleSubmit = (event) => {
         event.preventDefault();
-        this.props.createPost({ body: this.state.body });
+        const video = document.getElementById('videoInput').files[0]
+        const image = document.getElementById('imageInput').files[0]
+        this.props.createPost({ body: this.state.body, userImage: this.props.user.imageUrl }, video, image);
     };
     render() {
         const { errors } = this.state;
@@ -103,6 +117,40 @@ class CreatePost extends Component {
                                 onChange={this.handleChange}
                                 fullWidth
                             />
+                            <div className="image-wrapper">
+
+                                <input type="file"
+                                    id="videoInput"
+                                    hidden="hidden"
+
+                                />
+                                <MyButton
+
+                                    onClick={this.handleAddVideo}
+                                    btnClassName="button"
+                                >
+                                    <AddIcon color="primary" />
+                                    <Typography variant="body1">
+                                        Add Video To Your Post
+                                    </Typography>
+                                </MyButton>
+                            </div>
+
+                            <div className="image-wrapper">
+                                <input type="file"
+                                    id="imageInput"
+                                    hidden="hidden"
+                                    onChange={this.handleAddImage}
+                                />
+                                <MyButton
+
+                                    onClick={this.handleAddImage}
+                                    btnClassName="button"
+                                >
+                                    <AddIcon color="primary"></AddIcon>
+                                    Add Pictures
+                                </MyButton>
+                            </div>
                             <Button
                                 type="submit"
                                 variant="contained"
@@ -133,7 +181,8 @@ CreatePost.propTypes = {
 };
 
 const mapStateToProps = (state) => ({
-    UI: state.UI
+    UI: state.UI,
+    user: state.user
 });
 
 export default connect(

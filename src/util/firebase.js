@@ -1,6 +1,8 @@
-import * as firebase from 'firebase'
+import firebase from 'firebase/app'
 import 'firebase/storage'
-
+import 'firebase/auth'
+import 'firebase/database'
+import 'firebase/firestore'
 const config = {
     apiKey: "AIzaSyCAeH_aaEH5cKcMgFrm8iMBvoSsu-1Y7QA",
     authDomain: "shotsup-mvp.firebaseapp.com",
@@ -12,6 +14,8 @@ const config = {
     measurementId: "G-LT64VQCDS1"
 };
 
+
+
 firebase.initializeApp(config)
 
-export default firebase
+export {firebase}

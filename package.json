@@ -1,5 +1,6 @@
 {
   "name": "shotsup-mvp-client",
+  "homepage": "https://shotsup-mvp.web.app",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -15,12 +16,15 @@
     "dayjs": "^1.8.34",
     "firebase": "^7.22.1",
     "jwt-decode": "^2.2.0",
+    "material-ui-dropzone": "^3.5.0",
     "react": "^16.13.1",
     "react-compound-timer": "^1.2.0",
     "react-dom": "^16.13.1",
+    "react-dropzone": "^11.2.3",
     "react-hls-player": "^1.1.0",
     "react-player": "^2.6.2",
     "react-redux": "^7.2.1",
+    "react-responsive": "^8.1.0",
     "react-router-dom": "^5.2.0",
     "react-scripts": "3.4.3",
     "redux": "^4.0.5",
@@ -47,5 +51,4 @@
       "last 1 safari version"
     ]
   }
-  
 }

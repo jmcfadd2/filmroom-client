@@ -15,146 +15,149 @@ import CloseIcon from '@material-ui/icons/Close';
 import Typography from '@material-ui/core/Typography'
 // Redux stuff
 import { connect } from 'react-redux';
-import { getUserDrills, addDrillToSession, clearErrors } from '../../redux/actions/dataActions';
+import { getUserDrills, getGenericDrills, addDrillToSession, clearErrors } from '../../redux/actions/dataActions';
 
 const styles = (theme) => ({
-    ...theme.spreadThis,
-    submitButton: {
-        position: 'relative',
-        float: 'right',
-        marginTop: 10
-    },
-    progressSpinner: {
-        position: 'absolute'
-    },
-    closeButton: {
-        position: 'absolute',
-        left: '91%',
-        top: '1%'
-    }
+  ...theme.spreadThis,
+  submitButton: {
+    position: 'relative',
+    float: 'right',
+    marginTop: 10
+  },
+  progressSpinner: {
+    position: 'absolute'
+  },
+  closeButton: {
+    position: 'absolute',
+    left: '91%',
+    top: '1%'
+  }
 });
 
 class AddDrill extends Component {
-    state = {
-        open: false,
-        errors: {},
-        drillToBeAdded: ""
-    };
-    handle = this.props.user.credentials.handle
-    handleOpen = () => {
-        this.setState({ open: true });
-        console.log(this.handle)
-        this.props.getUserDrills(this.handle)
-        
-    };
-    handleClose = () => {
-        this.props.clearErrors();
-        this.setState({ open: false, errors: {} });
-    };
-    handleChange = (event) => {
-        this.setState({ drillToBeAdded: event.target.value });
-        console.log(this.state)
-    };
-    sendDrill = (event) => {
-        event.preventDefault();
-        this.props.addDrillToSession(this.state.drillToBeAdded);
-        console.log(this.state.drillToBeAdded)
-    };
-    componentDidMount() {
-        
-        
-    }
-    render() {
-        const { errors } = this.state;
-        const { yourDrills } = this.props.data;
-        
-        const {
-            classes,
-            data: { topics, session },
-            UI: { loading }
-        } = this.props;
-        return (
-            <Fragment>
-                <MyButton onClick={this.handleOpen} tip={`Add New ${session.topic ? topics[this.props.index].subActivity : "Drill"}`}>
-                    <AddIcon />
-                    <Typography variant={"h6"}>Add Your {session.topic ? topics[this.props.index].subActivity : "Drill"} </Typography>
+  state = {
+    open: false,
+    errors: {},
+    drillToBeAdded: ""
+  };
+  handle = this.props.user.credentials.handle
+  handleOpen = () => {
+    this.setState({ open: true });
+    console.log(this.handle)
+    console.log(this.props.data.session.topic)
+    this.props.data.session.topic !== "eSports" ? this.props.getUserDrills(this.handle, this.props.data.session.topic, this.props.data.session.type) :
+    this.props.getGenericDrills(this.props.data.session.topic, this.props.data.session.type)
+    
 
-                </MyButton>
-                <Dialog
-                    open={this.state.open}
-                    onClose={this.handleClose}
-                    fullWidth
-                    maxWidth="sm"
-                >
-                    <MyButton
-                        tip="Close"
-                        onClick={this.handleClose}
-                        tipClassName={classes.closeButton}
-                    >
-                        <CloseIcon />
-                    </MyButton>
-                    <DialogTitle>Add Your {session.topic ? topics[this.props.index].subActivity : "Drill"}</DialogTitle>
-                    <DialogContent>
-                        <form >
-                            <TextField
-                                name="userDrill"
-                                label="Your Drills"
-                                select
-                                rows="1"
-                                error={errors.body ? true : false}
-                                helperText={errors.body}
-                                className={classes.textField}
-                                
-                                onChange={this.handleChange}
-                                fullWidth
-                            >
-                                {yourDrills.map((drill) => (
-                                    <MenuItem key={drill.drillId} value={drill.name}>
-                                        {drill.name}
-                                    </MenuItem>
-                                ))}
-                            </TextField>
-                            
-                            
-                            <Button
-                                type="sendDrill"
-                                variant="contained"
-                                color="primary"
-                                className={classes.submitButton}
-                                disabled={loading}
-                                onClick={this.sendDrill}
-                            >
-                                Submit
+  };
+  handleClose = () => {
+    this.props.clearErrors();
+    this.setState({ open: false, errors: {} });
+  };
+  handleChange = (event) => {
+    this.setState({ drillToBeAdded: event.target.value });
+    console.log(this.state)
+  };
+  sendDrill = (event) => {
+    event.preventDefault();
+    this.props.addDrillToSession(this.state.drillToBeAdded);
+    console.log(this.state.drillToBeAdded)
+  };
+  componentDidMount() {
+    
+  }
+  render() {
+    const { errors } = this.state;
+    const { yourDrills } = this.props.data;
+
+    const {
+      classes,
+      data: { topics, session },
+      UI: { loading }
+    } = this.props;
+    return (
+      <Fragment>
+        <MyButton onClick={this.handleOpen} tip={`Add New ${session.topic ? topics[this.props.index].subActivity : "Drill"}`}>
+          <AddIcon />
+          <Typography variant={"h6"}>Add {session.topic ? `${topics[this.props.index].subActivity}` : "Drill"} </Typography>
+
+        </MyButton>
+        <Dialog
+          open={this.state.open}
+          onClose={this.handleClose}
+          fullWidth
+          maxWidth="sm"
+        >
+          <MyButton
+            tip="Close"
+            onClick={this.handleClose}
+            tipClassName={classes.closeButton}
+          >
+            <CloseIcon />
+          </MyButton>
+          <DialogTitle>Add {session.topic ? `${topics[this.props.index].subActivity}s` : "Drills"}</DialogTitle>
+          <DialogContent>
+            <form >
+              <TextField
+                name="userDrill"
+                label="Your Drills"
+                select
+                rows="1"
+                error={errors.body ? true : false}
+                helperText={errors.body}
+                className={classes.textField}
+
+                onChange={this.handleChange}
+                fullWidth
+              >
+                {yourDrills.map((drill) => (
+                  <MenuItem key={drill.drillId} value={drill.name}>
+                    {drill.name}
+                  </MenuItem>
+                ))}
+              </TextField>
+
+
+              <Button
+                type="sendDrill"
+                variant="contained"
+                color="primary"
+                className={classes.submitButton}
+                disabled={loading}
+                onClick={this.sendDrill}
+              >
+                Submit
                 {loading && (
-                                    <CircularProgress
-                                        size={30}
-                                        className={classes.progressSpinner}
-                                    />
-                                )}
-                            </Button>
-                        </form>
-                    </DialogContent>
-                </Dialog>
-            </Fragment>
-        );
-    }
+                  <CircularProgress
+                    size={30}
+                    className={classes.progressSpinner}
+                  />
+                )}
+              </Button>
+            </form>
+          </DialogContent>
+        </Dialog>
+      </Fragment>
+    );
+  }
 }
 
 AddDrill.propTypes = {
-    getUserDrills: PropTypes.func.isRequired,
-    clearErrors: PropTypes.func.isRequired,
-    UI: PropTypes.object.isRequired,
-    data: PropTypes.object.isRequired,
-    user: PropTypes.object.isRequired
+  getUserDrills: PropTypes.func.isRequired,
+  getGenericDrills: PropTypes.func.isRequired,
+  clearErrors: PropTypes.func.isRequired,
+  UI: PropTypes.object.isRequired,
+  data: PropTypes.object.isRequired,
+  user: PropTypes.object.isRequired
 };
 
 const mapStateToProps = (state) => ({
-    UI: state.UI,
-    data: state.data,
-    user: state.user
+  UI: state.UI,
+  data: state.data,
+  user: state.user
 });
 
 export default connect(
-    mapStateToProps,
-    { getUserDrills, addDrillToSession, clearErrors }
+  mapStateToProps,
+  { getUserDrills, getGenericDrills, addDrillToSession, clearErrors }
 )(withStyles(styles)(AddDrill));

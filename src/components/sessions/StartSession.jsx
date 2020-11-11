@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import withStyles from '@material-ui/core/styles/withStyles';
 import MyButton from '../../util/MyButton';
 // MUI Stuff
-import SportsIcon from '@material-ui/icons/Sports'
 
 // Redux stuff
 import { connect } from 'react-redux';

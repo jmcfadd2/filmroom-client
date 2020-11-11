@@ -11,6 +11,10 @@ export const LOADING_UI = 'LOADING_UI';
 export const CLEAR_ERRORS = 'CLEAR_ERRORS';
 export const LOADING_DATA = 'LOADING_DATA';
 export const STOP_LOADING_UI = 'STOP_LOADING_UI';
+export const SET_PROGRESS = 'SET_PROGRESS';
+export const SET_VID_STATUS = 'SET_VID_STATUS';
+export const SET_PIC_STATUS = 'SET_PIC_STATUS';
+
 // Data reducer types
 export const SET_POSTS = 'SET_POSTS';
 export const SET_DRILLS = 'SET_DRILLS';
@@ -27,7 +31,7 @@ export const SET_TYPE = 'SET_TYPE';
 export const SET_TOPIC = 'SET_TOPIC';
 export const UPDATE_SESSION = 'UPDATE_SESSION';
 export const UPDATE_RESULTS = 'UPDATE_RESULTS';
-export const STAGE_SESSION = 'STAGE_SESSION';
+export const SET_SESSION = 'SET_SESSION';
 export const SET_TITLE = 'SET_TITLE';
 export const SET_DESCRIPT = 'SET_DESCRIPT';
 export const CREATE_SESSION_POST = 'CREATE_SESSION_POST';

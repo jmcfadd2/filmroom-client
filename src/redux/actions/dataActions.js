@@ -1,322 +1,469 @@
 import {
-    SET_POSTS,
-    LOADING_DATA,
-    LIKE_POST,
-    UNLIKE_POST,
-    DELETE_POST,
-    SET_ERRORS,
-    CREATE_POST,
-    CLEAR_ERRORS,
-    LOADING_UI,
-    SET_POST,
-    STOP_LOADING_UI,
-    GET_TOPICS,
-    SET_TOPIC,
-    SET_TYPE,
-    STAGE_SESSION,
-    ADD_NEW_DRILL,
-    SET_DRILLS,
-    ADD_DRILL,
-    UPDATE_RESULTS,
-    SET_TITLE,
-    SET_DESCRIPT,
-    SUBMIT_COMMENT
+  SET_POSTS,
+  LOADING_DATA,
+  LIKE_POST,
+  UNLIKE_POST,
+  DELETE_POST,
+  SET_ERRORS,
+  CREATE_POST,
+  CLEAR_ERRORS,
+  LOADING_UI,
+  SET_POST,
+  STOP_LOADING_UI,
+  GET_TOPICS,
+  SET_TOPIC,
+  SET_TYPE,
+  SET_SESSION,
+  ADD_NEW_DRILL,
+  SET_DRILLS,
+  ADD_DRILL,
+  UPDATE_RESULTS,
+  SET_TITLE,
+  SET_DESCRIPT,
+  SUBMIT_COMMENT,
+  SET_PROGRESS,
+  SET_VID_STATUS
 } from '../types';
-import firebase from '../../util/firebase'
+import * as UpChunk from '@mux/upchunk'
+import {firebase} from '../../util/firebase'
 import axios from 'axios';
 
 export const getPosts = () => (dispatch) => {
-    dispatch({
-        type: LOADING_DATA
+  dispatch({
+    type: LOADING_DATA
+  });
+  axios
+
+    .get('/posts')
+    .then((res) => {
+
+      dispatch({
+        type: SET_POSTS,
+        payload: res.data
+      });
+      console.log(res.data)
+    })
+    .catch((err) => {
+      dispatch({
+        type: SET_POSTS,
+        payload: []
+      });
     });
-    axios
-    
-        .get('/posts')
-        .then((res) => {
-            dispatch({
-                type: SET_POSTS,
-                payload: res.data
-            });
-        })
-        .catch((err) => {
-            dispatch({
-                type: SET_POSTS,
-                payload: []
-            });
-        });
 };
 
 export const getPost = (postId) => (dispatch) => {
-    dispatch({
-        type: LOADING_UI
-    });
-    axios
-        .get(`/post/${postId}`)
-        .then((res) => {
-            dispatch({
-                type: SET_POST,
-                payload: res.data
-            });
-            dispatch({
-                type: STOP_LOADING_UI
-            });
-        })
-        .catch((err) => console.log(err));
+  dispatch({
+    type: LOADING_UI
+  });
+  axios
+    .get(`/post/${postId}`)
+    .then((res) => {
+      dispatch({
+        type: SET_POST,
+        payload: res.data
+      });
+      dispatch({
+        type: STOP_LOADING_UI
+      });
+    })
+    .catch((err) => console.log(err));
 };
 
-export const createPost = (newPost) => (dispatch) => {
-    dispatch({
-        type: LOADING_UI
-    });
-    axios
-        .post('/post', newPost)
-        .then((res) => {
-            dispatch({
-                type: CREATE_POST,
-                payload: res.data
-            });
-            dispatch(clearErrors());
+export const createPost = (newPost, video, image) => (dispatch) => {
+  dispatch({
+    type: LOADING_UI
+  });
+  axios
+    .post('/post', newPost)
+    .then(async (res) => {
+      const uploadVideo = typeof video !== undefined && await UpChunk.createUpload({
+        endpoint: res.data.uploadUrl,
+        file: video,
+        chunkSize: 20971520,
+      })
+      uploadVideo.on('progress', progress => {
+        console.log(`So far we've uploaded ${progress.detail}% of this file.`);
+      })
+
+      typeof image !== undefined && await
+      firebase.storage().ref('post-pics')
+        .child(image.name)
+        .put(image)
+        .then(() => {
+
+          console.log(`Uploaded file: ${image.name}`)
+          firebase.storage().ref('post-pics')
+            .child(image.name).getDownloadURL().then((url) => {
+              firebase.firestore().collection('posts').doc(`${res.data.postId}`).update({
+                imageUrl: url
+              })
+            })
         })
-        .catch((err) => {
-            dispatch({
-                type: SET_ERRORS,
-                payload: err.response.data
-            });
-        });
+      dispatch({
+        type: CREATE_POST,
+        payload: res.data
+      });
+      dispatch(clearErrors());
+    })
+    .catch((err) => {
+      dispatch({
+        type: SET_ERRORS,
+        payload: err.data
+      });
+    });
 };
 
 
 
 export const likePost = (postId) => (dispatch) => {
-    axios
-        .get(`/post/${postId}/like`)
-        .then((res) => {
-            dispatch({
-                type: LIKE_POST,
-                payload: res.data
-            });
-        })
-        .catch((err) => console.log(err));
+  axios
+    .get(`/post/${postId}/like`)
+    .then((res) => {
+      dispatch({
+        type: LIKE_POST,
+        payload: res.data
+      });
+    })
+    .catch((err) => console.log(err));
 };
 
 export const unlikePost = (postId) => (dispatch) => {
-    axios
-        .get(`/post/${postId}/unlike`)
-        .then((res) => {
-            dispatch({
-                type: UNLIKE_POST,
-                payload: res.data
-            });
-        })
-        .catch((err) => console.log(err));
+  axios
+    .get(`/post/${postId}/unlike`)
+    .then((res) => {
+      dispatch({
+        type: UNLIKE_POST,
+        payload: res.data
+      });
+    })
+    .catch((err) => console.log(err));
 }
 
 export const deletePost = (postId) => (dispatch) => {
-    axios
-        .delete(`/post/${postId}`)
-        .then(() => {
-            dispatch({
-                type: DELETE_POST,
-                payload: postId
-            });
-        })
-        .catch((err) => console.log(err));
+  axios
+    .delete(`/post/${postId}`)
+    .then(() => {
+      dispatch({
+        type: DELETE_POST,
+        payload: postId
+      });
+    })
+    .catch((err) => console.log(err));
 };
 
 export const submitComment = (postId, commentData) => (dispatch) => {
-    axios
-        .post(`/post/${postId}/comment`, commentData)
-        .then((res) => {
-            dispatch({
-                type: SUBMIT_COMMENT,
-                payload: res.data
-            });
-            dispatch(clearErrors());
-        })
-        .catch((err) => {
-            dispatch({
-                type: SET_ERRORS,
-                payload: err.response.data
-            });
-        });
+  axios
+    .post(`/post/${postId}/comment`, commentData)
+    .then((res) => {
+      dispatch({
+        type: SUBMIT_COMMENT,
+        payload: res.data
+      });
+      dispatch(clearErrors());
+    })
+    .catch((err) => {
+      dispatch({
+        type: SET_ERRORS,
+        payload: err.response.data
+      });
+    });
 };
 
 export const getUserData = (userHandle) => (dispatch) => {
-    dispatch({
-        type: LOADING_DATA
+  dispatch({
+    type: LOADING_DATA
+  });
+  axios
+    .get(`/user/${userHandle}`)
+    .then((res) => {
+      dispatch({
+        type: SET_POSTS,
+        payload: res.data.posts
+      });
+    })
+    .catch(() => {
+      dispatch({
+        type: SET_POSTS,
+        payload: null
+      });
     });
-    axios
-        .get(`/user/${userHandle}`)
-        .then((res) => {
-            dispatch({
-                type: SET_POSTS,
-                payload: res.data.posts
-            });
-        })
-        .catch(() => {
-            dispatch({
-                type: SET_POSTS,
-                payload: null
-            });
-        });
 };
 export const getTopicData = () => (dispatch) => {
-    dispatch({
-        type: LOADING_DATA
-    });
-    firebase
-        .firestore()
-        .collection("topics")
-        .get()
-        .then((data) => {
-            let topics = []
-            data.forEach((doc) => {
-                topics.push({
-                    name: doc.data().name,
-                    sessionTypes: doc.data().sessionTypes,
-                    metrics: doc.data().metrics,
-                    subActivity: doc.data().subActivity
+  dispatch({
+    type: LOADING_DATA
+  });
+  firebase
+    .firestore()
+    .collection("topics")
+    .get()
+    .then((data) => {
+      let topics = []
+      data.forEach((doc) => {
+        topics.push({
+          name: doc.data().name,
+          sessionTypes: doc.data().sessionTypes,
+          metrics: doc.data().metrics,
+          subActivity: doc.data().subActivity
 
-                })
-
-            })
-            dispatch({
-                type: GET_TOPICS,
-                payload: topics
-            })
         })
+
+      })
+      dispatch({
+        type: GET_TOPICS,
+        payload: topics
+      })
+    })
 };
 
 
 
 export const setTopic = (newTopic) => (dispatch) => {
-    dispatch({
-        type: SET_TOPIC,
-        payload: newTopic
-    })
+  dispatch({
+    type: SET_TOPIC,
+    payload: newTopic
+  })
 }
 export const setType = (newType) => (dispatch) => {
-    dispatch({
-        type: SET_TYPE,
-        payload: newType
-    })
+  dispatch({
+    type: SET_TYPE,
+    payload: newType
+  })
 }
 
-export const finishSession = (newSession) => (dispatch) => {
-    dispatch({
-        type: LOADING_UI
+export const setSession = (sessionData) => (dispatch) => {
+  dispatch({
+    type: LOADING_UI
+  });
+  const session = {
+    session: sessionData
+  }
+  axios
+    .post('/session', session)
+    .then((res) => {
+      console.log(res)
+      dispatch({
+        type: SET_SESSION,
+        payload: res.data
+      });
+      dispatch(clearErrors());
+    })
+    .catch((err) => {
+      dispatch({
+        type: SET_ERRORS,
+        payload: err.response.data
+      });
     });
-    axios
-        .post('/session/stage', newSession)
-        .then((res) => {
-            console.log(res)
-            dispatch({
-                type: STAGE_SESSION,
-                payload: res.data
-            });
-            dispatch(clearErrors());
-        })
-        .catch((err) => {
-            dispatch({
-                type: SET_ERRORS,
-                payload: err.response.data
-            });
-        });
-};
-export const addNewDrill = (newDrill) => (dispatch) => {
-    dispatch({
-        type: LOADING_UI
-    });
-    axios
-        .post('/drill', newDrill)
-        .then((res) => {
-            dispatch({
-                type: ADD_NEW_DRILL,
-                payload: res.data
-            });
-            dispatch(clearErrors());
-        })
-
 };
 
-export const getUserDrills = (userHandle) => (dispatch) => {
+export const stageSession = (sessionData) => (dispatch) => {
+  dispatch({
+    type: LOADING_UI
+  });
+  const session = {
+    drillResults: sessionData
+  }
+  axios
+    .post('/session/stage', session)
+    .then((res) => {
+      console.log(res)
+      dispatch({
+        type: SET_SESSION,
+        payload: res.data
+      });
+      dispatch(clearErrors());
+    })
+    .catch((err) => {
+      dispatch({
+        type: SET_ERRORS,
+        payload: err.response.data
+      });
+    });
+};
+export const addNewDrill = (newDrill, video) => (dispatch) => {
+  dispatch({
+    type: LOADING_UI
+  });
+  axios
+    .post('/drill', newDrill)
+    .then(async (res) => {
 
-    axios
-        .get(`/drills/${userHandle}`)
-        .then((res) => {
-            dispatch({
-                type: SET_DRILLS,
-                payload: res.data
-            })
-        })
-        .catch(() => {
-            dispatch({
-                type: SET_DRILLS,
-                payload: ["No drills available"]
-            })
-        })
+      const upload = typeof video !== undefined && await UpChunk.createUpload({
+        endpoint: res.data.uploadUrl,
+        file: video,
+        chunkSize: 20971520,
+      })
+      upload.on('progress', progress => {
+        console.log(`So far we've uploaded ${progress.detail}% of this file.`);
+      })
+      dispatch({
+        type: ADD_NEW_DRILL,
+        payload: res.data
+      });
+      dispatch(clearErrors());
+    })
+
+};
+
+export const getUserDrills = (userHandle, topic, type) => (dispatch) => {
+
+  axios
+    .get(`/drills/${userHandle}/${topic}/${type}`)
+    .then((res) => {
+      console.log(res)
+      dispatch({
+        type: SET_DRILLS,
+        payload: res.data
+      })
+    })
+    .catch(() => {
+      dispatch({
+        type: SET_DRILLS,
+        payload: ["No drills available"]
+      })
+    })
+}
+export const getGenericDrills = (topic, type) => (dispatch) => {
+
+  axios
+    .get(`/drills/${topic}/${type}`)
+    .then((res) => {
+      console.log(res)
+      dispatch({
+        type: SET_DRILLS,
+        payload: res.data
+      })
+    })
+    .catch(() => {
+      dispatch({
+        type: SET_DRILLS,
+        payload: ["No drills available"]
+      })
+    })
 }
 
 export const addDrillToSession = (drillName) => (dispatch) => {
-    dispatch({
-        type: ADD_DRILL,
-        payload: drillName
-    })
+  dispatch({
+    type: ADD_DRILL,
+    payload: drillName
+  })
 }
 
-export const updateResults = (results, drillName, drillId) => (dispatch) => {
+export const updateResults = (results, drillName, drillId, sessionId, image) => async (dispatch) => {
+  dispatch({
+    type: LOADING_UI
     
-    dispatch({
-                type: UPDATE_RESULTS,
-                payload: {
-                    drillName,
-                    drillId,
-                    results
-                    
-                }
-            });
-            dispatch(clearErrors());
-        
+  })
+
+  image && await
+  firebase.storage().ref('post-pics')
+    .child(image.name)
+    .put(image)
+    .then(() => {
+
+      console.log(`Uploaded file: ${image.name}`)
+      firebase.storage().ref('post-pics')
+        .child(image.name).getDownloadURL().then((url) => {
+          firebase.firestore().collection('posts').doc(`${sessionId}`).update({
+            images: firebase.firestore.FieldValue.arrayUnion(url)
+          })
+        })
+    })
+  dispatch({
+    type: UPDATE_RESULTS,
+    payload: {
+      drillName,
+      drillId,
+      results
+
+    }
+  });
+  dispatch(clearErrors());
+
 }
 
 export const setTitle = (newTitle) => (dispatch) => {
-    dispatch({
-        type: SET_TITLE,
-        payload: newTitle
-    })
+  dispatch({
+    type: SET_TITLE,
+    payload: newTitle
+  })
 }
 export const setDescript = (newDescript) => (dispatch) => {
-    dispatch({
-        type: SET_DESCRIPT,
-        payload: newDescript
-    })
+  dispatch({
+    type: SET_DESCRIPT,
+    payload: newDescript
+  })
 }
 
-export const postSession = (sessionId, newSessionPost) => (dispatch) => {
-    dispatch({
-        type: LOADING_UI
-    });
-    axios
-        .post(`/post/${sessionId}`, newSessionPost)
-        .then((res) => {
-            dispatch({
-                type: CREATE_POST,
-                payload: res.data
-            });
-            dispatch(clearErrors());
+export const postSession = (sessionId, newSessionPost, videos, images) => (dispatch) => {
+  dispatch({
+    type: LOADING_UI
+  });
+  axios
+    .post(`/post/${sessionId}`, newSessionPost)
+    .then(async (res) => {
+      console.log(res.data.uploadUrls)
+        for (let i = 0; i < images.length; i++) {
+          const image = images[i];
+          await firebase.storage().ref('post-pics')
+            .child(image.name)
+            .put(image)
+            .then(() => {
+
+              console.log(`Uploaded file: ${image.name}`)
+              firebase.storage().ref('post-pics')
+                .child(image.name).getDownloadURL().then((url) => {
+                  firebase.firestore().collection('posts').doc(`${res.data.postId}`).update({
+                    images: firebase.firestore.FieldValue.arrayUnion(url)
+                  })
+                })
+            })
+        }
+        
+        let uploadsCompleted = 0
+        for (let i = 0; i < videos.length; i++) {
+        const video = videos[i];
+        const upload = typeof videos !== undefined && await UpChunk.createUpload({
+          endpoint: res.data.uploadUrls[i],
+          file: video,
+          chunkSize: 20971520,
         })
-        .catch((err) => {
+        upload.on('progress', progress => {
+          const videoStatus = `So far we've uploaded ${progress.detail.toPrecision(3)}% of video #${i+1}.`
+          dispatch({
+            type: SET_PROGRESS,
+            payload: progress.detail.toPrecision(3)
+          })
+          dispatch({
+            type: SET_VID_STATUS,
+            payload: videoStatus
+          })
+        })
+        
+          
+          
+        // eslint-disable-next-line no-loop-func
+        upload.on('success', () => {
+          uploadsCompleted++
+          console.log("Uploads completed :", uploadsCompleted
+          );
+          uploadsCompleted === videos.length && setTimeout(() => {
+            window.location.href = '/'
             dispatch({
-                type: SET_ERRORS,
-                payload: err.response.data
-            });
-        });
+              type: SET_VID_STATUS,
+              payload: "Video uploads completed, putting things in their place"
+            })
+          }, 5000)
+        })
+      }
+      
+    })
+    
 };
 
 
 
 export const clearErrors = () => (dispatch) => {
-    dispatch({
-        type: CLEAR_ERRORS
-    });
+  dispatch({
+    type: CLEAR_ERRORS
+  });
 };

@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import withStyles from '@material-ui/core/styles/withStyles';
 import PropTypes from 'prop-types';
-import Background from '../images/filip-mroz-AvWhWeWhleE-unsplash.jpg';
 import { Link } from 'react-router-dom'
 //MUI
 import Grid from '@material-ui/core/Grid';
@@ -9,7 +8,7 @@ import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import firebase from '../util/firebase';
+import {firebase} from '../util/firebase';
 // Redux
 import { connect } from 'react-redux'
 import { loginUser } from '../redux/actions/userActions'

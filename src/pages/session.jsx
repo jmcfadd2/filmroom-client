@@ -2,20 +2,17 @@ import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import withStyles from '@material-ui/core/styles/withStyles';
 import CreateDrill from '../components/sessions/CreateDrill';
-import DrillTimeline from '../components/sessions/DrillTimeline'
 import StageSession from '../components/sessions/StageSession'
-import firebase from '../util/firebase'
 // MUI Stuff
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
-
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Paper from '@material-ui/core/Paper';
 import MenuItem from '@material-ui/core/MenuItem'
 // Redux stuff
 import { connect } from 'react-redux';
-import { setTopic, setType, clearErrors, getTopicData } from '../redux/actions/dataActions';
-import { Typography } from '@material-ui/core';
+import { setTopic, setType, clearErrors, getTopicData, getUserData, setSession, stageSession } from '../redux/actions/dataActions';
+import { Chip, Typography } from '@material-ui/core';
 import ActivityStepper from '../components/sessions/ActivityStepper';
 import AddDrill from '../components/sessions/AddDrill';
 
@@ -70,8 +67,8 @@ export class session extends Component {
     }
     getTopics = () => {
         this.props.getTopicData()
-        console.log(this.props.data.topics)
     }
+    
     handleOpen = () => {
         this.setState({ open: true });
     };
@@ -87,8 +84,9 @@ export class session extends Component {
     handleType = (event) => {
         this.props.setType(event.target.value);
     };
-    handleStart = (event) => {
+    handleStart = async (event) => {
         event.preventDefault();
+        await this.props.setSession(this.props.data.session)
         this.setState({ sessionCreated: true });
     };
     handleStage = (event) => {
@@ -102,10 +100,10 @@ export class session extends Component {
 
 
     render() {
-        const { errors, sessionCreated, sessionStaged, currentTopicIndex} = this.state;
+        const { sessionCreated, sessionStaged, currentTopicIndex} = this.state;
         const {
             classes,
-            data: { topics },
+            data: { topics, session },
             UI: { loading }
         } = this.props;
 
@@ -137,7 +135,8 @@ export class session extends Component {
 
 
                         </TextField>
-                        <TextField
+
+                        {session.topic && <TextField
                             name="type"
                             select
                             label="Session Type"
@@ -151,12 +150,24 @@ export class session extends Component {
                                     {type}
                                 </MenuItem>
                             ))}
-                        </TextField>
-                        <DrillTimeline />
-                        <Fragment>
+                        </TextField>}
+
+                        {session.topic && session.type && <Fragment>
                             <AddDrill index={this.state.currentTopicIndex}/>
-                            <CreateDrill index={this.state.currentTopicIndex}/>
+                            {session.topic !== 'eSports' && <CreateDrill index={this.state.currentTopicIndex}/>}
+                        </Fragment>}
+                        <br/>
+                        <Fragment>
+                          {session.drills.map((drill, index) => (
+                            <Chip 
+                              key={index}
+                              label={`${index + 1}. ${drill.name}`}
+                              
+                            />
+                          ))}
+                          
                         </Fragment>
+                        <br/>
                         <Button
                             type="submit"
                             variant="contained"
@@ -186,6 +197,8 @@ export class session extends Component {
 
 session.propTypes = {
     clearErrors: PropTypes.func.isRequired,
+    setSession: PropTypes.func.isRequired,
+    getUserData: PropTypes.func.isRequired,
     getTopicData: PropTypes.func.isRequired,
     UI: PropTypes.object.isRequired,
     data: PropTypes.object.isRequired
@@ -200,4 +213,4 @@ const mapStateToProps = (state) => ({
 
 
 
-export default connect(mapStateToProps, { setTopic, setType, clearErrors, getTopicData })(withStyles(styles)(session))
+export default connect(mapStateToProps, { setTopic, setType, clearErrors, getTopicData, getUserData, stageSession, setSession })(withStyles(styles)(session))

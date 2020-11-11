@@ -10,14 +10,11 @@ import {
     SUBMIT_COMMENT,
     SET_TOPIC,
     SET_TYPE,
-    STAGE_SESSION,
+    SET_SESSION,
     ADD_NEW_DRILL,
     SET_DRILLS,
     ADD_DRILL,
-    SET_DESCRIPT,
-    SET_TITLE,
     UPDATE_RESULTS,
-    CREATE_SESSION_POST,
     GET_TOPICS
 } from '../types';
 
@@ -75,7 +72,8 @@ export default function (state = initialState, action) {
         case CREATE_POST:
             return {
                 ...state,
-                posts: [action.payload, ...state.posts]
+                posts: [action.payload, ...state.posts],
+                loading: false
             };
         case SUBMIT_COMMENT:
             return {
@@ -115,7 +113,8 @@ export default function (state = initialState, action) {
                     session: {
                         ...state.session,
                         drills: [...state.session.drills, action.payload]
-                    }
+                    },
+                    loading: false
                 }
             
         case SET_DRILLS:
@@ -143,12 +142,14 @@ export default function (state = initialState, action) {
                 session: {
                     ...state.session,
                     drillResults: [...state.session.drillResults, action.payload]
-                }
+                },
+                loading: false
             };
-        case STAGE_SESSION:
+        case SET_SESSION:
             return {
                 ...state,
-                session: action.payload
+                session: action.payload,
+                loading: false
             };
                 default:
                     return state;
