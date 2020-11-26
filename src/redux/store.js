@@ -5,7 +5,7 @@ import thunk from 'redux-thunk'
 import userReducer from './reducers/userReducer'
 import dataReducer from './reducers/dataReducer'
 import uiReducer from './reducers/uiReducer'
-
+import courseReducer from './reducers/courseReducer'
 
 const initialState= {}
 
@@ -15,6 +15,7 @@ const reducers = combineReducers({
     user: userReducer,
     data: dataReducer,
     UI: uiReducer,
+    courses: courseReducer 
     
 })
 

@@ -22,12 +22,14 @@ import login from './pages/login';
 import signup from './pages/signup';
 import user from './pages/user'
 import session from './pages/session'
+import learn from './pages/learn'
+import trainingUpload from './pages/trainingUpload'
 import axios from 'axios';
 const theme = createMuiTheme(themeFile);
 
 
 
-axios.defaults.baseURL = "https://us-central1-shotsup-mvp.cloudfunctions.net/api"
+axios.defaults.baseURL = "http://localhost:5000/shotsup-mvp/us-central1/api"
 
 const token = localStorage.FBIdToken
 if (token)  {
@@ -65,6 +67,10 @@ function App() {
                             <Route exact path="/users/:handle/post/:postId" component={user}
                             />
                             <Route exact path="/session" component={session}
+                            />
+                            <Route exact path="/learn" component={learn}
+                            />
+                            <Route exact path="/upload-training" component={trainingUpload}
                             />
                             
                         </Switch>

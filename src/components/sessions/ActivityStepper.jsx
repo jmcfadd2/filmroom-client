@@ -47,9 +47,12 @@ export default function ActivityStepper(props) {
   // TODO Handle Edge Case of different
   const handleFirstCompoundMetric = (e) => {
     setResults({ ...results, compoundMetric: [e.target.value]})
+    
+    console.log(results);
   }
   const handleSecondCompoundMetric = (e) => {
-    setResults({ ...results, compoundMetric: [...results.compoundMetric, e.target.value] })
+    results.compoundMetric[1] = e.target.value
+    console.log(results);
   }
 
   const handleNext = () => {
@@ -74,7 +77,7 @@ export default function ActivityStepper(props) {
     <div>
       <Grid container >
         <Grid item sm />
-        <Grid item sm>
+        <Grid item sm xs={12}>
 
           {drills.map((drill, index) => (
 
@@ -84,9 +87,9 @@ export default function ActivityStepper(props) {
                   <Typography variant="h6">{`${index + 1}.  ${drill.name}`}</Typography>
                   <hr />
                   <br />
-                  <br />
 
-                  {session.topic !== "eSports" ? <ReactPlayer url={`https://stream.mux.com/${drill.drillVideoId}.m3u8`} playing={true} controls={true} /> : 
+                  {session.topic !== "eSports" ? <ReactPlayer url={`https://stream.mux.com/${drill.drillVideoId}.m3u8`} playing={true} controls={true} height="100%"
+                    width="100%" /> : 
                   <DropzoneArea
                     showPreviewsInDropzone={true}
                     

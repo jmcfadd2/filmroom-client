@@ -47,11 +47,11 @@ class Navbar extends Component {
                                     </Link>
                                     <CreatePost />
                                     <Notifications />
+                                    <Link to="/learn">Learn</Link>
                                 </Fragment>
                             ) : (
-                                    <Fragment>
-                                        
-                                    </Fragment>
+                                    <>
+                                    </>
                                 )}
                         </Toolbar>
                     </Box>

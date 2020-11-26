@@ -31,6 +31,7 @@ export default function StageSession() {
   const [images, setImages] = useState([])
   const [openVideo, setOpenVideo] = useState(false);
   const [openImage, setOpenImage] = useState(false);
+  
   const handleVideoClick = () => {
     setOpenVideo(true)
   }

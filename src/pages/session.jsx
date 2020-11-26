@@ -12,7 +12,7 @@ import MenuItem from '@material-ui/core/MenuItem'
 // Redux stuff
 import { connect } from 'react-redux';
 import { setTopic, setType, clearErrors, getTopicData, getUserData, setSession, stageSession } from '../redux/actions/dataActions';
-import { Chip, Typography } from '@material-ui/core';
+import { Chip, Grid, Typography } from '@material-ui/core';
 import ActivityStepper from '../components/sessions/ActivityStepper';
 import AddDrill from '../components/sessions/AddDrill';
 
@@ -109,7 +109,7 @@ export class session extends Component {
 
         return (
 
-            <Fragment>
+            <Grid>
                 
 
                 { !sessionCreated && !sessionStaged && <Paper className={classes.formPaper}>
@@ -190,7 +190,7 @@ export class session extends Component {
                     {sessionCreated && !sessionStaged && <ActivityStepper stage={this.handleStage} />}
                 </div>
                 {sessionStaged && <StageSession />}
-            </Fragment>
+            </Grid>
         )
     }
 }
