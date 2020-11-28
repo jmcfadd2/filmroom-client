@@ -9,11 +9,34 @@ import {
   LOADING_UI,
   SET_UPLOAD_SUCCESS,
   LOADING_COURSES,
-  STOP_LOADING_UI
+  STOP_LOADING_UI,
+  SET_COURSES
 } from '../types'
 import * as UpChunk from '@mux/upchunk'
 
 
+export const getCourses = () => (dispatch) => {
+  dispatch({
+    type: LOADING_DATA
+  });
+  axios
+
+    .get('/courses')
+    .then((res) => {
+
+      dispatch({
+        type: SET_COURSES,
+        payload: res.data
+      });
+      console.log(res.data)
+    })
+    .catch((err) => {
+      dispatch({
+        type: SET_COURSES,
+        payload: []
+      });
+    });
+};
 export const setTopic = (newTopic) => (dispatch) => {
   dispatch({
     type: SET_COURSE_TOPIC,
@@ -114,18 +137,17 @@ export const uploadCourseDrills = (drills, courseId, videos) => (dispatch) => {
   dispatch({
     type: LOADING_UI
   })
-  dispatch({
-    type: SET_UPLOAD_SUCCESS,
-    payload: true
-  })
   axios
-    .post(`/courses/${courseId}/drills`, drills)
+    .post(`/courses/${courseId}/drills`, {
+      drills: drills, 
+      drillCount: drills.length
+    })
     .then(async (res) => {
       let uploadsCompleted = 0
       for (let i = 0; i < videos.length; i++) {
         const video = videos[i];
         const upload = typeof video !== undefined && await UpChunk.createUpload({
-          endpoint: res.data.uploadUrl,
+          endpoint: res.data.uploadUrls[i],
           file: video,
           chunkSize: 20971520,
         })

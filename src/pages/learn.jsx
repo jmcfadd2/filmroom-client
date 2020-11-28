@@ -10,7 +10,8 @@ import { Box } from '@material-ui/core'
 
 // Redux 
 import { connect } from 'react-redux'
-import { getPosts } from '../redux/actions/dataActions';
+import { getCourses } from '../redux/actions/courseActions';
+import CourseCard from '../components/courses/CourseCard';
 
 const styles = (theme) => ({
   ...theme.spreadThis,
@@ -22,14 +23,14 @@ const styles = (theme) => ({
 export class learn extends Component {
 
   componentDidMount() {
-    this.props.getPosts();
+    this.props.getCourses();
   }
 
   render() {
     const { classes } = this.props
-    const { posts, loading } = this.props.data;
-    let recentPostsMarkup = !loading ? (
-      posts.map(post => <Post key={post.postId} post={post} />)
+    const { courses, loading } = this.props.courses;
+    let recentCoursesMarkup = !loading ? (
+      courses.map(course => <CourseCard key={course.courseId} course={course} />)
     ) : <PostSkeleton />
     return (
       <Box mt={10}>
@@ -41,6 +42,7 @@ export class learn extends Component {
 
           <Grid item md={6} style={{ paddingLeft: 25, paddingRight: 25 }} sm={12} xs={12}>
             <Paper>
+              {recentCoursesMarkup}
               <Typography> Upload your own course and become a Reppit coach today</Typography>
               <Button href='/upload-training'>
                 Upload Now!
@@ -55,16 +57,16 @@ export class learn extends Component {
 }
 
 learn.propTypes = {
-  getPosts: PropTypes.func.isRequired,
-  data: PropTypes.object.isRequired
+  getCourses: PropTypes.func.isRequired,
+  courses: PropTypes.object.isRequired
 };
 
 const mapStateToProps = (state) => ({
-  data: state.data
+  courses: state.courses
 });
 
 export default connect(
   mapStateToProps,
-  { getPosts }
+  { getCourses }
 )(withStyles(styles)(learn));
 

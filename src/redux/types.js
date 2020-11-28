@@ -36,6 +36,7 @@ export const SET_TITLE = 'SET_TITLE';
 export const SET_DESCRIPT = 'SET_DESCRIPT';
 export const CREATE_SESSION_POST = 'CREATE_SESSION_POST';
 // Course Reducer
+export const SET_COURSES = 'SET_COURSES'
 export const LOADING_COURSES = 'LOADING_COURSES'
 export const SET_COURSE_TOPIC = 'SET_COURSE_TOPIC'
 export const SET_COURSE_DRILLS = 'SET_COURSE_DRILLS'

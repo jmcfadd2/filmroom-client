@@ -48,7 +48,6 @@ export default function TrainingUpload() {
   const courseDrills = useSelector(state => state.courses.drills)
   const [drillVideos, setDrillVideos] = useState([])
   const [previewVideo, setPreviewVideo] = useState([])
-  const [drillVideo, setDrillVideo] = useState([])
   const videoStatus = useSelector(state => state.UI.videoStatus)
   const progress = useSelector(state => state.UI.progress)
   const [drillName, setDrillName] = useState()
@@ -105,9 +104,9 @@ export default function TrainingUpload() {
   )
   const handleDrillVideo = useCallback(
     (files) => {
-      setDrillVideo([].concat(drillVideo, files))
-      console.log(drillVideo)
-    }, [drillVideo],
+      setDrillVideos([].concat(drillVideos, files))
+      console.log(drillVideos)
+    }, [drillVideos],
   )
   
 
@@ -117,11 +116,18 @@ export default function TrainingUpload() {
     console.log(e);
   }
 
+  const handleFinish = () => {
+    window.location.href = '/learn'
+  }
+
   const handleDrillName = (e) => {
     setDrillName(e.target.value)
   }
   const handleDrillMetrics = (e) => {
     setDrillMetrics([...drillMetrics, e.target.value])
+  }
+  const handleDrillType = (e) => {
+    setDrillType(e.target.value)
   }
 
   const handleAddDrill = () => {
@@ -131,6 +137,9 @@ export default function TrainingUpload() {
       topic: topics[currentTopic].name,
       type: drillType
     }))
+    setDrillMetrics([])
+    setDrillName("")
+    setDrillType("")
   }
 
   useEffect(() => {
@@ -174,10 +183,7 @@ export default function TrainingUpload() {
               useChipsForPreview={true}
               maxFileSize={1000000000}
               onDrop={handlePreviewVideo}
-              onSave={() => {
-                console.log(previewVideo)
-                setOpenVideo(false)
-              }}
+              
 
             />
 
@@ -230,10 +236,7 @@ export default function TrainingUpload() {
               maxFileSize={1000000000}
               open={openVideo}
               onDrop={handleAddCourseVideo}
-              onSave={() => {
-                console.log()
-                setOpenVideo(false)
-              }}
+              
               
             />   
             <Dialog open={loading}  >
@@ -261,8 +264,8 @@ export default function TrainingUpload() {
             <TextField
               name="name"
               type="text"
+              value={drillName}
               label="Drill Name"
-              multiline
               rows="1"
               placeholder="The name of your drill?"
               className={classes.textField, classes.instructions}
@@ -270,8 +273,26 @@ export default function TrainingUpload() {
               fullWidth
             />
 
+          <TextField
+            name="Type"
+            value={drillType}
+            select
+            label="Type"
+            placeholder="How are you tracking your reps?"
+            className={classes.textField}
+            onChange={handleDrillType}
+            fullWidth
+          >
+            {topics[0] && topics[currentTopic].sessionTypes.map((type, index) => (
+              <MenuItem value={type} key={index}>
+                {type}
+              </MenuItem>
+            ))}
+          </TextField>
+
             <TextField
               name="metrics"
+              value={drillMetrics}
               select
               label="Metrics"
               placeholder="How are you tracking your reps?"
@@ -285,34 +306,19 @@ export default function TrainingUpload() {
                 </MenuItem>
               ))}
             </TextField>
+            
 
-            <div className="image-wrapper">
-
-              <input type="file"
-                id="videoInput"
-                hidden="hidden"
-                onChange={handleDrillVideo}
-
-              />
-              <MyButton
-
-                onClick={handleVideoClick}
-                btnClassName="button"
-              >
-                <AddIcon color="primary" />
-                <Typography variant="body1">
-                  Add Video Instruction To Your Drill
-                                        </Typography>
-              </MyButton>
-            </div>
-            {drillVideos && drillVideos[0] &&
-              <Chip
-
-                label={drillVideos[0].name}
-              />
-
-            }
-
+            
+            <DropzoneArea
+              acceptedFiles={['video/*']}
+              multiple
+              useChipsForPreview={true}
+              maxFileSize={1000000000}
+              onDrop={handleDrillVideo}
+              
+            />  
+            
+            
 
 
             {drillMetrics.map((metric, index) => (
@@ -335,9 +341,25 @@ export default function TrainingUpload() {
                 />
               )}
             </Button>
-
+            {courseDrills[0] && 
+              courseDrills.map((drill, index) => (
+                <Chip key={index} label={`${index+1} ${drill.drillName}`} />
+              ))
+            } 
           </div>
+        <Dialog open={loading}  >
+          {console.log(loading)}
+          <DialogContent>
+            <DialogContentText> {videoStatus}  </DialogContentText>
+
+            <LinearProgress variant="determinate" lab value={progress} />
+            {uploadSuccess === true && <Button onClick={handleFinish} >
+              Finish
+                </Button>}
+          </DialogContent>
+        </Dialog>    
         </Paper>
+        
 
 
 
