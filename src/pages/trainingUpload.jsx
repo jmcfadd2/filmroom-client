@@ -11,26 +11,31 @@ import { setTopic, setDrills, uploadCourseDrills, uploadCourseVideos, createCour
 import { DropzoneArea, DropzoneDialog } from 'material-ui-dropzone';
 import { getTopicData } from '../redux/actions/dataActions';
 import { LOADING_UI, SET_UPLOAD_SUCCESS, STOP_LOADING_UI } from '../redux/types';
+import theme from '../util/theme';
 
 const useStyles = makeStyles((theme) => ({
   root: {
     width: '50%',
     marginRight: "auto",
-    marginLeft: "auto"
+    marginLeft: "auto",
   },
   step: {
     paddingLeft: '15vh',
     paddingRight: '15vh',
+    backgroundColor: theme.palette.secondary.dark
+
   },
   stepButton: {
     marginRight: theme.spacing(1),
-    marginTop: theme.spacing(3),
-    marginBottom: theme.spacing(3),
+    marginTop: theme.spacing(2),
   },
   instructions: {
     marginTop: theme.spacing(2),
     marginBottom: theme.spacing(2),
+    backgroundColor: 'white',
+    borderRadius: 10
   },
+
 }));
 
 export default function TrainingUpload() {
@@ -55,26 +60,26 @@ export default function TrainingUpload() {
   const [drillMetrics, setDrillMetrics] = useState([])
   const [description, setDescription] = useState("")
   const [title, setTitle] = useState("")
-  
-  
+
+
   const nextStep = () => {
     setActiveStep((prevActiveStep) => prevActiveStep + 1)
     dispatch({
-        type: SET_UPLOAD_SUCCESS,
-        payload: false
-      })
+      type: SET_UPLOAD_SUCCESS,
+      payload: false
+    })
     dispatch({
       type: STOP_LOADING_UI
     })
   }
   const handleNext = async () => {
-    
+
     const firstStep = async () => {
       dispatch(await createCourse({
         description: description,
         title: title,
       }, previewVideo[0]));
-     
+
     }
 
     activeStep === 0 ? firstStep() :
@@ -84,7 +89,7 @@ export default function TrainingUpload() {
       }, courseId, courseVideos))
         : dispatch(uploadCourseDrills(courseDrills, courseId, drillVideos))
 
-    
+
   }
 
   const handleVideoClick = () => {
@@ -108,7 +113,7 @@ export default function TrainingUpload() {
       console.log(drillVideos)
     }, [drillVideos],
   )
-  
+
 
 
   const handleTopic = (e) => {
@@ -154,23 +159,24 @@ export default function TrainingUpload() {
         <Paper>
           <div className={classes.step}>
 
-            <Typography variant="h5">
-              Upload Preview
-                  </Typography>
+            <Typography variant="h5" color='textSecondary' >
+              Upload Course Preview Video
+            </Typography>
             <TextField
               name="title"
               id="title"
-              placeholder="Title"
+              placeholder="Course Title"
+
               className={classes.instructions}
-              variant="outlined"
+              variant="filled"
               onChange={(e) => setTitle(e.target.value)}
               size="small"
             />
 
             <TextField
               name="description"
-              placeholder="Description"
-              variant="outlined"
+              placeholder="Course Description"
+              variant="filled"
               className={classes.instructions}
               multiline
               onChange={(e) => setDescription(e.target.value)}
@@ -183,11 +189,16 @@ export default function TrainingUpload() {
               useChipsForPreview={true}
               maxFileSize={1000000000}
               onDrop={handlePreviewVideo}
-              
-
             />
 
-            <Dialog open={loading}  >
+            <Dialog
+              PaperProps={{
+                style: {
+                  backgroundColor: theme.palette.secondary.dark,
+                },
+              }}
+              open={loading}
+            >
               {console.log(loading)}
               <DialogContent>
                 <DialogContentText> {videoStatus}  </DialogContentText>
@@ -209,7 +220,7 @@ export default function TrainingUpload() {
       {activeStep === 1 &&
 
         <Paper>
-          
+
           <div className={classes.step}>
             <Typography variant="h5">Upload Training Videos</Typography>
             <Divider />
@@ -218,7 +229,7 @@ export default function TrainingUpload() {
               name="topic"
               select
               label="Sport"
-              variant="outlined"
+              variant="filled"
               className={classes.textField, classes.instructions}
               onChange={handleTopic}
               fullWidth
@@ -236,20 +247,27 @@ export default function TrainingUpload() {
               maxFileSize={1000000000}
               open={openVideo}
               onDrop={handleAddCourseVideo}
-              
-              
-            />   
-            <Dialog open={loading}  >
+
+
+            />
+            <Dialog
+              PaperProps={{
+                style: {
+                  backgroundColor: theme.palette.secondary.dark,
+                },
+              }}
+              open={loading}
+            >
               {console.log(loading)}
               <DialogContent>
                 <DialogContentText> {videoStatus}  </DialogContentText>
 
                 <LinearProgress variant="determinate" lab value={progress} />
-              {uploadSuccess === true && <Button onClick={nextStep} >
-                Next
+                {uploadSuccess === true && <Button onClick={nextStep} >
+                  Next
                 </Button>}
               </DialogContent>
-            </Dialog>         
+            </Dialog>
           </div>
         </Paper>
       }
@@ -273,22 +291,22 @@ export default function TrainingUpload() {
               fullWidth
             />
 
-          <TextField
-            name="Type"
-            value={drillType}
-            select
-            label="Type"
-            placeholder="How are you tracking your reps?"
-            className={classes.textField}
-            onChange={handleDrillType}
-            fullWidth
-          >
-            {topics[0] && topics[currentTopic].sessionTypes.map((type, index) => (
-              <MenuItem value={type} key={index}>
-                {type}
-              </MenuItem>
-            ))}
-          </TextField>
+            <TextField
+              name="Type"
+              value={drillType}
+              select
+              label="Type"
+              placeholder="How are you tracking your reps?"
+              className={classes.textField}
+              onChange={handleDrillType}
+              fullWidth
+            >
+              {topics[0] && topics[currentTopic].sessionTypes.map((type, index) => (
+                <MenuItem value={type} key={index}>
+                  {type}
+                </MenuItem>
+              ))}
+            </TextField>
 
             <TextField
               name="metrics"
@@ -306,19 +324,19 @@ export default function TrainingUpload() {
                 </MenuItem>
               ))}
             </TextField>
-            
 
-            
+
+
             <DropzoneArea
               acceptedFiles={['video/*']}
               multiple
               useChipsForPreview={true}
               maxFileSize={1000000000}
               onDrop={handleDrillVideo}
-              
-            />  
-            
-            
+
+            />
+
+
 
 
             {drillMetrics.map((metric, index) => (
@@ -341,31 +359,38 @@ export default function TrainingUpload() {
                 />
               )}
             </Button>
-            {courseDrills[0] && 
+            {courseDrills[0] &&
               courseDrills.map((drill, index) => (
-                <Chip key={index} label={`${index+1} ${drill.drillName}`} />
+                <Chip key={index} label={`${index + 1} ${drill.drillName}`} />
               ))
-            } 
+            }
           </div>
-        <Dialog open={loading}  >
-          {console.log(loading)}
-          <DialogContent>
-            <DialogContentText> {videoStatus}  </DialogContentText>
+          <Dialog
+            PaperProps={{
+              style: {
+                backgroundColor: theme.palette.secondary.dark,
+              },
+            }}
+            open={loading}
+          >
 
-            <LinearProgress variant="determinate" lab value={progress} />
-            {uploadSuccess === true && <Button onClick={handleFinish} >
-              Finish
+            <DialogContent>
+              <DialogContentText> {videoStatus}  </DialogContentText>
+
+              <LinearProgress variant="determinate" lab value={progress} />
+              {uploadSuccess === true && <Button onClick={handleFinish} >
+                Finish
                 </Button>}
-          </DialogContent>
-        </Dialog>    
+            </DialogContent>
+          </Dialog>
         </Paper>
-        
+
 
 
 
       }
 
-      <div className={classes.instructions}>
+      <div className={classes.stepButton}>
         {activeStep === 3 ? (
           <div>
             <Typography className={classes.instructions}>All steps completed</Typography>

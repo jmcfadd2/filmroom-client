@@ -5,14 +5,16 @@ import {
   SET_COURSE_ID,
   SET_UPLOAD_SUCCESS,
   LOADING_COURSES,
-  SET_COURSES
+  SET_COURSES,
+  SET_COURSE_INFO
 } from '../types'
 
 const initialState = {
   drills: [],
   topic: 0,
   loading: false,
-  courses: []
+  courses: [],
+  info: ""
 }
 
 export default function (state = initialState, action) {
@@ -27,6 +29,11 @@ export default function (state = initialState, action) {
       return {
         ...state,
         courses: action.payload
+      }
+    case SET_COURSE_INFO:
+      return {
+        ...state,
+        info: action.payload
       }
     case SET_COURSE_TOPIC:
       return {

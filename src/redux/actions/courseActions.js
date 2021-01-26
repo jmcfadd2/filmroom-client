@@ -10,9 +10,11 @@ import {
   SET_UPLOAD_SUCCESS,
   LOADING_COURSES,
   STOP_LOADING_UI,
-  SET_COURSES
+  SET_COURSES,
+  SET_COURSE_INFO
 } from '../types'
 import * as UpChunk from '@mux/upchunk'
+import { getUserData } from './userActions';
 
 
 export const getCourses = () => (dispatch) => {
@@ -37,6 +39,29 @@ export const getCourses = () => (dispatch) => {
       });
     });
 };
+
+export const getCourseData = (courseId) => (dispatch) => {
+  dispatch({
+    type: LOADING_COURSES
+  });
+  axios
+    .get(`/courses/${courseId}`)
+    .then((res) => {
+      console.log(res);
+      dispatch({
+        type: SET_COURSE_INFO,
+        payload: res.data
+      });
+    })
+    .catch(() => {
+      dispatch({
+        type: SET_COURSE_INFO,
+        payload: null
+      });
+    });
+};
+
+
 export const setTopic = (newTopic) => (dispatch) => {
   dispatch({
     type: SET_COURSE_TOPIC,
@@ -174,5 +199,27 @@ export const uploadCourseDrills = (drills, courseId, videos) => (dispatch) => {
           })
         })
       }
+    })
+}
+
+export const addCourseToLibrary = (courseInfo) => (dispatch) => {
+  dispatch({
+    type: LOADING_COURSES
+  })
+  const newRequest = {
+      drillInfo: courseInfo.drillInfo,
+      drillVideos: courseInfo.drillVideos,
+      instructor: courseInfo.instructor,
+      courseId: courseInfo.courseId,
+      
+  }
+  axios
+    .post('/courses/add', newRequest)
+    .then((res) => {
+      console.log(res);
+      dispatch(getUserData())
+    })
+    .catch((err) => {
+      console.log(err);
     })
 }

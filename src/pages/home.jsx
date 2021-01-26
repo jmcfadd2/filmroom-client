@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
-import { Grid, withStyles } from '@material-ui/core'
+import { Grid, Paper, withStyles } from '@material-ui/core'
 import PropTypes from 'prop-types';
+import SearchBar from '../components/layout/SearchBar';
 
 // Components
 import Post from '../components/post/Post'
@@ -16,6 +17,9 @@ const styles = (theme) =>({
     ...theme.spreadThis,
     homeGrid: {
         marginTop: 50,
+    },
+    searchBar: {
+      height: '10vh'
     }
 })
 
@@ -39,8 +43,13 @@ export class home extends Component {
                             <Profile />
                         </Grid>
                     
-                    <Grid item md={6} style={{ paddingLeft: 25, paddingRight: 25 }} sm={12} xs={12}>
+                    <Grid item md={4} style={{ paddingLeft: 25, paddingRight: 25 }} sm={12} xs={12}>
                         {recentPostsMarkup}
+                    </Grid>
+                    <Grid item md={4}>
+                <Paper elevation={2} className={classes.searchBar}>
+                  <SearchBar />
+                </Paper>
                     </Grid>
                 </Grid>
             </Box>

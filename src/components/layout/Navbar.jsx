@@ -13,6 +13,7 @@ import { connect } from 'react-redux'
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Notifications from './Notifications';
+import SearchBar from './SearchBar';
 
 // Icons 
 
@@ -30,7 +31,7 @@ class Navbar extends Component {
         const { authenticated, classes } = this.props
         return (
 
-            <AppBar elevation={1} className={classes.appBar} color="light" position="fixed">
+            <AppBar elevation={1} className={classes.appBar}  position="fixed">
                 <Box display="flex">
                     <Box my="auto" mt={2}>
                         <Link to="/">
@@ -42,12 +43,13 @@ class Navbar extends Component {
                         <Toolbar>
                             {authenticated ? (
                                 <Fragment>
+                                  
                                     <Link to="/session">
                                         <StartSession />
                                     </Link>
                                     <CreatePost />
                                     <Notifications />
-                                    <Link to="/learn">Learn</Link>
+                      <Link style={{textDecoration: 'none'}} to="/learn">Learn</Link>
                                 </Fragment>
                             ) : (
                                     <>

@@ -22,7 +22,7 @@ export default function (state = initialState, action) {
             return {
                 ...state,
                 loading: false,
-                    errors: action.payload
+                errors: action.payload
             };
         case CLEAR_ERRORS:
             return {

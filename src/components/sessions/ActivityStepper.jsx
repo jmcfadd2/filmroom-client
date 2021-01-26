@@ -19,13 +19,22 @@ const useStyles = makeStyles((theme) => ({
   button: {
     marginTop: theme.spacing(1),
     marginRight: theme.spacing(1),
+    color: theme.palette.primary.contrastText
   },
   actionsContainer: {
     marginBottom: theme.spacing(2),
+    backgroundColor: theme.palette.secondary.dark
+  },
+  sessionCard: {
+    backgroundColor: theme.palette.secondary.dark,
+    justifyContent: "center" 
   },
   resetContainer: {
     padding: theme.spacing(3),
   },
+  labelClass: {
+    color: 'white'
+  }
 }));
 
 
@@ -46,8 +55,8 @@ export default function ActivityStepper(props) {
   }
   // TODO Handle Edge Case of different
   const handleFirstCompoundMetric = (e) => {
-    setResults({ ...results, compoundMetric: [e.target.value]})
-    
+    setResults({ ...results, compoundMetric: [e.target.value] })
+
     console.log(results);
   }
   const handleSecondCompoundMetric = (e) => {
@@ -68,7 +77,7 @@ export default function ActivityStepper(props) {
     (files) => {
       setImages(files)
       console.log(images)
-    },[images],
+    }, [images],
   )
 
 
@@ -82,20 +91,20 @@ export default function ActivityStepper(props) {
           {drills.map((drill, index) => (
 
             <div key={index}>
-              { activeStep === index && <Card key={index}>
-                <CardContent style={{ justifyContent: "center" }}>
-                  <Typography variant="h6">{`${index + 1}.  ${drill.name}`}</Typography>
+              { activeStep === index && <Card className={classes.sessionCard} key={index}>
+                <CardContent >
+                  <Typography color='textSecondary' variant="h6">{`${index + 1}.  ${drill.name}`}</Typography>
                   <hr />
                   <br />
 
                   {session.topic !== "eSports" ? <ReactPlayer url={`https://stream.mux.com/${drill.drillVideoId}.m3u8`} playing={true} controls={true} height="100%"
-                    width="100%" /> : 
-                  <DropzoneArea
-                    showPreviewsInDropzone={true}
-                    
-                    onChange={handleImageAdded}
-                    
-                  />
+                    width="100%" /> :
+                    <DropzoneArea
+                      showPreviewsInDropzone={true}
+
+                      onChange={handleImageAdded}
+
+                    />
                   }
 
                   <form>
@@ -125,6 +134,7 @@ export default function ActivityStepper(props) {
                               type="number"
                               label={metric.split(/(\sx\s|\/)/)[2]}
                               name={metric.split(/(\sx\s|\/)/)[2]}
+                              InputLabelProps={{ className: classes.labelClass }}
                               defaultValue="0"
                               variant="standard"
                               onChange={handleSecondCompoundMetric}
@@ -190,7 +200,8 @@ export default function ActivityStepper(props) {
               dispatch(stageSession(session))
               props.stage()
             }}
-            className={classes.button}>
+            className={classes.button}
+          >
             Finish Session
               </Button>
         </Paper>

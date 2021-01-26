@@ -7,7 +7,7 @@ import dataReducer from './reducers/dataReducer'
 import uiReducer from './reducers/uiReducer'
 import courseReducer from './reducers/courseReducer'
 
-const initialState= {}
+const initialState= {this: 'ttra'}
 
 const middleware = [thunk];
 
@@ -20,7 +20,7 @@ const reducers = combineReducers({
 })
 
 const composeEnhancers =
-    typeof window === 'object' && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ ?
+    typeof window !== 'undefined' && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ ?
     window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({}) :
     compose;
 

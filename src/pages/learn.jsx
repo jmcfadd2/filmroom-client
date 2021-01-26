@@ -17,6 +17,10 @@ const styles = (theme) => ({
   ...theme.spreadThis,
   homeGrid: {
     marginTop: 50,
+  },
+  upload: {
+    marginTop: 20,
+    backgroundColor: theme.palette.secondary.dark
   }
 })
 
@@ -43,11 +47,15 @@ export class learn extends Component {
           <Grid item md={6} style={{ paddingLeft: 25, paddingRight: 25 }} sm={12} xs={12}>
             <Paper>
               {recentCoursesMarkup}
-              <Typography> Upload your own course and become a Reppit coach today</Typography>
-              <Button href='/upload-training'>
+            </Paper>
+
+            <Paper className={classes.upload}>
+              <Typography color='textSecondary'>
+                Upload your own course and become a FilmRoom coach today
+              </Typography>
+              <Button color='primary' variant="contained" href='/upload-training'>
                 Upload Now!
               </Button>
-
             </Paper>
           </Grid>
         </Grid>

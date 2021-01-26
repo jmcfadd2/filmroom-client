@@ -45,7 +45,8 @@ class AddDrill extends Component {
     this.setState({ open: true });
     console.log(this.handle)
     console.log(this.props.data.session.topic)
-    this.props.data.session.topic !== "eSports" ? this.props.getUserDrills(this.handle, this.props.data.session.topic, this.props.data.session.type) :
+    this.props.data.session.topic !== "eSports" ? this.props.getUserDrills(this.handle
+    , this.props.data.session.topic, this.props.data.session.type) :
     this.props.getGenericDrills(this.props.data.session.topic, this.props.data.session.type)
     
 
