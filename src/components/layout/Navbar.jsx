@@ -5,7 +5,8 @@ import PropTypes from 'prop-types';
 import CreatePost from '../post/CreatePost';
 import StartSession from '../sessions/StartSession';
 import AppIcon from '../../images/reppit-text-logo.png'
-import { Box } from '@material-ui/core'
+import MenuIcon from '@material-ui/icons/Menu';
+import { Box, Drawer, IconButton, List, ListItem, Typography } from '@material-ui/core'
 // Redux
 import { connect } from 'react-redux'
 
@@ -14,61 +15,119 @@ import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Notifications from './Notifications';
 import SearchBar from './SearchBar';
+import MyButton from '../../util/MyButton';
 
 // Icons 
 
 const styles = (theme) => ({
-    ...theme.spreadThis,
-    logo: {
-        height: 40,
-        marginLeft: 25
-    },
-    
+  ...theme.spreadThis,
+  logo: {
+    height: 40,
+    marginLeft: 25
+  },
+  drawer: {
+    width: '40vh',
+    backgroundColor: theme.palette.primary.light
+  },
+  list: {
+    marginLeft: 'auto',
+    marginRight: 'auto',
+  }
+
 })
 
 class Navbar extends Component {
-    render() {
-        const { authenticated, classes } = this.props
-        return (
+  constructor(props) {
+    super(props)
+    this.state = { drawerOpen: false }
+    this.handleOpenDrawer = this.handleOpenDrawer.bind(this)
+    this.handleCloseDrawer = this.handleCloseDrawer.bind(this)
+  }
 
-            <AppBar elevation={1} className={classes.appBar}  position="fixed">
-                <Box display="flex">
-                    <Box my="auto" mt={2}>
-                        <Link to="/">
-                            <img src={AppIcon} alt="Up logo" className={classes.logo} />
-                        </Link>
+  handleOpenDrawer() {
+    this.setState({
+      drawerOpen: true
+    })
+  }
 
-                    </Box>
-                    <Box mx="auto"  my="auto">
-                        <Toolbar>
-                            {authenticated ? (
-                                <Fragment>
-                                  
-                                    <Link to="/session">
-                                        <StartSession />
-                                    </Link>
-                                    <CreatePost />
-                                    <Notifications />
-                      <Link style={{textDecoration: 'none'}} to="/learn">Learn</Link>
-                                </Fragment>
-                            ) : (
-                                    <>
-                                    </>
-                                )}
-                        </Toolbar>
-                    </Box>
-                </Box>
-            </AppBar>
-        )
-    }
+  handleCloseDrawer() {
+    this.setState({
+      drawerOpen: false
+    })
+  }
+  render() {
+
+    const { authenticated, classes } = this.props
+    const listMarkup = (
+
+      <List className={classes.list}>
+        <ListItem>
+          <Link to="/session">
+            <StartSession />
+          </Link>
+        </ListItem>
+        <ListItem>
+          <CreatePost />
+        </ListItem>
+        <ListItem>
+          <Link style={{ textDecoration: 'none' }} to="/learn">
+            <MyButton tip='Watch a Course' >
+              <Typography variant='h6' >Learn</Typography>
+            </MyButton>
+          </Link>
+        </ListItem>
+      </List>
+    )
+    return (
+
+      <AppBar elevation={1} className={classes.appBar} position="fixed">
+        <Box display="flex">
+          <Box my="auto" mt={2}>
+            <Link to="/">
+              <img src={AppIcon} alt="Up logo" className={classes.logo} />
+            </Link>
+
+          </Box>
+          <Box mx="auto" my="auto">
+            <Toolbar>
+              {authenticated ? (
+                <Fragment>
+
+                  <IconButton
+                    onClick={this.handleOpenDrawer}
+                  >
+                    <MenuIcon color='primary' />
+                  </IconButton>
+                  <Drawer
+                    anchor='right'
+                    style={{ display: 'flex' }}
+                    open={this.state.drawerOpen}
+                    onClose={this.handleCloseDrawer}
+                    classes={{ paper: classes.drawer }}
+                  >
+                    {listMarkup}
+                  </Drawer>
+                  <Notifications />
+
+                </Fragment>
+              ) : (
+                  <>
+                  </>
+                )}
+            </Toolbar>
+          </Box>
+        </Box>
+      </AppBar>
+    )
+  }
 }
 
 Navbar.propTypes = {
-    authenticated: PropTypes.bool.isRequired
+  authenticated: PropTypes.bool.isRequired
 };
 
 const mapStateToProps = (state) => ({
-    authenticated: state.user.authenticated
+  authenticated: state.user.authenticated
 });
 
 export default connect(mapStateToProps)(withStyles(styles)(Navbar));

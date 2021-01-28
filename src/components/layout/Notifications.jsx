@@ -11,6 +11,7 @@ import Typography from '@material-ui/core/Typography';
 import Badge from '@material-ui/core/Badge';
 // Icons
 import FavoriteIcon from '@material-ui/icons/Favorite';
+import NotificationsIcon from '@material-ui/icons/Notifications';
 import ChatIcon from '@material-ui/icons/Chat';
 // Redux
 import { connect } from 'react-redux';
@@ -48,12 +49,12 @@ class Notifications extends Component {
                         }
                         color="secondary"
                     >
-                        <Typography variant="h6">Notifications</Typography>
+                        <NotificationsIcon color='primary' />
                     </Badge>
                 ))
-                : (notificationsIcon = <Typography variant="h6">Notifications</Typography>);
+              : (notificationsIcon = <NotificationsIcon color='primary' />);
         } else {
-            notificationsIcon = <Typography variant="h6">Notifications</Typography>;
+          notificationsIcon = <NotificationsIcon color='primary' />;
         }
         let notificationsMarkup =
             notifications && notifications.length > 0 ? (
