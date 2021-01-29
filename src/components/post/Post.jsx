@@ -53,7 +53,7 @@ const styles = {
   results: {
     marginLeft: 30
   }
-  
+
 
 }
 
@@ -97,7 +97,14 @@ export class Post extends Component {
             deleteButton
           }
           title={
-            <Link to={`/users/${userHandle}`}>{userHandle}</Link>
+            <Typography
+              component={Link}
+              color='textSecondary'
+              to={`/users/${userHandle}`} variant='body1'
+            >
+              {userHandle}
+            </Typography>
+
           }
           subheader={dayjs(createdAt).format("MMMM D, YYYY")}
 
@@ -133,7 +140,7 @@ export class Post extends Component {
                         </Typography>
                         </div>
                       )}
-                    
+
                   </Grid>
                 ))}
             </Grid>

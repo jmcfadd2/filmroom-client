@@ -36,9 +36,7 @@ const styles = (theme) => ({
     left: '91%',
     top: '1%',
   },
-  labelClass: {
-    color: 'white'
-  }
+  
 });
 
 

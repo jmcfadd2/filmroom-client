@@ -14,7 +14,11 @@ import { connect } from 'react-redux'
 import { loginUser } from '../redux/actions/userActions'
 
 const styles = (theme) => ({
-  ...theme.spreadThis
+  ...theme.spreadThis,
+  signupLink: {
+    marginTop: 20
+  }
+
 })
 
 
@@ -57,7 +61,11 @@ export class login extends Component {
       <Grid container className={classes.form}>
         <Grid item sm />
         <Grid item sm>
-          <Typography variant="h3" className={classes.pageTitle}>
+          <Typography
+            variant="h3"
+            className={classes.pageTitle}
+            color='textSecondary'
+          >
             Login
                     </Typography>
           <form noValidate onSubmit={this.handleSubmit}>
@@ -67,6 +75,7 @@ export class login extends Component {
               type="email"
               label="email"
               className={classes.textField}
+              InputLabelProps={{ className: classes.labelClass }}
               helperText={errors.email}
               error={errors.email ? true : false}
               value={this.state.email}
@@ -81,10 +90,12 @@ export class login extends Component {
               type="password"
               label="password"
               className={classes.textField}
+              InputLabelProps={{ className: classes.labelClass }}
               helperText={errors.password}
               error={errors.password ? true : false}
               value={this.state.password}
               onChange={this.handleChange}
+              variant='filled'
               fullWidth
             />
 
@@ -100,7 +111,7 @@ export class login extends Component {
               )}
             </Button>
             <br />
-            <small>Don't have an account? Sign up <Link to="/signup">here</Link></small>
+            <Typography className={classes.signupLink} color='textSecondary' >Don't have an account? Sign up <Link to="/signup">here</Link></Typography>
 
           </form>
         </Grid>

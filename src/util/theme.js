@@ -54,6 +54,9 @@ export default {
       padding: 20,
       backgroundColor: '#262F50'
     },
+    labelClass: {
+      color: '#FF6F16'
+    },
     profile: {
       '& .image-wrapper': {
         textAlign: 'center',
