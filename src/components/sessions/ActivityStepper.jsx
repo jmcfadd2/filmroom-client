@@ -31,6 +31,11 @@ const useStyles = makeStyles((theme) => ({
   },
   resetContainer: {
     padding: theme.spacing(3),
+    width: '50%',
+    marginLeft: 'auto',
+    marginRight: 'auto',
+    backgroundColor: theme.palette.secondary.dark,
+
   },
   labelClass: {
     color: 'white'

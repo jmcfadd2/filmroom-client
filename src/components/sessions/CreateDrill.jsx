@@ -100,7 +100,7 @@ class CreateDrill extends Component {
       <Fragment>
         <MyButton onClick={this.handleOpen} tip="Create New Drill">
           <AddIcon></AddIcon>
-          <Typography variant={"h6"}>Create New {session.topic ? topics[this.props.index].subActivity : "Drill"}</Typography>
+          <Typography color='textSecondary' variant={"h6"}>Create New {session.topic ? topics[this.props.index].subActivity : "Drill"}</Typography>
 
         </MyButton>
         <Dialog

@@ -62,7 +62,7 @@ export default function StageSession() {
       <Paper className={classes.formPaper}>
         <Box justifyItems="center">
           <Box >
-            <Typography variant="h4"> Completed Drills </Typography>
+            <Typography color='textSecondary' variant="h4"> Completed Drills </Typography>
             <br />
             <hr />
 
@@ -71,18 +71,18 @@ export default function StageSession() {
             <Grid item />
             {session.drillResults.map((result, index) => (
               <Grid item spacing={2} key={index}>
-                <Typography variant="body2">{result.drillName}</Typography>
+                <Typography color='textSecondary' variant="body2">{result.drillName}</Typography>
                 <br />
                 {!result.results.compoundMetric ? Object.entries(result.results).map(([metric, value], index) => (
                   <div key={index}>
-                    <Typography variant="body2">{metric}</Typography>
+                    <Typography color='textSecondary' variant="body2">{metric}</Typography>
                     <br />
-                    <Typography variant="body2">{value}</Typography>
+                    <Typography color='textSecondary' variant="body2">{value}</Typography>
                   </div>
                 )) : <div>
-                    <Typography>{session.drills[index].metrics[index]}</Typography>
+                    <Typography color='textSecondary'>{session.drills[index].metrics[index]}</Typography>
 
-                    <Typography> {Object.values(result.results.compoundMetric)[0]}/{Object.values(result.results.compoundMetric)[1]} {(Object.values(result.results.compoundMetric)[0] / Object.values(result.results.compoundMetric)[1] * 100).toPrecision(3)}%</Typography>
+                    <Typography color='textSecondary'> {Object.values(result.results.compoundMetric)[0]}/{Object.values(result.results.compoundMetric)[1]} {(Object.values(result.results.compoundMetric)[0] / Object.values(result.results.compoundMetric)[1] * 100).toPrecision(3)}%</Typography>
                   </div>
 
                 }
@@ -95,7 +95,7 @@ export default function StageSession() {
           <Grid container >
             <Grid item sm />
             <Grid item justify="center">
-            <Typography variant="h6"> Describe Session </Typography>
+            <Typography color='textSecondary' variant="h6"> Describe Session </Typography>
               <TextField
                 name="title"
                 id="title"
@@ -143,7 +143,7 @@ export default function StageSession() {
                 btnClassName="button"
               >
                 <AddIcon color="primary" />
-                <Typography variant="body1">
+                <Typography color='textSecondary' variant="body1">
                   Add Video To Your Post
                                       </Typography>
               </MyButton>

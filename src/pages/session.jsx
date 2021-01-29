@@ -116,7 +116,7 @@ export class session extends Component {
 
 
         { !sessionCreated && !sessionStaged && <Paper className={classes.formPaper}>
-          <Typography variant={"h5"}>What kind of session?</Typography>
+          <Typography color='textSecondary' variant={"h5"}>What kind of session?</Typography>
           <form onSubmit={this.handleStart}>
             <TextField
               name="topic"
