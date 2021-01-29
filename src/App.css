@@ -28,6 +28,25 @@ body {
     color: #262F50;
 }
 
+.ais-SearchBox-form {
+  display: flex;
+}
+.ais-SearchBox-input {
+  width: 70%;
+  margin-left: auto;
+  height: 5vh;
+  margin-top: 3vh;
+}
+
+.ais-SearchBox-submit {
+    margin-right: auto;
+    margin-top: 3vh;
+}
+
+.ais-Hits {
+  background-color: #CCCFD3;
+}
+
 a {
     text-decoration: none;
 

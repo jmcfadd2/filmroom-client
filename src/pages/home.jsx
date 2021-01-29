@@ -19,7 +19,9 @@ const styles = (theme) =>({
         marginTop: 50,
     },
     searchBar: {
-      height: '10vh'
+      minHeight: '10vh',
+      
+      backgroundColor: theme.palette.secondary.dark 
     }
 })
 
