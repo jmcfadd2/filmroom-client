@@ -76,14 +76,14 @@ export const createPost = (newPost, video, image) => (dispatch) => {
   axios
     .post('/post', newPost)
     .then(async (res) => {
-      const uploadVideo = typeof video !== undefined && await UpChunk.createUpload({
+      if (video) {const uploadVideo = typeof video !== undefined && await UpChunk.createUpload({
         endpoint: res.data.uploadUrl,
         file: video,
         chunkSize: 20971520,
       })
       uploadVideo.on('progress', progress => {
         console.log(`So far we've uploaded ${progress.detail}% of this file.`);
-      })
+      })}
 
       typeof image !== undefined && await
       firebase.storage().ref('post-pics')

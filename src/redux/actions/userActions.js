@@ -8,6 +8,8 @@ import {
     MARK_NOTIFICATIONS_READ
 } from '../types';
 import axios from 'axios';
+import { firebase } from '../../util/firebase'
+
 
 export const loginUser = (userData, history) => (dispatch) => {
     dispatch({
@@ -72,6 +74,29 @@ export const getUserData = () => (dispatch) => {
             })
         })
         .catch((err) => console.log(err))
+}
+
+export const changeUserPicture = (image, handle) => async (dispatch) => {
+  dispatch({
+    type: LOADING_USER
+  })
+
+
+
+  const storageRef = firebase.storage().ref('profile-pics')
+  const fileRef = storageRef.child(image.name)
+  await fileRef.put(image)
+    .then(() => {
+
+      console.log(`Uploaded file: ${image.name}`)
+      console.log(handle)
+      fileRef.getDownloadURL().then((url) => {
+        firebase.firestore().collection('users').doc(`${handle}`).update({ imageUrl: url })
+      })
+
+
+    })
+
 }
 
 export const uploadImage = (formData) => (dispatch) => {

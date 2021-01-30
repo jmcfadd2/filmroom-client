@@ -14,7 +14,7 @@ import MuiLink from '@material-ui/core/Link';
 import Typography from '@material-ui/core/Typography'
 // Redux
 import { connect } from 'react-redux'
-import { logoutUser, uploadImage } from '../../redux/actions/userActions'
+import { logoutUser, uploadImage, changeUserPicture } from '../../redux/actions/userActions'
 
 
 
@@ -36,21 +36,9 @@ const styles = (theme) => ({
 export class Profile extends Component {
 
   handleImageChange = async (event) => {
+    const handle = this.props.user.credentials.handle
     const image = event.target.files[0]
-    const storageRef = firebase.storage().ref('profile-pics')
-    const fileRef = storageRef.child(image.name)
-    await fileRef.put(image)
-      .then(() => {
-
-        console.log(`Uploaded file: ${image.name}`)
-        console.log(this.props.user.credentials.handle)
-        fileRef.getDownloadURL().then((url) => {
-          firebase.firestore().collection('users').doc(`${this.props.user.credentials.handle}`).update({ imageUrl: url })
-          this.setState()
-        })
-
-
-      })
+    this.props.changeUserPicture(image, handle)
   }
   handleEditPicture = () => {
     const fileInput = document.getElementById('imageInput')
@@ -73,6 +61,7 @@ export class Profile extends Component {
             <input type="file"
               id="imageInput"
               hidden="hidden"
+              accept="image/png, image/jpeg"
               onChange={this.handleImageChange}
             />
             <MyButton
@@ -138,7 +127,7 @@ const mapStateToProps = (state) => ({
   user: state.user
 });
 
-const mapActionsToProps = { logoutUser, uploadImage }
+const mapActionsToProps = { logoutUser, uploadImage, changeUserPicture }
 
 
 

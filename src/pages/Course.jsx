@@ -60,6 +60,8 @@ function Course() {
           <ReactPlayer
             url={`https://stream.mux.com/${courseInfo.previewVideo}.m3u8`}
             light={courseInfo.image ? courseInfo.image : `https://image.mux.com/${courseInfo.previewVideo}/thumbnail.png`}
+            controls
+            playing
             width={'100%'} 
           />  
         </div>

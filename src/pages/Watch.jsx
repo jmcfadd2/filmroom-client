@@ -57,11 +57,12 @@ function Watch() {
             className={classes.videoPlayer}
             url={`https://stream.mux.com/${courseInfo.videos[activeVideo]}.m3u8`}
             light={`https://image.mux.com/${courseInfo.videos[activeVideo]}/thumbnail.png`}
-            playing={true}
-            controls={true}
+            playing
+            controls
           />
           <NavigateNext
             onClick={handleNext}
+            
             className={classes.next}
             color={activeVideo !== courseInfo.videos.length ? 'primary' : 'disabled'}
           />
