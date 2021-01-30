@@ -113,7 +113,7 @@ export default {
     appBar: {
       marginBottom: 100,
       backgroundColor: '#262F50',
-      maxHeight: '10vh'
+      maxHeight: '13vh'
 
     },
     numberField: {

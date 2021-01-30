@@ -14,15 +14,18 @@ import { connect } from 'react-redux'
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Notifications from './Notifications';
-import SearchBar from './SearchBar';
 import MyButton from '../../util/MyButton';
 
 // Icons 
 
 const styles = (theme) => ({
   ...theme.spreadThis,
+  root: {
+    flexGrow: 1
+  },
   logo: {
-    height: 40,
+    marginTop: 27 ,
+    height: 150,
     marginLeft: 25
   },
   drawer: {
@@ -32,6 +35,10 @@ const styles = (theme) => ({
   list: {
     marginLeft: 'auto',
     marginRight: 'auto',
+  },
+  buttons: {
+    position: 'absolute',
+    right: 40
   }
 
 })
@@ -80,44 +87,39 @@ class Navbar extends Component {
     )
     return (
 
-      <AppBar elevation={1} className={classes.appBar} position="fixed">
-        <Box display="flex">
-          <Box my="auto" mt={2}>
+      <div className={classes.root}>
+        <AppBar elevation={1} className={classes.appBar} position="fixed">
+          <Toolbar>
             <Link to="/">
               <img src={AppIcon} alt="Up logo" className={classes.logo} />
             </Link>
-
-          </Box>
-          <Box mx="auto" my="auto">
-            <Toolbar>
-              {authenticated ? (
-                <Fragment>
-
-                  <IconButton
-                    onClick={this.handleOpenDrawer}
-                  >
-                    <MenuIcon color='primary' />
-                  </IconButton>
-                  <Drawer
-                    anchor='right'
-                    style={{ display: 'flex' }}
-                    open={this.state.drawerOpen}
-                    onClose={this.handleCloseDrawer}
-                    classes={{ paper: classes.drawer }}
-                  >
-                    {listMarkup}
-                  </Drawer>
-                  <Notifications />
-
-                </Fragment>
-              ) : (
-                  <>
-                  </>
-                )}
-            </Toolbar>
-          </Box>
-        </Box>
-      </AppBar>
+            {authenticated ? (
+              <div className={classes.buttons}>
+                <IconButton
+                  onClick={this.handleOpenDrawer}
+                  edge='end'
+                >
+                  <MenuIcon color='primary' />
+                </IconButton>
+                <Drawer
+                  anchor='right'
+                  style={{ display: 'flex' }}
+                  open={this.state.drawerOpen}
+                  onClose={this.handleCloseDrawer}
+                  classes={{ paper: classes.drawer }}
+                >
+                  {listMarkup}
+                </Drawer>
+                <Notifications />
+  
+              </div>
+            ) : (
+                <>
+                </>
+              )}
+          </Toolbar>
+        </AppBar>
+      </div>
     )
   }
 }
