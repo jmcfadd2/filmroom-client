@@ -67,7 +67,12 @@ function Course() {
         </div>
         <Typography variant="h4" color='textSecondary' className={classes.title}>{courseInfo.title}</Typography>
         {purchaseIds && !isPurchased() ? 
-        <Button color='primary' className={classes.button} onClick={handleAddToLibrary}>
+        <Button 
+        color='primary' 
+        className={classes.button} 
+        onClick={handleAddToLibrary}
+        variant='contained'
+        >
           Add to Library
         </Button> : 
           <Button color='primary' variant="contained" className={classes.button} href={`/watch/${courseId}`}>
