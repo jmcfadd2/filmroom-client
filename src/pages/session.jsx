@@ -25,8 +25,7 @@ const styles = (theme) => ({
   },
   submitButton: {
     marginTop: '8vh',
-    marginLeft: 'auto',
-    marginRight: 'auto'
+    marginLeft: 85
   },
   progressSpinner: {
     position: 'absolute'
@@ -158,7 +157,7 @@ export class session extends Component {
 
             {session.topic && session.type && <Fragment>
               <AddDrill index={this.state.currentTopicIndex} />
-              {session.topic !== 'eSports' && <CreateDrill index={this.state.currentTopicIndex} />}
+              {/* {session.topic !== 'eSports' && <CreateDrill index={this.state.currentTopicIndex} />} */}
             </Fragment>}
             <br />
             <Fragment>

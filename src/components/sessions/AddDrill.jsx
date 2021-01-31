@@ -16,6 +16,7 @@ import Typography from '@material-ui/core/Typography'
 // Redux stuff
 import { connect } from 'react-redux';
 import { getUserDrills, getGenericDrills, addDrillToSession, clearErrors } from '../../redux/actions/dataActions';
+import { Link } from 'react-router-dom';
 
 const styles = (theme) => ({
   ...theme.spreadThis,
@@ -31,6 +32,23 @@ const styles = (theme) => ({
     position: 'absolute',
     left: '91%',
     top: '1%'
+  },
+  noDrills: {
+    marginLeft: 'auto',
+    marginRight: 'auto',
+    display: 'flex',
+    flexDirection: 'column',
+  },
+  noDrillsContainer: {
+    display: 'flex',
+  },
+  noDrillsText: {
+    marginTop: '5vh',
+    marginBottom: '5vh',
+  },
+  noDrillsButton: {
+    marginLeft: 85,
+    marginBottom: 10
   }
 });
 
@@ -46,9 +64,9 @@ class AddDrill extends Component {
     console.log(this.handle)
     console.log(this.props.data.session.topic)
     this.props.data.session.topic !== "eSports" ? this.props.getUserDrills(this.handle
-    , this.props.data.session.topic, this.props.data.session.type) :
-    this.props.getGenericDrills(this.props.data.session.topic, this.props.data.session.type)
-    
+      , this.props.data.session.topic, this.props.data.session.type) :
+      this.props.getGenericDrills(this.props.data.session.topic, this.props.data.session.type)
+
 
   };
   handleClose = () => {
@@ -65,7 +83,7 @@ class AddDrill extends Component {
     console.log(this.state.drillToBeAdded)
   };
   componentDidMount() {
-    
+
   }
   render() {
     const { errors } = this.state;
@@ -98,44 +116,62 @@ class AddDrill extends Component {
           </MyButton>
           <DialogTitle>Add {session.topic ? `${topics[this.props.index].subActivity}s` : "Drills"}</DialogTitle>
           <DialogContent>
-            <form >
-              <TextField
-                name="userDrill"
-                label="Your Drills"
-                select
-                rows="1"
-                error={errors.body ? true : false}
-                helperText={errors.body}
-                className={classes.textField}
+            {yourDrills[0] ?
+              <form >
+                <TextField
+                  name="userDrill"
+                  label="Your Drills"
+                  select
+                  rows="1"
+                  error={errors.body ? true : false}
+                  helperText={errors.body}
+                  className={classes.textField}
 
-                onChange={this.handleChange}
-                fullWidth
-              >
-                {yourDrills.map((drill) => (
-                  <MenuItem key={drill.drillId} value={drill.name}>
-                    {drill.name}
-                  </MenuItem>
-                ))}
-              </TextField>
+                  onChange={this.handleChange}
+                  fullWidth
+                >
+                  {yourDrills.map((drill) => (
+                    <MenuItem key={drill.drillId} value={drill.name}>
+                      {drill.name}
+                    </MenuItem>
+                  ))}
+                </TextField>
 
 
-              <Button
-                type="sendDrill"
-                variant="contained"
-                color="primary"
-                className={classes.submitButton}
-                disabled={loading}
-                onClick={this.sendDrill}
-              >
-                Submit
+                <Button
+                  type="sendDrill"
+                  variant="contained"
+                  color="primary"
+                  className={classes.submitButton}
+                  disabled={loading}
+                  onClick={this.sendDrill}
+                >
+                  Submit
                 {loading && (
-                  <CircularProgress
-                    size={30}
-                    className={classes.progressSpinner}
-                  />
-                )}
-              </Button>
-            </form>
+                    <CircularProgress
+                      size={30}
+                      className={classes.progressSpinner}
+                    />
+                  )}
+                </Button>
+              </form> :
+              <div className={classes.noDrillsContainer}>
+                <div className={classes.noDrills}>
+                  <Typography className={classes.noDrillsText} variant='h5'>
+                    Add drills from Courses page
+                </Typography>
+                  <Link to='/learn'>
+                    <Button
+                      className={classes.noDrillsButton}
+                      color='primary'
+                      variant='contained'
+                    >
+                      Go to Courses
+                </Button>
+                  </Link>
+                </div>
+              </div>
+            }
           </DialogContent>
         </Dialog>
       </Fragment>

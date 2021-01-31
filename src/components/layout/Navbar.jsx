@@ -79,7 +79,7 @@ class Navbar extends Component {
         <ListItem>
           <Link style={{ textDecoration: 'none' }} to="/learn">
             <MyButton tip='Watch a Course' >
-              <Typography variant='h6' >Learn</Typography>
+              <Typography variant='h6' >Courses</Typography>
             </MyButton>
           </Link>
         </ListItem>

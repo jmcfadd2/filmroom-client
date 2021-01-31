@@ -64,7 +64,11 @@ export class signup extends Component {
                 <Grid item sm />
                 <Grid item sm>
                     <img src={AppIcon} alt="Up logo" className={classes.image} />
-                    <Typography variant="h3" className={classes.pageTitle}>
+                    <Typography 
+                    variant="h3" 
+                    className={classes.pageTitle}
+                    color='textSecondary'
+                    >
                         Sign Up
                     </Typography>
                     <form noValidate onSubmit={this.handleSubmit}>
