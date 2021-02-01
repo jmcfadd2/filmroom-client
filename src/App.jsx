@@ -31,7 +31,7 @@ const theme = createMuiTheme(themeFile);
 
 
 
-axios.defaults.baseURL = "http://localhost:5000/shotsup-mvp/us-central1/api"
+axios.defaults.baseURL = "https://us-central1-shotsup-mvp.cloudfunctions.net/api"
 
 const token = localStorage.FBIdToken
 if (token) {
