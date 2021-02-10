@@ -10,7 +10,7 @@ import Box from '@material-ui/core/Box'
 import { makeStyles } from '@material-ui/core/styles';
 import { useSelector, useDispatch } from 'react-redux';
 import { postSession } from '../../redux/actions/dataActions'
-import { Dialog, DialogContent, DialogContentText, Grid, LinearProgress, Chip } from '@material-ui/core';
+import { Dialog, DialogContent, DialogContentText, Grid, LinearProgress, Chip, CircularProgress } from '@material-ui/core';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -31,7 +31,7 @@ export default function StageSession() {
   const [images, setImages] = useState([])
   const [openVideo, setOpenVideo] = useState(false);
   const [openImage, setOpenImage] = useState(false);
-  
+
   const handleVideoClick = () => {
     setOpenVideo(true)
   }
@@ -95,7 +95,7 @@ export default function StageSession() {
           <Grid container >
             <Grid item sm />
             <Grid item justify="center">
-            <Typography color='textSecondary' variant="h6"> Describe Session </Typography>
+              <Typography color='textSecondary' variant="h6"> Describe Session </Typography>
               <TextField
                 name="title"
                 id="title"
@@ -104,8 +104,8 @@ export default function StageSession() {
                 onChange={(e) => setTitle(e.target.value)}
                 size="small"
               />
-            <br />
-            <br/>
+              <br />
+              <br />
               <TextField
                 name="description"
                 placeholder="Description"
@@ -115,12 +115,12 @@ export default function StageSession() {
                 rows={5}
               />
             </Grid>
-            
+
             <Grid item sm />
           </Grid>
 
           <Grid container justify="center">
-            <Grid item  />
+            <Grid item />
             <Grid item>
               <DropzoneDialog
                 acceptedFiles={['video/*']}
@@ -198,13 +198,15 @@ export default function StageSession() {
                       userImage: userImage,
                       videoCount: videos.length
                     }, videos, images))
-    
+
                   }}> Post Session </Button>
                   <Dialog open={loading}>
                     {console.log(loading)}
                     <DialogContent>
-                      <DialogContentText> {videoStatus}  </DialogContentText>
-    
+                      <DialogContentText>
+                        {videoStatus !== null ? videoStatus : <CircularProgress size={30} />}
+                      </DialogContentText>
+
                       <LinearProgress variant="determinate" lab value={progress} />
                     </DialogContent>
                   </Dialog>
@@ -212,7 +214,7 @@ export default function StageSession() {
                 <Grid item />
               </Grid>
             </Grid>
-            <Grid item  />
+            <Grid item />
           </Grid>
         </Box>
       </Paper>

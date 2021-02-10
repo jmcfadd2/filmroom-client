@@ -25,7 +25,7 @@ import {
   SET_VID_STATUS
 } from '../types';
 import * as UpChunk from '@mux/upchunk'
-import {firebase} from '../../util/firebase'
+import { firebase } from '../../util/firebase'
 import axios from 'axios';
 
 export const getPosts = () => (dispatch) => {
@@ -76,29 +76,31 @@ export const createPost = (newPost, video, image) => (dispatch) => {
   axios
     .post('/post', newPost)
     .then(async (res) => {
-      if (video) {const uploadVideo = typeof video !== undefined && await UpChunk.createUpload({
-        endpoint: res.data.uploadUrl,
-        file: video,
-        chunkSize: 20971520,
-      })
-      uploadVideo.on('progress', progress => {
-        console.log(`So far we've uploaded ${progress.detail}% of this file.`);
-      })}
+      if (video) {
+        const uploadVideo = typeof video !== undefined && await UpChunk.createUpload({
+          endpoint: res.data.uploadUrl,
+          file: video,
+          chunkSize: 20971520,
+        })
+        uploadVideo.on('progress', progress => {
+          console.log(`So far we've uploaded ${progress.detail}% of this file.`);
+        })
+      }
 
       typeof image !== undefined && await
-      firebase.storage().ref('post-pics')
-        .child(image.name)
-        .put(image)
-        .then(() => {
+        firebase.storage().ref('post-pics')
+          .child(image.name)
+          .put(image)
+          .then(() => {
 
-          console.log(`Uploaded file: ${image.name}`)
-          firebase.storage().ref('post-pics')
-            .child(image.name).getDownloadURL().then((url) => {
-              firebase.firestore().collection('posts').doc(`${res.data.postId}`).update({
-                imageUrl: url
+            console.log(`Uploaded file: ${image.name}`)
+            firebase.storage().ref('post-pics')
+              .child(image.name).getDownloadURL().then((url) => {
+                firebase.firestore().collection('posts').doc(`${res.data.postId}`).update({
+                  imageUrl: url
+                })
               })
-            })
-        })
+          })
       dispatch({
         type: CREATE_POST,
         payload: res.data
@@ -351,23 +353,23 @@ export const addDrillToSession = (drillName) => (dispatch) => {
 export const updateResults = (results, drillName, drillId, sessionId, image) => async (dispatch) => {
   dispatch({
     type: LOADING_UI
-    
+
   })
 
   image && await
-  firebase.storage().ref('post-pics')
-    .child(image.name)
-    .put(image)
-    .then(() => {
+    firebase.storage().ref('post-pics')
+      .child(image.name)
+      .put(image)
+      .then(() => {
 
-      console.log(`Uploaded file: ${image.name}`)
-      firebase.storage().ref('post-pics')
-        .child(image.name).getDownloadURL().then((url) => {
-          firebase.firestore().collection('posts').doc(`${sessionId}`).update({
-            images: firebase.firestore.FieldValue.arrayUnion(url)
+        console.log(`Uploaded file: ${image.name}`)
+        firebase.storage().ref('post-pics')
+          .child(image.name).getDownloadURL().then((url) => {
+            firebase.firestore().collection('posts').doc(`${sessionId}`).update({
+              images: firebase.firestore.FieldValue.arrayUnion(url)
+            })
           })
-        })
-    })
+      })
   dispatch({
     type: UPDATE_RESULTS,
     payload: {
@@ -402,62 +404,72 @@ export const postSession = (sessionId, newSessionPost, videos, images) => (dispa
     .post(`/post/${sessionId}`, newSessionPost)
     .then(async (res) => {
       console.log(res.data.uploadUrls)
-        for (let i = 0; i < images.length; i++) {
-          const image = images[i];
-          await firebase.storage().ref('post-pics')
-            .child(image.name)
-            .put(image)
-            .then(() => {
+      for (let i = 0; i < images.length; i++) {
+        const image = images[i];
+        await firebase.storage().ref('post-pics')
+          .child(image.name)
+          .put(image)
+          .then(() => {
 
-              console.log(`Uploaded file: ${image.name}`)
-              firebase.storage().ref('post-pics')
-                .child(image.name).getDownloadURL().then((url) => {
-                  firebase.firestore().collection('posts').doc(`${res.data.postId}`).update({
-                    images: firebase.firestore.FieldValue.arrayUnion(url)
-                  })
+            console.log(`Uploaded file: ${image.name}`)
+            firebase.storage().ref('post-pics')
+              .child(image.name).getDownloadURL().then((url) => {
+                firebase.firestore().collection('posts').doc(`${res.data.postId}`).update({
+                  images: firebase.firestore.FieldValue.arrayUnion(url)
                 })
-            })
-        }
-        
+              })
+          })
+      }
+      console.log(videos);
+      if (videos[0]) {
+        console.log('if is running');
         let uploadsCompleted = 0
         for (let i = 0; i < videos.length; i++) {
-        const video = videos[i];
-        const upload = typeof videos !== undefined && await UpChunk.createUpload({
-          endpoint: res.data.uploadUrls[i],
-          file: video,
-          chunkSize: 20971520,
-        })
-        upload.on('progress', progress => {
-          const videoStatus = `So far we've uploaded ${progress.detail.toPrecision(3)}% of video #${i+1}.`
-          dispatch({
-            type: SET_PROGRESS,
-            payload: progress.detail.toPrecision(3)
+          const video = videos[i];
+          const upload = await UpChunk.createUpload({
+            endpoint: res.data.uploadUrls[i],
+            file: video,
+            chunkSize: 20971520,
           })
-          dispatch({
-            type: SET_VID_STATUS,
-            payload: videoStatus
-          })
-        })
-        
-          
-          
-        // eslint-disable-next-line no-loop-func
-        upload.on('success', () => {
-          uploadsCompleted++
-          console.log("Uploads completed :", uploadsCompleted
-          );
-          uploadsCompleted === videos.length && setTimeout(() => {
-            window.location.href = '/'
+          upload.on('progress', progress => {
+            const videoStatus = `So far we've uploaded ${progress.detail.toPrecision(3)}% of video #${i + 1}.`
+            dispatch({
+              type: SET_PROGRESS,
+              payload: progress.detail.toPrecision(3)
+            })
             dispatch({
               type: SET_VID_STATUS,
-              payload: "Video uploads completed, putting things in their place"
+              payload: videoStatus
             })
-          }, 5000)
-        })
+          })
+
+
+
+          // eslint-disable-next-line no-loop-func
+          upload.on('success', () => {
+            uploadsCompleted++
+            console.log("Uploads completed :", uploadsCompleted
+            );
+            uploadsCompleted === videos.length && setTimeout(() => {
+              window.location.href = '/'
+              dispatch({
+                type: SET_VID_STATUS,
+                payload: "Video uploads completed, putting things in their place"
+              })
+            }, 5000)
+          })
+        }
+      } else {
+        setTimeout(() => {
+          window.location.href = '/'
+          dispatch({
+            type: STOP_LOADING_UI
+          })
+        }, 2000)
       }
-      
+
     })
-    
+
 };
 
 
