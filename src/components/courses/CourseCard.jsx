@@ -9,7 +9,8 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: 10
   },
   courseCard: {
-    backgroundColor: theme.palette.secondary.dark
+    backgroundColor: theme.palette.secondary.dark,
+    marginBottom: 20
   }
 })) 
 

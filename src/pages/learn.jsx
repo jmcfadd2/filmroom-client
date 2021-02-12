@@ -44,10 +44,10 @@ export class learn extends Component {
             <Profile />
           </Grid>
 
-          <Grid item md={6} style={{ paddingLeft: 25, paddingRight: 25 }} sm={12} xs={12}>
-            <Paper>
+          <Grid item md={6} style={{ paddingLeft: 25, paddingRight: 25, paddingTop: 25 }} sm={12} xs={12}>
+            
               {recentCoursesMarkup}
-            </Paper>
+            
 
             {/* <Paper className={classes.upload}>
               <Typography color='textSecondary'>
