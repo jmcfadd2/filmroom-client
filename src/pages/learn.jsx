@@ -49,14 +49,14 @@ export class learn extends Component {
               {recentCoursesMarkup}
             </Paper>
 
-            <Paper className={classes.upload}>
+            {/* <Paper className={classes.upload}>
               <Typography color='textSecondary'>
                 Upload your own course and become a FilmRoom coach today
               </Typography>
               <Button color='primary' variant="contained" href='/upload-training'>
                 Upload Now!
               </Button>
-            </Paper>
+            </Paper> */}
           </Grid>
         </Grid>
       </Box>

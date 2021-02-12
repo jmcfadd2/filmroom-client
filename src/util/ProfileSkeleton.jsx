@@ -8,6 +8,7 @@ import Paper from '@material-ui/core/Paper';
 import LocationOn from '@material-ui/icons/LocationOn';
 import LinkIcon from '@material-ui/icons/Link';
 import CalendarToday from '@material-ui/icons/CalendarToday';
+import { Typography } from '@material-ui/core';
 
 const styles = (theme) => ({
     ...theme.spreadThis,
@@ -19,13 +20,13 @@ const styles = (theme) => ({
     },
     fullLine: {
         height: 15,
-        backgroundColor: 'rgba(0,0,0,0.6)',
+        backgroundColor: '#fff',
         width: '100%',
         marginBottom: 10
     },
     halfLine: {
         height: 15,
-        backgroundColor: 'rgba(0,0,0,0.6)',
+        backgroundColor: '#fff',
         width: '50%',
         marginBottom: 10
     }
@@ -46,11 +47,11 @@ const ProfileSkeleton = (props) => {
                     <div className={classes.fullLine} />
                     <div className={classes.fullLine} />
                     <hr />
-                    <LocationOn color="primary" /> <span>Location</span>
+                    <LocationOn color="primary" /> <Typography color='textSecondary'>Location</Typography>
                     <hr />
-                    <LinkIcon color="primary" /> https://website.com
+                    <LinkIcon color="primary" />
           <hr />
-                    <CalendarToday color="primary" /> Joined date
+                    <CalendarToday color="primary" /> <Typography color='textSecondary'>Joined date</Typography>
         </div>
             </div>
         </Paper>

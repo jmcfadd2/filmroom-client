@@ -82,7 +82,8 @@ export class Profile extends Component {
             <hr />
             {location && (
               <Fragment>
-                <LocationOn color={'primary'} /> <span>{location}</span>
+                <LocationOn color={'primary'} /> 
+                <Typography color='textSecondary'>{location}</Typography>
                 <hr />
               </Fragment>
             )}
@@ -96,7 +97,7 @@ export class Profile extends Component {
               </Fragment>
             )}
             <CalendarToday color="primary" /> {' '}
-            <span>Joined {dayjs(createdAt).format('MMM YYYY')}</span>
+            <Typography color='textSecondary'>Joined {dayjs(createdAt).format('MMM YYYY')}</Typography>
           </div>
           <MyButton tip="Logout" onClick={this.handleLogout}>
             <KeyboardReturn color="primary" />

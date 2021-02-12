@@ -12,7 +12,8 @@ const styles = (theme) => ({
     ...theme.spreadThis,
     card: {
         display: 'flex',
-        marginBottom: 20
+        marginBottom: 20,
+        backgroundColor: theme.palette.primary.dark
     },
     cardContent: {
         width: '100%',
