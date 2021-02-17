@@ -1,4 +1,4 @@
-![Example screenshot](./src/images/Filmroom-logo2.png)
+![App logo](./src/images/Filmroom-Logo2.png)
 
 
 
