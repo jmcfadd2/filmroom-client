@@ -15,6 +15,10 @@ import { Dialog, DialogContent, DialogContentText, Grid, LinearProgress, Chip, C
 
 const useStyles = makeStyles((theme) => ({
   ...theme.spreadThis,
+  textInput: {
+    backgroundColor: theme.palette.primary.light
+  }
+
 }))
 
 
@@ -100,7 +104,8 @@ export default function StageSession() {
                 name="title"
                 id="title"
                 defaultValue={`${session.topic} ${session.type} session`}
-                variant="outlined"
+                variant="filled"
+                inputProps={{className: classes.textInput }}
                 onChange={(e) => setTitle(e.target.value)}
                 size="small"
               />
@@ -109,7 +114,8 @@ export default function StageSession() {
               <TextField
                 name="description"
                 placeholder="Description"
-                variant="outlined"
+                variant="filled"
+                className={ classes.textInput }
                 multiline
                 onChange={(e) => setDescription(e.target.value)}
                 rows={5}
@@ -145,7 +151,7 @@ export default function StageSession() {
                 <AddIcon color="primary" />
                 <Typography color='textSecondary' variant="body1">
                   Add Video To Your Post
-                                      </Typography>
+                </Typography>
               </MyButton>
               {videos.map((video, index) => (
                 <Chip
@@ -174,9 +180,12 @@ export default function StageSession() {
 
                 onClick={handleImageClick}
                 btnClassName="button"
+
               >
                 <AddIcon color="primary"></AddIcon>
-                                      Add Pictures
+                <Typography color='textSecondary' variant="body1">
+                  Add Images To Your Post
+                </Typography>
                 </MyButton>
               {images.map((image, index) => (
                 <Chip

@@ -116,9 +116,7 @@ export default {
       maxHeight: '13vh'
 
     },
-    numberField: {
-      width: 70,
-    },
+    
 
   }
 }

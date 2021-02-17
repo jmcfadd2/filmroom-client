@@ -9,6 +9,7 @@ import Textfield from '@material-ui/core/TextField'
 import { useSelector, useDispatch, } from 'react-redux';
 import { updateResults, stageSession } from '../../redux/actions/dataActions';
 import { Card, CardContent } from '@material-ui/core';
+
 import { Grid } from '@material-ui/core';
 
 const useStyles = makeStyles((theme) => ({
@@ -27,7 +28,7 @@ const useStyles = makeStyles((theme) => ({
   },
   sessionCard: {
     backgroundColor: theme.palette.secondary.dark,
-    justifyContent: "center" 
+    justifyContent: "center"
   },
   resetContainer: {
     padding: theme.spacing(3),
@@ -39,6 +40,30 @@ const useStyles = makeStyles((theme) => ({
   },
   labelClass: {
     color: 'white'
+  },
+  numberField: {
+    width: 100,
+    height: 100,
+    backgroundColor: theme.palette.primary.light,
+    borderRadius: 10,
+  },
+  numberFieldInput: {
+    width: 100,
+    height: 100,
+    borderRadius: 10,
+    fontSize: 30,
+    backgroundColor: theme.palette.primary.light,
+  },
+  metricContainer: {
+    display: 'flex',
+    justifyContent: 'space-around',
+    marginTop: 20,
+    marginBottom: 20,
+  },
+  forwardSlash: {
+    fontSize: 70,
+    color: 'white',
+
   }
 }));
 
@@ -102,14 +127,23 @@ export default function ActivityStepper(props) {
                   <hr />
                   <br />
 
-                  {session.topic !== "eSports" ? <ReactPlayer url={`https://stream.mux.com/${drill.drillVideoId}.m3u8`} playing={true} controls={true} height="100%"
-                    width="100%" /> :
-                    <DropzoneArea
-                      showPreviewsInDropzone={true}
-
-                      onChange={handleImageAdded}
-
+                  {session.topic !== "eSports" ? (
+                    <ReactPlayer
+                      url={`https://stream.mux.com/${drill.drillVideoId}.m3u8`}
+                      playing
+                      
+                      loop
+                      height="100%"
+                      width="100%"
                     />
+                  ) : (
+                      <DropzoneArea
+                        showPreviewsInDropzone
+
+                        onChange={handleImageAdded}
+
+                      />
+                    )
                   }
 
                   <form>
@@ -117,21 +151,26 @@ export default function ActivityStepper(props) {
 
                       <div key={index}>
 
-                        {metric.includes("/") || metric.includes(" x ") ?
-                          <div key={index}>
+                        {metric.includes("/") || metric.includes(" x ") ? (
+                          <div className={classes.metricContainer} key={index}>
 
                             <Textfield
                               key={index}
                               className={classes.numberField}
                               rows="1"
-                              type="text"
+                              type="number"
                               label={metric.split(/(\sx\s|\/)/)[0]}
                               name={metric.split(/(\sx\s|\/)/)[0]}
-                              defaultValue="0"
-                              variant="standard"
+                              defaultValue=""
+                              InputLabelProps={{ className: classes.labelClass }}
+                              InputProps={{
+                                className: classes.numberFieldInput
+                              }}
+                              variant="filled"
                               onChange={handleFirstCompoundMetric}
-                              size="small"
+
                             />
+                            <Typography className={classes.forwardSlash}>/</Typography>
                             <Textfield
                               key={index}
                               className={classes.numberField}
@@ -140,24 +179,28 @@ export default function ActivityStepper(props) {
                               label={metric.split(/(\sx\s|\/)/)[2]}
                               name={metric.split(/(\sx\s|\/)/)[2]}
                               InputLabelProps={{ className: classes.labelClass }}
-                              defaultValue="0"
-                              variant="standard"
+                              InputProps={{ className: classes.numberFieldInput }}
+                              defaultValue=""
+                              variant="filled"
                               onChange={handleSecondCompoundMetric}
+
+                            />
+                          </div>
+                        ) : (
+                            <Textfield
+                              key={index}
+                              className={classes.numberField}
+                              rows="1"
+                              type="number"
+                              label={metric}
+                              InputProps={{ className: classes.numberFieldInput }}
+                              name={metric}
+                              defaultValue=""
+                              variant="filled"
+                              onChange={handleMetric}
                               size="small"
                             />
-                          </div> :
-                          <Textfield
-                            key={index}
-                            className={classes.numberField}
-                            rows="1"
-                            type="number"
-                            label={metric}
-                            name={metric}
-                            defaultValue="0"
-                            variant="standard"
-                            onChange={handleMetric}
-                            size="small"
-                          />}
+                          )}
                       </div>
                     ))}
 
@@ -181,6 +224,10 @@ export default function ActivityStepper(props) {
                         onClick={() => {
                           handleNext();
                           dispatch(updateResults(results, drill.name, drill.drillId))
+                          if (activeStep === drills.length - 1 ) {
+                            dispatch(stageSession(session))
+                            props.stage()
+                          }
                         }}
                         className={classes.button}
                       >
@@ -196,22 +243,7 @@ export default function ActivityStepper(props) {
         <Grid item sm />
       </Grid>
 
-      {activeStep === drills.length && (
 
-        <Paper square elevation={0} className={classes.resetContainer}>
-          <Typography>All drills completed - you're finished</Typography>
-          <Button
-            onClick={() => {
-              dispatch(stageSession(session))
-              props.stage()
-            }}
-            className={classes.button}
-          >
-            Finish Session
-              </Button>
-        </Paper>
-
-      )}
     </div>
   );
 }
