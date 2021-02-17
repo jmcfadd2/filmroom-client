@@ -6,11 +6,11 @@
 
 
 ## Table of contents
-
-* [Technologies](#technologies)
-* [Web Features](#web-features)
 * [Inspiration](#inspiration)
-* [Contact](#contact)
+* [Technologies](#technologies)
+* [Features](#features)
+
+
 
 ## Motivation
 
@@ -27,7 +27,7 @@ As an avid user of Strava, which tracks runs and Udemy, which provides online co
 
 
 
-## Web Features
+## Features
 List of features ready and TODOs for future development
 1. [Training](#training)
 1. [Courses](#courses)
@@ -56,6 +56,7 @@ Payment will give trainers the ability to monetize their content. This will be i
 
 The group functionality will provide Coaches to provide their teams with workouts and receive feedback on their players.
  
+
 
 
 
