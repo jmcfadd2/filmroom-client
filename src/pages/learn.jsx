@@ -1,9 +1,8 @@
 import React, { Component } from 'react'
-import { Button, Grid, Paper, Typography, withStyles } from '@material-ui/core'
+import {  Grid, withStyles } from '@material-ui/core'
 import PropTypes from 'prop-types';
 
 // Components
-import Post from '../components/post/Post'
 import Profile from '../components/profile/Profile'
 import PostSkeleton from '../util/PostSkeleton';
 import { Box } from '@material-ui/core'

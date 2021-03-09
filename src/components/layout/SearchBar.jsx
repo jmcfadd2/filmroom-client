@@ -1,5 +1,5 @@
 import algoliasearch from 'algoliasearch/lite';
-import { Hits, InstantSearch, Panel, SearchBox } from 'react-instantsearch-dom';
+import { Hits, InstantSearch, SearchBox } from 'react-instantsearch-dom';
 import React from 'react';
 import SearchHits from './SearchHits';
 

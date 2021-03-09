@@ -115,7 +115,7 @@ export default function StageSession() {
                 name="description"
                 placeholder="Description"
                 variant="filled"
-                className={ classes.textInput }
+                inputProps={{ className: classes.textInput }}
                 multiline
                 onChange={(e) => setDescription(e.target.value)}
                 rows={5}

@@ -3,7 +3,6 @@ import ReactPlayer from 'react-player'
 import { DropzoneArea } from 'material-ui-dropzone'
 import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
-import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import Textfield from '@material-ui/core/TextField'
 import { useSelector, useDispatch, } from 'react-redux';

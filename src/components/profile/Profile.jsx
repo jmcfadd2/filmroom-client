@@ -6,7 +6,6 @@ import dayjs from 'dayjs'
 import EditDetails from './EditDetails';
 import MyButton from '../../util/MyButton';
 import ProfileSkeleton from '../../util/ProfileSkeleton';
-import { firebase } from '../../util/firebase';
 // MUI
 import Button from '@material-ui/core/Button';
 import { Paper } from '@material-ui/core';
@@ -24,7 +23,6 @@ import LinkIcon from '@material-ui/icons/Link'
 import CalendarToday from '@material-ui/icons/CalendarToday'
 import EditIcon from '@material-ui/icons/Edit'
 import KeyboardReturn from '@material-ui/icons/KeyboardReturn'
-import theme from '../../util/theme';
 
 
 

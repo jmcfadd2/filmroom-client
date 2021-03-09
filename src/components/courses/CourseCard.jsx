@@ -1,5 +1,5 @@
 import { Card, CardContent, CardMedia, Link, makeStyles, Typography } from '@material-ui/core'
-import React, { useEffect } from 'react'
+import React from 'react'
 
 const useStyles = makeStyles((theme) => ({
   media: {

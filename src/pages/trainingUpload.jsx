@@ -1,16 +1,14 @@
-import React, { useEffect, useState, useCallback, Fragment } from 'react'
+import React, { useEffect, useState, useCallback } from 'react'
 import { makeStyles } from '@material-ui/core/styles';
-import MyButton from '../util/MyButton';
 import { useSelector, useDispatch } from 'react-redux';
-import AddIcon from '@material-ui/icons/Add'
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
-import { Paper, Chip, Divider, MenuItem, CircularProgress, Grid, Dialog, DialogContent, DialogContentText, LinearProgress } from '@material-ui/core';
+import { Paper, Chip, Divider, MenuItem, CircularProgress, Dialog, DialogContent, DialogContentText, LinearProgress } from '@material-ui/core';
 import { setTopic, setDrills, uploadCourseDrills, uploadCourseVideos, createCourse } from '../redux/actions/courseActions.js';
-import { DropzoneArea, DropzoneDialog } from 'material-ui-dropzone';
+import { DropzoneArea } from 'material-ui-dropzone';
 import { getTopicData } from '../redux/actions/dataActions';
-import { LOADING_UI, SET_UPLOAD_SUCCESS, STOP_LOADING_UI } from '../redux/types';
+import {  SET_UPLOAD_SUCCESS, STOP_LOADING_UI } from '../redux/types';
 import theme from '../util/theme';
 
 const useStyles = makeStyles((theme) => ({
@@ -44,7 +42,6 @@ export default function TrainingUpload() {
   const [activeStep, setActiveStep] = React.useState(0);
   const [openVideo, setOpenVideo] = useState(false);
   const [courseVideos, setCourseVideos] = useState([])
-  const [courseVideoNames, setCourseVideoNames] = useState([])
   const topics = useSelector(state => state.data.topics)
   const loading = useSelector(state => state.UI.loading)
   const uploadSuccess = useSelector(state => state.courses.uploadSuccess)
@@ -92,9 +89,9 @@ export default function TrainingUpload() {
 
   }
 
-  const handleVideoClick = () => {
-    document.getElementById('videoInput').click()
-  }
+  // const handleVideoClick = () => {
+  //   document.getElementById('videoInput').click()
+  // }
   const handleAddCourseVideo = useCallback(
     (files) => {
       setCourseVideos([].concat(courseVideos, files))

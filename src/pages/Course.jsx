@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 
 import { getCourseData, addCourseToLibrary } from '../redux/actions/courseActions';
-import { getUserData } from '../redux/actions/userActions';
+
 
 const useStyles = makeStyles((theme) => ({
     ...theme.spreadThis,
@@ -41,6 +41,7 @@ function Course() {
   useEffect(() => {
     
     dispatch(getCourseData(courseId))
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const handleAddToLibrary =  () => {

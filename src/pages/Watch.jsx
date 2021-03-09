@@ -5,7 +5,6 @@ import ReactPlayer from 'react-player';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { getCourseData } from '../redux/actions/courseActions';
-import theme from '../util/theme';
 
 const useStyles = makeStyles((theme) => ({
   ...theme.spreadthis,

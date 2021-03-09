@@ -1,12 +1,11 @@
-import React, { Component, Fragment } from 'react'
+import React, { Component } from 'react'
 import withStyles from '@material-ui/core/styles/withStyles';
 import { Link } from 'react-router-dom'
 import PropTypes from 'prop-types';
-import CreatePost from '../post/CreatePost';
 import StartSession from '../sessions/StartSession';
 import AppIcon from '../../images/reppit-text-logo.png'
 import MenuIcon from '@material-ui/icons/Menu';
-import { Box, Drawer, IconButton, List, ListItem, Typography } from '@material-ui/core'
+import { Drawer, IconButton, List, ListItem, Typography } from '@material-ui/core'
 // Redux
 import { connect } from 'react-redux'
 

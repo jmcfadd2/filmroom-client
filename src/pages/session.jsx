@@ -1,7 +1,6 @@
 import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import withStyles from '@material-ui/core/styles/withStyles';
-import CreateDrill from '../components/sessions/CreateDrill';
 import StageSession from '../components/sessions/StageSession'
 // MUI Stuff
 import Button from '@material-ui/core/Button';
@@ -15,7 +14,6 @@ import { setTopic, setType, clearErrors, getTopicData, getUserData, setSession, 
 import { Chip, Grid, Typography } from '@material-ui/core';
 import ActivityStepper from '../components/sessions/ActivityStepper';
 import AddDrill from '../components/sessions/AddDrill';
-import theme from '../util/theme';
 
 const styles = (theme) => ({
   ...theme.spreadThis,

@@ -1,9 +1,9 @@
 ![App logo](./src/images/Filmroom-Logo2.png)
 
 
+ Filmroom is a sports learning app that allows coaches to provide athletes with workouts and trainings in the same manner Udemy tutors provide courses for its users.
 
-> Filmroom is a sports learning app that allows coaches to provide athletes with workouts and trainings in the same manner Udemy tutors provide courses for its users.
-
+ Test out the app at [filmroom.io](https://filmroom.io/)
 
 ## Table of contents
 * [Inspiration](#inspiration)
@@ -40,12 +40,14 @@ To-do list:
 
 ### Training
 ![Training Demo](./src/images/Training_Demo.gif)
->In the Train tab users will be able to use drills learned in the [Courses](#courses) tab and track the amount of successful repetitions while doing them.
+
+In the Train tab users will be able to use drills learned in the [Courses](#courses) tab and track the amount of successful repetitions while doing them.
 
 
 ### Courses
 ![Courses Demo](./src/images/Courses_Demo.gif)
->In courses users find their desired course and add it to their library. Adding to the library allows user to watch the instrsutction videos and gives them access to the drills
+
+In courses users find their desired course and add it to their library. Adding to the library allows user to watch the instrsutction videos and gives them access to the drills
 
 ## Road Ahead
 
@@ -56,7 +58,7 @@ Payment will give trainers the ability to monetize their content. This will be i
 
 The group functionality will provide Coaches to provide their teams with workouts and receive feedback on their players.
  
-Test out the site at filmroom.io
+
 
 
 
