@@ -20,13 +20,11 @@ import {
   UPDATE_RESULTS,
   SET_TITLE,
   SET_DESCRIPT,
-  SUBMIT_COMMENT,
-  SET_PROGRESS,
-  SET_VID_STATUS
+  SUBMIT_COMMENT
 } from '../types';
-import * as UpChunk from '@mux/upchunk'
 import { firebase } from '../../util/firebase'
 import axios from 'axios';
+import { uploadOneVideo, uploadVideos } from './videoFunctions';
 
 export const getPosts = () => (dispatch) => {
   dispatch({
@@ -77,17 +75,10 @@ export const createPost = (newPost, video, image) => (dispatch) => {
     .post('/post', newPost)
     .then(async (res) => {
       if (video) {
-        const uploadVideo = typeof video !== undefined && await UpChunk.createUpload({
-          endpoint: res.data.uploadUrl,
-          file: video,
-          chunkSize: 20971520,
-        })
-        uploadVideo.on('progress', progress => {
-          console.log(`So far we've uploaded ${progress.detail}% of this file.`);
-        })
+        uploadOneVideo(res, video)
       }
 
-      typeof image !== undefined && await
+      image !== undefined && await
         firebase.storage().ref('post-pics')
           .child(image.name)
           .put(image)
@@ -289,14 +280,8 @@ export const addNewDrill = (newDrill, video) => (dispatch) => {
     .post('/drill', newDrill)
     .then(async (res) => {
 
-      const upload = typeof video !== undefined && await UpChunk.createUpload({
-        endpoint: res.data.uploadUrl,
-        file: video,
-        chunkSize: 20971520,
-      })
-      upload.on('progress', progress => {
-        console.log(`So far we've uploaded ${progress.detail}% of this file.`);
-      })
+      uploadOneVideo(res, video)
+
       dispatch({
         type: ADD_NEW_DRILL,
         payload: res.data
@@ -420,53 +405,7 @@ export const postSession = (sessionId, newSessionPost, videos, images) => (dispa
               })
           })
       }
-      console.log(videos);
-      if (videos[0]) {
-        console.log('if is running');
-        let uploadsCompleted = 0
-        for (let i = 0; i < videos.length; i++) {
-          const video = videos[i];
-          const upload = await UpChunk.createUpload({
-            endpoint: res.data.uploadUrls[i],
-            file: video,
-            chunkSize: 20971520,
-          })
-          upload.on('progress', progress => {
-            const videoStatus = `So far we've uploaded ${progress.detail.toPrecision(3)}% of video #${i + 1}.`
-            dispatch({
-              type: SET_PROGRESS,
-              payload: progress.detail.toPrecision(3)
-            })
-            dispatch({
-              type: SET_VID_STATUS,
-              payload: videoStatus
-            })
-          })
-
-
-
-          // eslint-disable-next-line no-loop-func
-          upload.on('success', () => {
-            uploadsCompleted++
-            console.log("Uploads completed :", uploadsCompleted
-            );
-            uploadsCompleted === videos.length && setTimeout(() => {
-              window.location.href = '/'
-              dispatch({
-                type: SET_VID_STATUS,
-                payload: "Video uploads completed, putting things in their place"
-              })
-            }, 5000)
-          })
-        }
-      } else {
-        setTimeout(() => {
-          window.location.href = '/'
-          dispatch({
-            type: STOP_LOADING_UI
-          })
-        }, 2000)
-      }
+      uploadVideos(res, videos)
 
     })
 
