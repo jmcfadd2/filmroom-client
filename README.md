@@ -4,6 +4,10 @@
  Filmroom is a sports learning app that allows coaches to provide athletes with workouts and trainings in the same manner Udemy tutors provide courses for its users.
 
  Test out the app at [filmroom.io](https://filmroom.io/)
+ 
+ Sample Account
+ email: testuser1@email.com
+ password: 123456
 
 ## Table of contents
 * [Inspiration](#inspiration)
