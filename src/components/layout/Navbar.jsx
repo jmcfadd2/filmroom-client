@@ -72,9 +72,6 @@ class Navbar extends Component {
             <StartSession />
           </Link>
         </ListItem>
-        {/* <ListItem>
-          <CreatePost />
-        </ListItem> */}
         <ListItem>
           <Link style={{ textDecoration: 'none' }} to="/learn">
             <MyButton tip='Watch a Course' >

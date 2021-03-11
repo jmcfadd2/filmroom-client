@@ -38,6 +38,17 @@ export class login extends Component {
       this.setState({ errors: nextProps.UI.errors })
     }
   }
+
+  handleTestSubmit = () => {
+    const userData = {
+      email: 'testuser1@email.com',
+      password: '123456'
+    }
+    
+    firebase.auth().signInWithEmailAndPassword(this.state.email, this.state.password)
+    this.props.loginUser(userData, this.props.history)
+  }
+
   handleSubmit = (event) => {
     event.preventDefault()
     const userData = {
@@ -106,6 +117,12 @@ export class login extends Component {
             )}
             <Button type="submit" variant="contained" color="primary" className={classes.button} disabled={loading}>
               Login
+                            {loading && (
+                <CircularProgress size={30} className={classes.progress} />
+              )}
+            </Button>
+            <Button onClick={this.handleTestSubmit} variant="contained" color="primary" className={classes.button} disabled={loading}>
+              Use Test Account
                             {loading && (
                 <CircularProgress size={30} className={classes.progress} />
               )}
