@@ -30,6 +30,7 @@ export class login extends Component {
       email: '',
       password: '',
       loading: false,
+      testLoading: false,
       errors: {}
     }
   }
@@ -44,7 +45,7 @@ export class login extends Component {
       email: 'testuser1@email.com',
       password: '123456'
     }
-    
+    this.setState({testLoading: true})
     firebase.auth().signInWithEmailAndPassword(this.state.email, this.state.password)
     this.props.loginUser(userData, this.props.history)
   }
@@ -115,12 +116,12 @@ export class login extends Component {
                 {errors.general}
               </Typography>
             )}
-            <Button type="submit" variant="contained" color="primary" className={classes.button} disabled={loading}>
+            {this.state.testLoading !== true && <Button type="submit" variant="contained" color="primary" className={classes.button} disabled={loading} style={{marginRight: 20}}>
               Login
                             {loading && (
                 <CircularProgress size={30} className={classes.progress} />
               )}
-            </Button>
+            </Button>}
             <Button onClick={this.handleTestSubmit} variant="contained" color="primary" className={classes.button} disabled={loading}>
               Use Test Account
                             {loading && (
