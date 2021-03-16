@@ -17,6 +17,13 @@ const useStyles = makeStyles((theme) => ({
   ...theme.spreadThis,
   textInput: {
     backgroundColor: theme.palette.primary.light
+  },
+  metricInput: {
+    marginHorizontal: 30,
+    width: 40,
+  },
+  metricInputTitle: {
+    width: 20,
   }
 
 }))
@@ -71,26 +78,18 @@ export default function StageSession() {
             <hr />
 
           </Box>
-          <Grid container justify="center" >
-            <Grid item />
+          <Grid container justify="space-around" >
+            <Grid spacing={4} item />
             {session.drillResults.map((result, index) => (
-              <Grid item spacing={2} key={index}>
-                <Typography color='textSecondary' variant="body2">{result.drillName}</Typography>
+              <div className={classes.metricContainer}>
+              
+                <Typography noWrap color='textSecondary'  variant="body2">{result.drillName}</Typography>
                 <br />
-                {!result.results.compoundMetric ? Object.entries(result.results).map(([metric, value], index) => (
-                  <div key={index}>
-                    <Typography color='textSecondary' variant="body2">{metric}</Typography>
-                    <br />
-                    <Typography color='textSecondary' variant="body2">{value}</Typography>
-                  </div>
-                )) : <div>
-                    <Typography color='textSecondary'>{session.drills[index].metrics[index]}</Typography>
 
-                    <Typography color='textSecondary'> {Object.values(result.results.compoundMetric)[0]}/{Object.values(result.results.compoundMetric)[1]} {(Object.values(result.results.compoundMetric)[0] / Object.values(result.results.compoundMetric)[1] * 100).toPrecision(3)}%</Typography>
-                  </div>
-
-                }
-              </Grid>
+                  <Typography color='textSecondary'>
+                    {Object.values(result.results.compoundMetric)[0]}/{Object.values(result.results.compoundMetric)[1]} {(Object.values(result.results.compoundMetric)[0] / Object.values(result.results.compoundMetric)[1] * 100).toPrecision(3)}%
+                    </Typography>
+                </div>
 
             ))}
             <Grid item />
@@ -105,7 +104,7 @@ export default function StageSession() {
                 id="title"
                 defaultValue={`${session.topic} ${session.type} session`}
                 variant="filled"
-                inputProps={{className: classes.textInput }}
+                inputProps={{ className: classes.textInput }}
                 onChange={(e) => setTitle(e.target.value)}
                 size="small"
               />
@@ -186,7 +185,7 @@ export default function StageSession() {
                 <Typography color='textSecondary' variant="body1">
                   Add Images To Your Post
                 </Typography>
-                </MyButton>
+              </MyButton>
               {images.map((image, index) => (
                 <Chip
                   key={index}

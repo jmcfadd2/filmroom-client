@@ -12,8 +12,9 @@ import MenuItem from '@material-ui/core/MenuItem'
 import { connect } from 'react-redux';
 import { setTopic, setType, clearErrors, getTopicData, getUserData, setSession, stageSession } from '../redux/actions/dataActions';
 import { Chip, Grid, Typography } from '@material-ui/core';
-import ActivityStepper from '../components/sessions/ActivityStepper';
+
 import AddDrill from '../components/sessions/AddDrill';
+import ActivityStepper from '../components/sessions/ActivityStepper/ActivityStepper';
 
 const styles = (theme) => ({
   ...theme.spreadThis,

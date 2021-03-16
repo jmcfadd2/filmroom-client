@@ -6,7 +6,7 @@ import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import Textfield from '@material-ui/core/TextField'
 import { useSelector, useDispatch, } from 'react-redux';
-import { updateResults, stageSession } from '../../redux/actions/dataActions';
+import { updateResults, stageSession } from '../../../redux/actions/dataActions';
 import { Card, CardContent } from '@material-ui/core';
 
 import { Grid } from '@material-ui/core';
@@ -71,7 +71,9 @@ const useStyles = makeStyles((theme) => ({
 export default function ActivityStepper(props) {
   const classes = useStyles();
   const [activeStep, setActiveStep] = useState(0);
-  const [results, setResults] = useState()
+  const [results, setResults] = useState({
+    compoundMetric: []
+  })
   const [images, setImages] = useState()
   const session = useSelector(state => state.data.session)
   const drills = useSelector(state => state.data.session.drills)
@@ -80,11 +82,11 @@ export default function ActivityStepper(props) {
   const dispatch = useDispatch()
 
   const handleMetric = (e) => {
-    setResults({ ...results, [e.target.name]: e.target.value })
+    setResults({[e.target.name]: e.target.value })
   }
   // TODO Handle Edge Case of different
   const handleFirstCompoundMetric = (e) => {
-    setResults({ ...results, compoundMetric: [e.target.value] })
+    results.compoundMetric[0] = e.target.value
 
     console.log(results);
   }
@@ -93,14 +95,17 @@ export default function ActivityStepper(props) {
     console.log(results);
   }
 
-  const handleNext = () => {
+  const handleNext = (drill) => {
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
-    setResults("")
+    dispatch(updateResults(results, drill.name, drill.drillId))
+    if (activeStep === drills.length - 1) {
+      dispatch(stageSession(session))
+      props.stage()
+    }
+    setResults({compoundMetric: []})
   };
 
-  const handleBack = () => {
-    setActiveStep((prevActiveStep) => prevActiveStep - 1);
-  };
+  
 
   const handleImageAdded = useCallback(
     (files) => {
@@ -209,25 +214,11 @@ export default function ActivityStepper(props) {
                   </form>
                   <div className={classes.actionsContainer}>
                     <div>
-                      {activeStep === 0 && <Button
-
-                        onClick={handleBack}
-                        className={classes.button}
-                      >
-                        Last Drill
-                                    </Button>}
                       <Button
                         variant="contained"
 
                         color="primary"
-                        onClick={() => {
-                          handleNext();
-                          dispatch(updateResults(results, drill.name, drill.drillId))
-                          if (activeStep === drills.length - 1 ) {
-                            dispatch(stageSession(session))
-                            props.stage()
-                          }
-                        }}
+                        onClick={() => handleNext(drill)}
                         className={classes.button}
                       >
                         {activeStep === drills.length - 1 ? 'Finish Drills' : 'Next Drill'}

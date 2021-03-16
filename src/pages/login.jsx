@@ -122,9 +122,9 @@ export class login extends Component {
                 <CircularProgress size={30} className={classes.progress} />
               )}
             </Button>}
-            <Button onClick={this.handleTestSubmit} variant="contained" color="primary" className={classes.button} disabled={loading}>
+            <Button onClick={this.handleTestSubmit} variant="contained" color="primary" className={classes.button} disabled={this.state.testLoading}>
               Use Test Account
-                            {loading && (
+                            {this.state.testLoading && (
                 <CircularProgress size={30} className={classes.progress} />
               )}
             </Button>
