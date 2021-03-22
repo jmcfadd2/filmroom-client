@@ -1,7 +1,7 @@
 /// <reference types="cypress" />
 
 describe('Logging In Test Account', () => {
-  beforeEach(() => {
+  it(() => {
     cy.visit('/login')
     cy.get('#email').type('justin1@email.com')
     cy.get('#password').type('123456')
