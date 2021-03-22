@@ -121,7 +121,7 @@ export class session extends Component {
               select
               label="Sport"
               variant="filled"
-
+              id="topic"
               InputLabelProps={{ className: classes.labelClass }}
               className={classes.textField}
               onChange={this.handleTopic}
@@ -141,6 +141,7 @@ export class session extends Component {
               name="type"
               select
               label="Session Type"
+              id="type"
               variant="filled"
               InputLabelProps={{ className: classes.labelClass }}
               className={classes.textField}

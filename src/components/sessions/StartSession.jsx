@@ -48,7 +48,13 @@ class StartSession extends Component {
         
         return (
             <Fragment>
-                <MyButton onClick={this.handleOpen}  tip="Start a session">
+            <MyButton
+              
+              onClick={this.handleOpen}
+              id='train'
+              tip="Start a session"
+
+            >
                     <Typography variant={"h6"} >Train</Typography>
                 </MyButton>
                 

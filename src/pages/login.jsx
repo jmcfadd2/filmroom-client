@@ -45,7 +45,7 @@ export class login extends Component {
       email: 'testuser1@email.com',
       password: '123456'
     }
-    this.setState({testLoading: true})
+    this.setState({ testLoading: true })
     firebase.auth().signInWithEmailAndPassword(this.state.email, this.state.password)
     this.props.loginUser(userData, this.props.history)
   }
@@ -116,16 +116,40 @@ export class login extends Component {
                 {errors.general}
               </Typography>
             )}
-            {this.state.testLoading !== true && <Button type="submit" variant="contained" color="primary" className={classes.button} disabled={loading} style={{marginRight: 20}}>
-              Login
-                            {loading && (
-                <CircularProgress size={30} className={classes.progress} />
-              )}
-            </Button>}
-            <Button onClick={this.handleTestSubmit} variant="contained" color="primary" className={classes.button} disabled={this.state.testLoading}>
+            {this.state.testLoading !== true &&
+              <Button
+                id="login"
+                type="submit"
+                variant="contained"
+                color="primary"
+                className={classes.button} disabled={loading}
+                style={{ marginRight: 20 }}
+              >
+                {loading ? (
+                  <CircularProgress
+                    size={30}
+                    className={classes.progress}
+                  />
+                ) : (
+                  "Login"
+                )
+                }
+              </Button>}
+            <Button
+              id="test-account"
+              onClick={this.handleTestSubmit}
+              variant="contained"
+              color="primary"
+              className={classes.button}
+              disabled={this.state.testLoading}
+            >
               Use Test Account
-                            {this.state.testLoading && (
-                <CircularProgress size={30} className={classes.progress} />
+              {this.state.testLoading && (
+                <CircularProgress
+                  
+                  size={30}
+                  className={classes.progress}
+                />
               )}
             </Button>
             <br />
@@ -133,7 +157,7 @@ export class login extends Component {
 
           </form>
         </Grid>
-        <Grid item sm />
+        <Grid />
       </Grid>
     )
   }

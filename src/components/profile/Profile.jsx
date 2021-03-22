@@ -80,7 +80,7 @@ export class Profile extends Component {
             <hr />
             {location && (
               <Fragment>
-                <LocationOn color={'primary'} /> 
+                <LocationOn color={'primary'} />
                 <Typography color='textSecondary'>{location}</Typography>
                 <hr />
               </Fragment>
@@ -104,20 +104,32 @@ export class Profile extends Component {
         </div>
       </Paper>
     ) : (
-        <Paper className={classes.paper}>
-          <Typography variant="body2" color={'textSecondary'} align="center">
-            No profile found, please login again
+      <Paper className={classes.paper}>
+        <Typography variant="body2" color={'textSecondary'} align="center">
+          No profile found, please login again
             </Typography>
-          <div className={classes.buttons}>
-            <Button variant="contained" color="primary" component={Link} to="/login">
-              Login
-                </Button>
-            <Button variant="contained" color="primary" component={Link} to="/signup">
-              Sign Up
-                </Button>
-          </div>
-        </Paper>
-      )) : (<ProfileSkeleton />)
+        <div className={classes.buttons}>
+          <Button
+            variant="contained"
+            color="primary"
+            component={Link}
+            id='login'
+            to="/login"
+          >
+            Login
+          </Button>
+          <Button
+            variant="contained"
+            color="primary"
+              component={Link}
+              id='signup'
+            to="/signup"
+          >
+            Sign Up
+          </Button>
+        </div>
+      </Paper>
+    )) : (<ProfileSkeleton />)
     return profileMarkup;
   }
 }
