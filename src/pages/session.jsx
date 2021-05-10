@@ -163,6 +163,7 @@ export class session extends Component {
             <Fragment>
               {session.drills.map((drill, index) => (
                 <Chip
+                  className={classes.chip}
                   key={index}
                   label={`${index + 1}. ${drill.name}`}
 

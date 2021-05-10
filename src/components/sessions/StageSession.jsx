@@ -27,7 +27,7 @@ const useStyles = makeStyles((theme) => ({
   },
   dialog: {
     backgroundColor: theme.palette.primary.dark
-  }
+  },
 
 }))
 
@@ -157,9 +157,9 @@ export default function StageSession() {
               </MyButton>
               {videos.map((video, index) => (
                 <Chip
+                  className={classes.chip}
                   key={index}
                   label={`${index + 1}. ${video.name}`}
-
                 />
               ))}
               <br />
@@ -191,13 +191,13 @@ export default function StageSession() {
               </MyButton>
               {images.map((image, index) => (
                 <Chip
+                  className={classes.chip}
                   key={index}
                   label={`${index + 1}. ${image.name}`}
-
                 />
               ))}
 
-              <Grid container>
+              <Grid style={{ marginTop: 15,}} container>
                 <Grid item />
                 <Grid item>
                   <Button variant="contained" onClick={async () => {
@@ -210,7 +210,8 @@ export default function StageSession() {
                       videoCount: videos.length
                     }, videos, images))
 
-                  }}> Post Session </Button>
+                  }}> Post Session
+                  </Button>
                   <Dialog open={loading} className={classes.dialog}>
                     <DialogContent>
                       <DialogContentText color="textPrimary">

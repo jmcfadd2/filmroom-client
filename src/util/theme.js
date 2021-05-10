@@ -114,8 +114,11 @@ export default {
       marginBottom: 100,
       backgroundColor: '#262F50',
       maxHeight: '13vh'
-
     },
+    chip: {
+      marginRight: 10,
+      marginVertical: 10,
+    }
     
 
   }
