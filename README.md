@@ -5,9 +5,6 @@
 
  Test out the app at [filmroom.io](https://filmroom.io/)
  
- Sample Account
- email: testuser1@email.com
- password: 123456
 
 ## Table of contents
 * [Inspiration](#inspiration)
@@ -40,7 +37,6 @@ List of features ready and TODOs for future development
 
 To-do list:
 1. [Groups](#groups)
-1. [Payment](#payment)
 
 ### Training
 ![Training Demo](./src/images/Training_Demo.gif)
@@ -55,8 +51,6 @@ In courses users find their desired course and add it to their library. Adding t
 
 ## Road Ahead
 
-### Payment
-Payment will give trainers the ability to monetize their content. This will be implemented through the Stripe Connect API
 
 ### Groups
 

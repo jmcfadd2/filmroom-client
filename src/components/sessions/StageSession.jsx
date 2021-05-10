@@ -24,6 +24,9 @@ const useStyles = makeStyles((theme) => ({
   },
   metricInputTitle: {
     width: 20,
+  },
+  dialog: {
+    backgroundColor: theme.palette.primary.dark
   }
 
 }))
@@ -208,10 +211,9 @@ export default function StageSession() {
                     }, videos, images))
 
                   }}> Post Session </Button>
-                  <Dialog open={loading}>
-                    {console.log(loading)}
+                  <Dialog open={loading} className={classes.dialog}>
                     <DialogContent>
-                      <DialogContentText>
+                      <DialogContentText color="textPrimary">
                         {videoStatus !== null ? videoStatus : <CircularProgress size={30} />}
                       </DialogContentText>
 

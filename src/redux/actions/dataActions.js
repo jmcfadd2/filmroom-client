@@ -1,3 +1,4 @@
+/* eslint-disable no-loop-func */
 import {
   SET_POSTS,
   LOADING_DATA,
@@ -20,11 +21,15 @@ import {
   UPDATE_RESULTS,
   SET_TITLE,
   SET_DESCRIPT,
-  SUBMIT_COMMENT
+  SUBMIT_COMMENT,
+  SET_VID_STATUS,
+  SET_PROGRESS
 } from '../types';
 import { firebase } from '../../util/firebase'
 import axios from 'axios';
 import { uploadOneVideo, uploadVideos } from './videoFunctions';
+import * as UpChunk from "@mux/upchunk";
+
 
 export const getPosts = () => (dispatch) => {
   dispatch({
@@ -381,7 +386,7 @@ export const setDescript = (newDescript) => (dispatch) => {
   })
 }
 
-export const postSession = (sessionId, newSessionPost, videos, images) => (dispatch) => {
+export const postSession = (sessionId, newSessionPost, videos, images) => async (dispatch) => {
   dispatch({
     type: LOADING_UI
   });
@@ -405,7 +410,53 @@ export const postSession = (sessionId, newSessionPost, videos, images) => (dispa
               })
           })
       }
-      uploadVideos(res, videos)
+      
+  console.log(videos);
+  if (videos[0]) {
+    console.log("if is running");
+    let uploadsCompleted = 0;
+    for (let i = 0; i < videos.length; i++) {
+      const video = videos[i];
+      const upload = UpChunk.createUpload({
+        endpoint: res.data.uploadUrls[i],
+        file: video,
+        chunkSize: 20971520,
+      });
+      upload.on("progress", (progress) => {
+        const videoStatus = `So far we've uploaded ${progress.detail.toPrecision(
+          3
+        )}% of video #${i + 1}.`;
+        dispatch({
+          type: SET_PROGRESS,
+          payload: progress.detail.toPrecision(3),
+        });
+        dispatch({
+          type: SET_VID_STATUS,
+          payload: videoStatus,
+        });
+      });
+
+      upload.on("success", () => {
+        uploadsCompleted++;
+        uploadsCompleted === videos.length &&
+          setTimeout(() => {
+            window.location.href = "/";
+            dispatch({
+              type: SET_VID_STATUS,
+              payload: "Video uploads completed, putting things in their place",
+            });
+          }, 5000);
+      });
+    }
+  } else {
+    setTimeout(() => {
+      window.location.href = "/";
+      dispatch({
+        type: STOP_LOADING_UI,
+      });
+    }, 2000);
+  }
+
 
     })
 

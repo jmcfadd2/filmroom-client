@@ -1,4 +1,4 @@
-import { UpChunk } from "@mux/upchunk";
+import * as UpChunk from "@mux/upchunk";
 import { SET_PROGRESS, SET_VID_STATUS, STOP_LOADING_UI } from "../types";
 
 export const uploadVideos =  (response, videos) => async (dispatch) => {
@@ -8,7 +8,7 @@ export const uploadVideos =  (response, videos) => async (dispatch) => {
     let uploadsCompleted = 0
     for (let i = 0; i < videos.length; i++) {
       const video = videos[i];
-      const upload = await UpChunk.createUpload({
+      const upload = UpChunk.createUpload({
         endpoint: response.data.uploadUrls[i],
         file: video,
         chunkSize: 20971520,

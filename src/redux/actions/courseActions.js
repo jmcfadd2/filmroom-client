@@ -46,7 +46,6 @@ export const getCourseData = (courseId) => (dispatch) => {
   axios
     .get(`/courses/${courseId}`)
     .then((res) => {
-      console.log(res);
       dispatch({
         type: SET_COURSE_INFO,
         payload: res.data
@@ -85,7 +84,6 @@ export const createCourse = async (newCourse, video) => (dispatch) => {
   axios
     .post('/courses/create', newCourse)
     .then(async (res) => {
-      console.log(res.data.uploadUrl)
 
       const upload = typeof video !== undefined && await UpChunk.createUpload({
         endpoint: res.data.uploadUrl,
