@@ -41,13 +41,13 @@ export class login extends Component {
   }
 
   handleTestSubmit = () => {
-    const userData = {
+    const testUserData = {
       email: 'testuser1@email.com',
       password: '123456'
     }
     this.setState({ testLoading: true })
-    firebase.auth().signInWithEmailAndPassword(this.state.email, this.state.password)
-    this.props.loginUser(userData, this.props.history)
+    firebase.auth().signInWithEmailAndPassword(testUserData.email, testUserData.password)
+    this.props.loginUser(testUserData, this.props.history)
   }
 
   handleSubmit = (event) => {
