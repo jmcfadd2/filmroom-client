@@ -24,7 +24,7 @@ As an avid user of Strava, which tracks runs and Udemy, which provides online co
 ## Technologies
 * React - Material UI
 * Redux - Redux Thunk
-* Firebase - Node.js (Firebase Functions)
+* NoSQL database - Node.js 
 
 
 
