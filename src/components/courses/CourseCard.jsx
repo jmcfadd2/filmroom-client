@@ -20,7 +20,7 @@ export default function CourseCard(props) {
   return (
     <div>
       <Link href={`/courses/${courseId}`} underline="none">
-      <Card className={classes.courseCard}>
+      <Card id={props.id} className={classes.courseCard}>
         <CardMedia
           className={classes.media}
           image={ image ? image : `https://image.mux.com/${videos[0]}/thumbnail.png`}

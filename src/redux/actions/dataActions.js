@@ -393,7 +393,6 @@ export const postSession = (sessionId, newSessionPost, videos, images) => async 
   axios
     .post(`/post/${sessionId}`, newSessionPost)
     .then(async (res) => {
-      console.log(res.data.uploadUrls)
       for (let i = 0; i < images.length; i++) {
         const image = images[i];
         await firebase.storage().ref('post-pics')
@@ -401,7 +400,6 @@ export const postSession = (sessionId, newSessionPost, videos, images) => async 
           .put(image)
           .then(() => {
 
-            console.log(`Uploaded file: ${image.name}`)
             firebase.storage().ref('post-pics')
               .child(image.name).getDownloadURL().then((url) => {
                 firebase.firestore().collection('posts').doc(`${res.data.postId}`).update({
@@ -411,9 +409,7 @@ export const postSession = (sessionId, newSessionPost, videos, images) => async 
           })
       }
       
-  console.log(videos);
   if (videos[0]) {
-    console.log("if is running");
     let uploadsCompleted = 0;
     for (let i = 0; i < videos.length; i++) {
       const video = videos[i];

@@ -33,7 +33,9 @@ export class learn extends Component {
     const { classes } = this.props
     const { courses, loading } = this.props.courses;
     let recentCoursesMarkup = !loading ? (
-      courses.map(course => <CourseCard key={course.courseId} course={course} />)
+      courses.map((course, idx) => {
+        return <CourseCard id={`course${idx + 1}`} key={course.courseId}  course={course} />
+      })
     ) : <PostSkeleton />
     return (
       <Box mt={10}>
