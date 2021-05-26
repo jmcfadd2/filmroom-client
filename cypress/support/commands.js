@@ -1,25 +1,24 @@
-// ***********************************************
-// This example commands.js shows you how to
-// create various custom commands and overwrite
-// existing commands.
-//
+/* eslint-disable no-undef */
+/// <reference types="cypress" />
 // For more comprehensive examples of custom
 // commands please read more here:
 // https://on.cypress.io/custom-commands
 // ***********************************************
-//
-//
-// -- This is a parent command --
-// Cypress.Commands.add('login', (email, password) => { ... })
-//
-//
-// -- This is a child command --
-// Cypress.Commands.add('drag', { prevSubject: 'element'}, (subject, options) => { ... })
-//
-//
-// -- This is a dual command --
-// Cypress.Commands.add('dismiss', { prevSubject: 'optional'}, (subject, options) => { ... })
-//
-//
-// -- This will overwrite an existing command --
-// Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
+
+Cypress.Commands.add("checkCourseVideo", (idx) => {
+  cy.get("#menu").click();
+  cy.get("#courses").click();
+  cy.get(".MuiBackdrop-root").click();
+  cy.get(`#course${idx}`).click();
+  cy.get(".MuiButton-label").click();
+  cy.get(".react-player__play-icon").click();
+  cy.wait(5000);
+  cy.get("video").its("0.paused").should("eq", false);
+});
+
+Cypress.Commands.add('loginTestUser', () => {
+  cy.visit("/login");
+  cy.get("#email").type("justin1@email.com");
+  cy.get("#password").type("123456");
+  cy.get("#login").click();
+})

@@ -96,7 +96,7 @@ class AddDrill extends Component {
     } = this.props;
     return (
       <Fragment>
-        <MyButton onClick={this.handleOpen} tip={`Add New ${session.topic ? topics[this.props.index].subActivity : "Drill"}`}>
+        <MyButton onClick={this.handleOpen} id="add-drill" tip={`Add New ${session.topic ? topics[this.props.index].subActivity : "Drill"}`}>
           <AddIcon />
           <Typography color='textSecondary' variant={"h6"}>Add {session.topic ? `${topics[this.props.index].subActivity}` : "Drill"} </Typography>
 

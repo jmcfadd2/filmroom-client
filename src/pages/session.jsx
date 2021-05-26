@@ -128,7 +128,7 @@ export class session extends Component {
               fullWidth
             >
               {topics.map((topic, index) => (
-                <MenuItem key={index} value={index}>
+                <MenuItem key={index} id={topic.name} value={index}>
                   {topic.name}
                 </MenuItem>
               ))}
@@ -149,7 +149,7 @@ export class session extends Component {
               fullWidth
             >
               {topics[0] && topics[currentTopicIndex].sessionTypes.map((type, index) => (
-                <MenuItem key={index} value={type}>
+                <MenuItem key={index} id={type} value={type}>
                   {type}
                 </MenuItem>
               ))}
@@ -175,6 +175,7 @@ export class session extends Component {
             <Button
               type="submit"
               variant="contained"
+              id="submit-button"
               color="primary"
               className={classes.submitButton}
               disabled={loading}
